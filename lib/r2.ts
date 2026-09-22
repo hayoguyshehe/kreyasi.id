@@ -7,39 +7,60 @@ import {
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 // ============================================
-// Cloudflare R2 (S3-Compatible) Storage Helper
+// S3-Compatible Storage Helper (Cloudflare R2 & Backblaze B2)
+// Mendukung fase bootstrap tanpa kartu kredit (Backblaze B2)
+// maupun skala produksi (Cloudflare R2)
 // ============================================
 
-const R2_ACCOUNT_ID = process.env.R2_ACCOUNT_ID || "";
-const R2_ACCESS_KEY_ID = process.env.R2_ACCESS_KEY_ID || "";
-const R2_SECRET_ACCESS_KEY = process.env.R2_SECRET_ACCESS_KEY || "";
-const R2_BUCKET_NAME = process.env.R2_BUCKET_NAME || "kreyasi-media";
-const R2_PUBLIC_URL = process.env.R2_PUBLIC_URL || "";
+const S3_ENDPOINT =
+  process.env.S3_ENDPOINT ||
+  (process.env.R2_ACCOUNT_ID
+    ? `https://${process.env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`
+    : "");
+const S3_ACCESS_KEY_ID =
+  process.env.S3_ACCESS_KEY_ID || process.env.R2_ACCESS_KEY_ID || "";
+const S3_SECRET_ACCESS_KEY =
+  process.env.S3_SECRET_ACCESS_KEY || process.env.R2_SECRET_ACCESS_KEY || "";
+const S3_BUCKET_NAME =
+  process.env.S3_BUCKET_NAME || process.env.R2_BUCKET_NAME || "kreyasi-media";
+const S3_PUBLIC_URL =
+  process.env.S3_PUBLIC_URL || process.env.R2_PUBLIC_URL || process.env.NEXT_PUBLIC_R2_PUBLIC_URL || "";
+const S3_REGION = process.env.S3_REGION || "auto";
 
 /**
- * Cek apakah R2 sudah dikonfigurasi.
- * Jika belum, fallback ke local storage bisa diimplementasikan.
+ * Cek apakah storage S3/R2/B2 sudah dikonfigurasi.
  */
 export function isR2Configured(): boolean {
-  return !!(R2_ACCOUNT_ID && R2_ACCESS_KEY_ID && R2_SECRET_ACCESS_KEY);
+  const endpoint = process.env.S3_ENDPOINT || (process.env.R2_ACCOUNT_ID ? `https://${process.env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com` : "");
+  const accessKey = process.env.S3_ACCESS_KEY_ID || process.env.R2_ACCESS_KEY_ID;
+  const secretKey = process.env.S3_SECRET_ACCESS_KEY || process.env.R2_SECRET_ACCESS_KEY;
+  return !!(endpoint && accessKey && secretKey);
 }
 
 /**
- * Buat S3Client yang terhubung ke Cloudflare R2.
+ * Buat S3Client yang terhubung ke Cloudflare R2 atau Backblaze B2.
  */
-function getR2Client(): S3Client {
+export function getS3Client(): S3Client {
+  const endpoint =
+    process.env.S3_ENDPOINT ||
+    (process.env.R2_ACCOUNT_ID
+      ? `https://${process.env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`
+      : undefined);
+
   return new S3Client({
-    region: "auto",
-    endpoint: `https://${R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,
+    region: process.env.S3_REGION || "auto",
+    endpoint,
     credentials: {
-      accessKeyId: R2_ACCESS_KEY_ID,
-      secretAccessKey: R2_SECRET_ACCESS_KEY,
+      accessKeyId: process.env.S3_ACCESS_KEY_ID || process.env.R2_ACCESS_KEY_ID || "",
+      secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || process.env.R2_SECRET_ACCESS_KEY || "",
     },
   });
 }
 
+export const getR2Client = getS3Client;
+
 /**
- * Generate presigned URL untuk upload langsung dari browser ke R2.
+ * Generate presigned URL untuk upload langsung dari browser ke R2/S3.
  * URL berlaku selama 10 menit.
  *
  * @param key - path di bucket (mis. "invitations/{invId}/photos/{fileId}.jpg")
@@ -51,10 +72,11 @@ export async function generatePresignedUploadUrl(
   contentType: string,
   maxSizeBytes?: number
 ): Promise<{ uploadUrl: string; publicUrl: string; key: string }> {
-  const client = getR2Client();
+  const client = getS3Client();
+  const bucketName = process.env.S3_BUCKET_NAME || process.env.R2_BUCKET_NAME || "kreyasi-media";
 
   const command = new PutObjectCommand({
-    Bucket: R2_BUCKET_NAME,
+    Bucket: bucketName,
     Key: key,
     ContentType: contentType,
     ...(maxSizeBytes && { ContentLength: maxSizeBytes }),
@@ -72,14 +94,15 @@ export async function generatePresignedUploadUrl(
 }
 
 /**
- * Hapus objek dari R2.
+ * Hapus objek dari R2/S3.
  */
 export async function deleteObject(key: string): Promise<void> {
-  const client = getR2Client();
+  const client = getS3Client();
+  const bucketName = process.env.S3_BUCKET_NAME || process.env.R2_BUCKET_NAME || "kreyasi-media";
 
   await client.send(
     new DeleteObjectCommand({
-      Bucket: R2_BUCKET_NAME,
+      Bucket: bucketName,
       Key: key,
     })
   );
@@ -87,27 +110,30 @@ export async function deleteObject(key: string): Promise<void> {
 
 /**
  * Dapatkan URL publik untuk media.
- * R2 public URL harus sudah dikonfigurasi (custom domain atau r2.dev subdomain).
+ * Public URL harus sudah dikonfigurasi (custom domain atau r2.dev subdomain).
  */
 export function getPublicUrl(key: string): string {
-  if (R2_PUBLIC_URL) {
-    return `${R2_PUBLIC_URL}/${key}`;
+  const publicUrl = process.env.S3_PUBLIC_URL || process.env.R2_PUBLIC_URL || process.env.NEXT_PUBLIC_R2_PUBLIC_URL;
+  if (publicUrl) {
+    return `${publicUrl.replace(/\/$/, "")}/${key}`;
   }
-  // Fallback: R2 dev URL (hanya untuk development)
-  return `https://${R2_BUCKET_NAME}.${R2_ACCOUNT_ID}.r2.dev/${key}`;
+  const bucketName = process.env.S3_BUCKET_NAME || process.env.R2_BUCKET_NAME || "kreyasi-media";
+  const accountId = process.env.R2_ACCOUNT_ID || "account";
+  return `https://${bucketName}.${accountId}.r2.dev/${key}`;
 }
 
 /**
- * Generate presigned URL untuk download/baca file dari R2.
+ * Generate presigned URL untuk download/baca file dari R2/S3.
  * Berguna untuk file private yang perlu diakses sementara.
  */
 export async function generatePresignedReadUrl(
   key: string
 ): Promise<string> {
-  const client = getR2Client();
+  const client = getS3Client();
+  const bucketName = process.env.S3_BUCKET_NAME || process.env.R2_BUCKET_NAME || "kreyasi-media";
 
   const command = new GetObjectCommand({
-    Bucket: R2_BUCKET_NAME,
+    Bucket: bucketName,
     Key: key,
   });
 

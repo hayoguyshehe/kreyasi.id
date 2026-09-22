@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { guestbookSchema } from "@/lib/validators/rsvp";
 import { sanitizeHtml } from "@/lib/utils";
+import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
 
 export async function POST(
   request: NextRequest,
@@ -10,14 +11,36 @@ export async function POST(
   try {
     const { slug } = await context.params;
 
+    // Rate Limiting: Maks. 10 submission per menit per IP + undangan
+    const clientIp = getClientIp(request);
+    const rateLimit = checkRateLimit(`${clientIp}:${slug}`, 10, 60 * 1000);
+
+    if (!rateLimit.success) {
+      const retryAfterSec = Math.max(1, Math.ceil((rateLimit.resetTime - Date.now()) / 1000));
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Terlalu banyak pengiriman ucapan. Silakan tunggu 1 menit sebelum mencoba kembali.",
+        },
+        {
+          status: 429,
+          headers: {
+            "Retry-After": String(retryAfterSec),
+            "X-RateLimit-Limit": String(rateLimit.limit),
+            "X-RateLimit-Remaining": "0",
+          },
+        }
+      );
+    }
+
     const invitation = await prisma.invitation.findUnique({
       where: { slug },
-      select: { id: true },
+      select: { id: true, status: true },
     });
 
-    if (!invitation) {
+    if (!invitation || invitation.status !== "PUBLISHED") {
       return NextResponse.json(
-        { success: false, error: "Undangan tidak ditemukan" },
+        { success: false, error: "Undangan tidak ditemukan atau belum dipublikasikan" },
         { status: 404 }
       );
     }

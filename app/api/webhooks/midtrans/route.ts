@@ -81,28 +81,53 @@ export async function POST(request: NextRequest) {
     const method = resolvePaymentMethod(payment_type);
     const now = new Date();
 
-    // 4. Update dalam transaksi atomik
+    // 4. Pengecekan Idempotensi Awal: jika order sudah PAID dan notifikasi berikutnya juga settlement/capture
+    if (order.status === "PAID" && targetStatus === "PAID") {
+      console.log(
+        `[Midtrans Webhook] Order ${order_id} SUDAH diproses sebelumnya (IDEMPOTEN). Mengabaikan pemrosesan ulang.`
+      );
+      return NextResponse.json({
+        success: true,
+        message: "Webhook already processed (idempotent)",
+        data: { orderId: order.id, status: order.status, isDuplicate: true },
+      });
+    }
+
+    // 5. Update dalam transaksi atomik
     await prisma.$transaction(async (tx) => {
+      // Re-fetch dalam transaksi untuk perlindungan race condition
+      const currentOrder = await tx.order.findUnique({
+        where: { id: order.id },
+        include: { invitation: true, package: true },
+      });
+
+      if (!currentOrder) throw new Error("Order not found");
+
+      // Idempotensi race guard di dalam transaksi
+      if (currentOrder.status === "PAID" && targetStatus === "PAID") {
+        return;
+      }
+
       // A. Update Status Order
       await tx.order.update({
-        where: { id: order.id },
+        where: { id: currentOrder.id },
         data: {
           status: targetStatus,
-          paidAt: targetStatus === "PAID" ? now : order.paidAt,
+          paidAt: targetStatus === "PAID" ? (currentOrder.paidAt || now) : currentOrder.paidAt,
         },
       });
 
-      // B. Catat Audit Trail Pembayaran ke Model Payment
+      // B. Catat Audit Trail Pembayaran ke Model Payment (1 record unik per orderId)
       await tx.payment.upsert({
-        where: { orderId: order.id },
+        where: { orderId: currentOrder.id },
         update: {
           method,
           gatewayRef: transaction_id || order_id,
           rawPayload: payload,
-          paidAt: targetStatus === "PAID" ? now : null,
+          paidAt: targetStatus === "PAID" ? (currentOrder.paidAt || now) : null,
         },
         create: {
-          orderId: order.id,
+          orderId: currentOrder.id,
           method,
           gatewayRef: transaction_id || order_id,
           rawPayload: payload,
@@ -110,23 +135,23 @@ export async function POST(request: NextRequest) {
         },
       });
 
-      // C. Jika pembayaran sukses (PAID)
-      if (targetStatus === "PAID") {
-        // Increment kupon jika dipakai
-        if (order.promoCodeId) {
+      // C. Efek samping pembayaran HANYA saat transisi pertama kali menuju PAID
+      if (targetStatus === "PAID" && currentOrder.status !== "PAID") {
+        // Increment kupon HANYA SEKALI
+        if (currentOrder.promoCodeId) {
           await tx.promoCode.update({
-            where: { id: order.promoCodeId },
+            where: { id: currentOrder.promoCodeId },
             data: { usedCount: { increment: 1 } },
           });
         }
 
-        // Auto-publish undangan dan atur expiresAt
-        if (order.invitationId && order.package) {
-          const durationDays = order.package.activeDurationDays;
+        // Auto-publish undangan dan tentukan expiresAt HANYA SEKALI (tidak boleh bergeser saat duplicate webhook)
+        if (currentOrder.invitationId && currentOrder.package) {
+          const durationDays = currentOrder.package.activeDurationDays;
           const expiresAt = new Date(now.getTime() + durationDays * 24 * 60 * 60 * 1000);
 
           await tx.invitation.update({
-            where: { id: order.invitationId },
+            where: { id: currentOrder.invitationId },
             data: {
               status: "PUBLISHED",
               publishedAt: now,
