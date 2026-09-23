@@ -1,6 +1,5 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import DOMPurify from "isomorphic-dompurify";
 import { nanoid } from "nanoid";
 
 /**
@@ -12,13 +11,17 @@ export function cn(...inputs: ClassValue[]) {
 
 /**
  * Sanitasi HTML input untuk mencegah XSS.
- * Aman dipakai di server-side (API route) maupun client-side.
+ * Strip semua HTML tags dan entities — aman dipakai di server maupun client.
+ *
+ * Catatan: implementasi ini sengaja menghindari isomorphic-dompurify / jsdom
+ * karena jsdom memiliki dependency chain ESM-only (@exodus/bytes) yang crash
+ * di Vercel serverless runtime dengan ERR_REQUIRE_ESM.
  */
 export function sanitizeHtml(dirty: string): string {
-  return DOMPurify.sanitize(dirty, {
-    ALLOWED_TAGS: [], // Strip semua HTML tags
-    ALLOWED_ATTR: [], // Strip semua atribut
-  });
+  return dirty
+    .replace(/<[^>]*>/g, "")          // Strip semua HTML tags
+    .replace(/&[#a-z0-9]+;/gi, "")    // Strip HTML entities
+    .trim();
 }
 
 /**
