@@ -7,9 +7,11 @@ import {
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 // ============================================
-// S3-Compatible Storage Helper (Cloudflare R2 & Backblaze B2)
-// Mendukung fase bootstrap tanpa kartu kredit (Backblaze B2)
-// maupun skala produksi (Cloudflare R2)
+// S3-Compatible Storage Helper
+// Mendukung:
+// 1. IDCloudHost Object Storage (https://is3.cloudhost.id)
+// 2. Cloudflare R2
+// 3. Backblaze B2
 // ============================================
 
 const S3_ENDPOINT =
@@ -25,10 +27,10 @@ const S3_BUCKET_NAME =
   process.env.S3_BUCKET_NAME || process.env.R2_BUCKET_NAME || "kreyasi-media";
 const S3_PUBLIC_URL =
   process.env.S3_PUBLIC_URL || process.env.R2_PUBLIC_URL || process.env.NEXT_PUBLIC_R2_PUBLIC_URL || "";
-const S3_REGION = process.env.S3_REGION || "auto";
+const S3_REGION = process.env.S3_REGION;
 
 /**
- * Cek apakah storage S3/R2/B2 sudah dikonfigurasi.
+ * Cek apakah storage S3/R2/B2/IDCloudHost sudah dikonfigurasi.
  */
 export function isR2Configured(): boolean {
   const endpoint = process.env.S3_ENDPOINT || (process.env.R2_ACCOUNT_ID ? `https://${process.env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com` : "");
@@ -38,7 +40,7 @@ export function isR2Configured(): boolean {
 }
 
 /**
- * Buat S3Client yang terhubung ke Cloudflare R2 atau Backblaze B2.
+ * Buat S3Client yang terhubung ke IDCloudHost, Cloudflare R2, atau Backblaze B2.
  */
 export function getS3Client(): S3Client {
   const endpoint =
@@ -47,9 +49,19 @@ export function getS3Client(): S3Client {
       ? `https://${process.env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`
       : undefined);
 
+  // Ceph S3 (IDCloudHost is3.cloudhost.id) memerlukan forcePathStyle: true
+  const isIdCloudHost = endpoint?.includes("cloudhost.id") || false;
+  const forcePathStyle =
+    process.env.S3_FORCE_PATH_STYLE !== undefined
+      ? process.env.S3_FORCE_PATH_STYLE === "true"
+      : isIdCloudHost;
+
+  const region = S3_REGION || (isIdCloudHost ? "us-east-1" : "auto");
+
   return new S3Client({
-    region: process.env.S3_REGION || "auto",
+    region,
     endpoint,
+    forcePathStyle,
     credentials: {
       accessKeyId: process.env.S3_ACCESS_KEY_ID || process.env.R2_ACCESS_KEY_ID || "",
       secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || process.env.R2_SECRET_ACCESS_KEY || "",
@@ -117,7 +129,15 @@ export function getPublicUrl(key: string): string {
   if (publicUrl) {
     return `${publicUrl.replace(/\/$/, "")}/${key}`;
   }
+
+  // IDCloudHost path-style: https://is3.cloudhost.id/{bucket}/{key}
+  const endpoint = process.env.S3_ENDPOINT;
   const bucketName = process.env.S3_BUCKET_NAME || process.env.R2_BUCKET_NAME || "kreyasi-media";
+  if (endpoint?.includes("cloudhost.id")) {
+    return `${endpoint.replace(/\/$/, "")}/${bucketName}/${key}`;
+  }
+
+  // Cloudflare R2 fallback
   const accountId = process.env.R2_ACCOUNT_ID || "account";
   return `https://${bucketName}.${accountId}.r2.dev/${key}`;
 }

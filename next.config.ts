@@ -4,6 +4,16 @@ const nextConfig: NextConfig = {
   // Konfigurasi image domains untuk Cloudflare R2
   images: {
     remotePatterns: [
+      // IDCloudHost Object Storage
+      {
+        protocol: "https",
+        hostname: "is3.cloudhost.id",
+      },
+      {
+        protocol: "https",
+        hostname: "**.cloudhost.id",
+      },
+      // Cloudflare R2 (legacy fallback)
       {
         protocol: "https",
         hostname: "**.r2.dev",
