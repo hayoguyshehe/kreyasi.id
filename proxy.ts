@@ -95,7 +95,7 @@ export async function proxy(request: NextRequest) {
   if (isDashboard || isAdmin || isProtectedApi) {
     const token = await getToken({
       req: request,
-      secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET,
+      secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET || "8sJDFfUKUu2YKvya5dMu+5oYAKikBgvCQgoDbkf8mxo=",
     });
 
     // 1. Cek otentikasi login & status akun
