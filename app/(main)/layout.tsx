@@ -8,16 +8,17 @@ export default async function MainLayout({
 }: {
   children: React.ReactNode;
 }) {
-  let session = null;
+  let user = null;
   try {
-    session = await auth();
+    const session = await auth();
+    user = session?.user ?? null;
   } catch (error) {
-    console.error("[MainLayout] Failed to get session:", error);
+    console.warn("[MainLayout] Session lookup fallback to guest:", error);
   }
 
   return (
     <div className="min-h-screen flex flex-col bg-[#0B0D11] text-slate-100">
-      <Navbar user={session?.user} />
+      <Navbar user={user} />
       <main className="flex-1">{children}</main>
       <Footer />
     </div>
