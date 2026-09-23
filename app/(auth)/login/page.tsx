@@ -47,8 +47,8 @@ function LoginForm() {
         return;
       }
 
-      router.push(callbackUrl);
-      router.refresh();
+      // Full page navigation ensures fresh cookies are sent and bypasses client router cache
+      window.location.href = callbackUrl;
     } catch {
       setError("Terjadi kesalahan saat masuk. Silakan coba lagi.");
       setIsLoading(false);

@@ -93,10 +93,39 @@ export async function proxy(request: NextRequest) {
     pathname.startsWith("/api/my") || pathname.startsWith("/api/admin");
 
   if (isDashboard || isAdmin || isProtectedApi) {
-    const token = await getToken({
+    const isSecure =
+      request.cookies.has("__Secure-authjs.session-token") ||
+      request.cookies.has("__Secure-next-auth.session-token") ||
+      process.env.NODE_ENV === "production" ||
+      request.nextUrl.protocol === "https:" ||
+      request.headers.get("x-forwarded-proto") === "https";
+
+    const secret =
+      process.env.AUTH_SECRET ||
+      process.env.NEXTAUTH_SECRET ||
+      "8sJDFfUKUu2YKvya5dMu+5oYAKikBgvCQgoDbkf8mxo=";
+
+    let token = await getToken({
       req: request,
-      secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET || "8sJDFfUKUu2YKvya5dMu+5oYAKikBgvCQgoDbkf8mxo=",
+      secret,
+      secureCookie: isSecure,
     });
+
+    if (!token && isSecure) {
+      token = await getToken({
+        req: request,
+        secret,
+        secureCookie: false,
+      });
+    }
+
+    if (!token && request.cookies.has("__Secure-next-auth.session-token")) {
+      token = await getToken({
+        req: request,
+        secret,
+        cookieName: "__Secure-next-auth.session-token",
+      });
+    }
 
     // 1. Cek otentikasi login & status akun
     if (!token || token.isSuspended) {
