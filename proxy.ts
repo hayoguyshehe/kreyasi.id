@@ -1,12 +1,11 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { getToken } from "next-auth/jwt";
-import { prisma } from "@/lib/prisma";
 
 // Cache in-memory resolusi custom domain (TTL 5 menit)
 const domainCache = new Map<string, { slug: string | null; expiresAt: number }>();
 
-async function resolveCustomDomain(domain: string): Promise<string | null> {
+async function resolveCustomDomain(domain: string, reqUrl: string): Promise<string | null> {
   const cached = domainCache.get(domain);
   const now = Date.now();
   if (cached && cached.expiresAt > now) {
@@ -14,12 +13,12 @@ async function resolveCustomDomain(domain: string): Promise<string | null> {
   }
 
   try {
-    const invitation = await prisma.invitation.findUnique({
-      where: { customDomain: domain },
-      select: { slug: true },
-    });
-
-    const slug = invitation?.slug || null;
+    const res = await fetch(
+      new URL(`/api/domains/resolve?domain=${encodeURIComponent(domain)}`, reqUrl)
+    );
+    if (!res.ok) return null;
+    const data = await res.json();
+    const slug = data.slug || null;
     domainCache.set(domain, { slug, expiresAt: now + 5 * 60 * 1000 });
     return slug;
   } catch (error) {
@@ -77,7 +76,7 @@ export async function proxy(request: NextRequest) {
     // 2. Cek Custom Domain (Tier Eksklusif): misal budi-ani.com
     const isApex = apexHosts.has(hostname) || hostname.endsWith(".vercel.app");
     if (!isApex && !isSubdomainOfRoot && !isSubdomainOfLocal) {
-      const resolvedSlug = await resolveCustomDomain(hostname);
+      const resolvedSlug = await resolveCustomDomain(hostname, request.url);
       if (resolvedSlug) {
         const targetPath = pathname === "/" ? `/u/${resolvedSlug}` : `/u/${resolvedSlug}${pathname}`;
         return NextResponse.rewrite(new URL(`${targetPath}${search}`, request.url));

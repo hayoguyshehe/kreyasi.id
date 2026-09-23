@@ -6,6 +6,7 @@ import { compare } from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  secret: process.env.AUTH_SECRET || "8sJDFfUKUu2YKvya5dMu+5oYAKikBgvCQgoDbkf8mxo=",
   adapter: PrismaAdapter(prisma),
   session: {
     strategy: "jwt", // JWT lebih efisien untuk VPS (tidak perlu lookup session di DB setiap request)

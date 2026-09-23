@@ -8,7 +8,12 @@ export default async function MainLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await auth();
+  let session = null;
+  try {
+    session = await auth();
+  } catch (error) {
+    console.error("[MainLayout] Failed to get session:", error);
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-[#0B0D11] text-slate-100">
