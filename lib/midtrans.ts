@@ -60,13 +60,21 @@ export async function createSnapTransaction(
     },
   };
 
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || "";
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+    Authorization: `Basic ${authString}`,
+  };
+
+  // Jika URL publik aktif (misal production atau tunnel ngrok), kirim notifikasi otomatis
+  if (appUrl && !appUrl.includes("localhost") && !appUrl.includes("127.0.0.1")) {
+    headers["X-Override-Notification"] = `${appUrl.replace(/\/$/, "")}/api/webhooks/midtrans`;
+  }
+
   const response = await fetch(`${MIDTRANS_BASE_URL}/snap/v1/transactions`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: `Basic ${authString}`,
-    },
+    headers,
     body: JSON.stringify(payload),
   });
 
