@@ -34,13 +34,13 @@ export function EnvelopeCover({
       }`}
     >
       {/* Ambient Lighting Background */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[350px] bg-amber-500/15 blur-[140px] pointer-events-none" />
-      <div className="absolute bottom-10 right-10 w-[350px] h-[250px] bg-[#E0A899]/10 blur-[100px] pointer-events-none" />
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-150 h-87.5 bg-amber-500/15 blur-[140px] pointer-events-none" />
+      <div className="absolute bottom-10 right-10 w-87.5 h-62.5 bg-[#E0A899]/10 blur-[100px] pointer-events-none" />
 
       {/* Decorative Envelope Frame */}
       <div className="relative w-full max-w-md rounded-3xl p-8 sm:p-10 glass-panel-gold border border-amber-500/40 text-center space-y-8 shadow-2xl">
         {/* Top Monogram */}
-        <div className="w-14 h-14 rounded-full bg-gradient-to-br from-amber-300 via-amber-500 to-amber-700 mx-auto flex items-center justify-center text-slate-950 shadow-lg shadow-amber-500/25">
+        <div className="w-14 h-14 rounded-full bg-linear-to-br from-amber-300 via-amber-500 to-amber-700 mx-auto flex items-center justify-center text-slate-950 shadow-lg shadow-amber-500/25">
           <Heart className="w-7 h-7 fill-slate-950" />
         </div>
 

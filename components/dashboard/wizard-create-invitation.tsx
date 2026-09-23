@@ -145,7 +145,7 @@ export function WizardCreateInvitation({
     <div className="max-w-3xl mx-auto space-y-8">
       {/* Stepper Header */}
       <div className="flex items-center justify-between relative">
-        <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-slate-800 -translate-y-1/2 -z-0" />
+        <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-slate-800 -translate-y-1/2 z-0" />
         {[
           { num: 1, label: "Kategori Acara" },
           { num: 2, label: "Paket Harga" },

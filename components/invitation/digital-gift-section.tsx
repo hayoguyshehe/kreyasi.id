@@ -46,7 +46,7 @@ export function DigitalGiftSection({
         {accounts.map((acc) => (
           <div
             key={acc.id}
-            className="p-6 rounded-3xl bg-gradient-to-br from-[#1C212C] to-[#12151D] border border-slate-700/80 shadow-xl space-y-4"
+            className="p-6 rounded-3xl bg-linear-to-br from-[#1C212C] to-[#12151D] border border-slate-700/80 shadow-xl space-y-4"
           >
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-amber-400 font-serif uppercase tracking-wider">

@@ -35,7 +35,7 @@ export default async function DashboardLayout({
         <div className="p-6 space-y-8">
           {/* Logo */}
           <Link href="/" className="inline-flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-slate-950 font-bold shadow-md shadow-amber-500/20">
+            <div className="w-8 h-8 rounded-lg bg-linear-to-br from-amber-400 to-amber-600 flex items-center justify-center text-slate-950 font-bold shadow-md shadow-amber-500/20">
               <Sparkles className="w-4 h-4 text-slate-950" />
             </div>
             <span className="text-xl font-bold tracking-tight text-white font-serif">

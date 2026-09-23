@@ -1,7 +1,6 @@
-import { PrismaClient, UserRole, EventCategory } from "../generated/prisma";
+import { UserRole, EventCategory } from "../generated/prisma";
 import { hash } from "bcryptjs";
-
-const prisma = new PrismaClient();
+import { prisma } from "../lib/prisma";
 
 async function main() {
   console.log("🌱 Seeding database...");

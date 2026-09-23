@@ -102,7 +102,7 @@ export function TemplateGallery({
           >
             <div>
               {/* Preview Thumbnail Container */}
-              <div className="h-60 bg-gradient-to-br from-slate-900 via-slate-850 to-slate-950 relative overflow-hidden flex items-center justify-center">
+              <div className="h-60 bg-linear-to-br from-slate-900 via-slate-850 to-slate-950 relative overflow-hidden flex items-center justify-center">
                 <div className="absolute inset-0 bg-amber-500/5 group-hover:bg-amber-500/10 transition-colors" />
 
                 {/* Placeholder decorative frame */}
@@ -227,7 +227,7 @@ export function TemplateGallery({
             <div className="flex justify-center bg-[#090B0E] p-4 sm:p-8 rounded-2xl border border-slate-800">
               <div
                 className={`transition-all duration-300 rounded-2xl overflow-hidden border border-slate-700 bg-[#12151D] shadow-2xl p-6 text-center space-y-5 ${
-                  previewDevice === "mobile" ? "w-[340px]" : "w-full max-w-lg"
+                  previewDevice === "mobile" ? "w-85" : "w-full max-w-lg"
                 }`}
               >
                 <div className="space-y-1">

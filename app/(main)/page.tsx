@@ -21,8 +21,8 @@ export default function HomePage() {
   return (
     <div className="relative overflow-hidden">
       {/* Background Ambient Glows */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-gradient-to-b from-amber-500/15 via-amber-500/5 to-transparent blur-[140px] pointer-events-none" />
-      <div className="absolute top-[800px] right-[-10%] w-[600px] h-[500px] bg-[#E0A899]/10 blur-[150px] pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-250 h-125 bg-linear-to-b from-amber-500/15 via-amber-500/5 to-transparent blur-[140px] pointer-events-none" />
+      <div className="absolute top-200 right-[-10%] w-150 h-125 bg-[#E0A899]/10 blur-[150px] pointer-events-none" />
 
       {/* 1. HERO SECTION */}
       <section className="relative pt-16 pb-24 md:pt-24 md:pb-32 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
@@ -72,7 +72,7 @@ export default function HomePage() {
 
         {/* Hero Visual Mockup */}
         <div className="mt-16 max-w-4xl mx-auto relative">
-          <div className="relative rounded-2xl p-2 sm:p-4 bg-gradient-to-b from-amber-500/20 via-slate-800/40 to-slate-900/60 border border-slate-700/80 shadow-2xl backdrop-blur-xl">
+          <div className="relative rounded-2xl p-2 sm:p-4 bg-linear-to-b from-amber-500/20 via-slate-800/40 to-slate-900/60 border border-slate-700/80 shadow-2xl backdrop-blur-xl">
             <div className="rounded-xl overflow-hidden bg-[#12151C] border border-slate-800 p-6 sm:p-10 text-center relative">
               <div className="max-w-md mx-auto space-y-6 py-6">
                 <div className="inline-block px-4 py-1 rounded-full bg-slate-800/90 border border-slate-700 text-xs text-amber-300">
@@ -267,7 +267,7 @@ export default function HomePage() {
                 key={tpl.title}
                 className="rounded-xl overflow-hidden bg-[#14171F] border border-slate-800 group hover:border-amber-500/50 transition-all duration-200"
               >
-                <div className="h-52 bg-gradient-to-br from-slate-800 to-slate-900 relative flex items-center justify-center overflow-hidden">
+                <div className="h-52 bg-linear-to-br from-slate-800 to-slate-900 relative flex items-center justify-center overflow-hidden">
                   <div className="absolute inset-0 bg-amber-500/5 group-hover:bg-amber-500/10 transition-colors" />
                   <span className="text-xs text-slate-500 font-mono tracking-wider">
                     [Preview: {tpl.title}]

@@ -10,8 +10,8 @@ export default function AuthLayout({
   return (
     <div className="min-h-screen flex flex-col justify-between bg-[#0B0D11] text-slate-100 relative overflow-hidden">
       {/* Background ambient lighting effects */}
-      <div className="absolute top-[-10%] left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-amber-500/10 blur-[130px] rounded-full pointer-events-none" />
-      <div className="absolute bottom-[-10%] right-[-5%] w-[450px] h-[300px] bg-[#E0A899]/10 blur-[120px] rounded-full pointer-events-none" />
+      <div className="absolute top-[-10%] left-1/2 -translate-x-1/2 w-175 h-87.5 bg-amber-500/10 blur-[130px] rounded-full pointer-events-none" />
+      <div className="absolute bottom-[-10%] right-[-5%] w-112.5 h-75 bg-[#E0A899]/10 blur-[120px] rounded-full pointer-events-none" />
 
       {/* Header / Logo */}
       <header className="relative z-10 pt-8 pb-4 px-6 flex justify-center items-center">
@@ -19,7 +19,7 @@ export default function AuthLayout({
           href="/"
           className="inline-flex items-center gap-2 group transition-transform duration-200 hover:scale-105"
         >
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-slate-950 font-bold shadow-lg shadow-amber-500/20">
+          <div className="w-10 h-10 rounded-xl bg-linear-to-br from-amber-400 to-amber-600 flex items-center justify-center text-slate-950 font-bold shadow-lg shadow-amber-500/20">
             <Sparkles className="w-5 h-5 text-slate-950" />
           </div>
           <span className="text-2xl font-bold tracking-tight text-white font-serif">

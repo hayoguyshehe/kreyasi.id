@@ -106,7 +106,7 @@ export function GuestbookSection({
       </div>
 
       {/* Feed Ucapan */}
-      <div className="space-y-3 max-h-[450px] overflow-y-auto pr-1">
+      <div className="space-y-3 max-h-112.5 overflow-y-auto pr-1">
         {messages.length === 0 ? (
           <p className="text-center text-xs text-slate-500 py-6">
             Belum ada ucapan. Jadilah yang pertama memberikan ucapan selamat!

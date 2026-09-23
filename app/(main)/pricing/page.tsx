@@ -38,7 +38,7 @@ export default async function PricingPage() {
               key={pkg.id}
               className={`rounded-2xl flex flex-col justify-between transition-all duration-200 relative ${
                 isPopular
-                  ? "bg-gradient-to-b from-[#1E2430] to-[#14171F] border-2 border-amber-500 shadow-2xl shadow-amber-500/10 scale-105 z-10"
+                  ? "bg-linear-to-b from-[#1E2430] to-[#14171F] border-2 border-amber-500 shadow-2xl shadow-amber-500/10 scale-105 z-10"
                   : isExclusive
                   ? "bg-[#14171F] border border-amber-500/40 shadow-xl"
                   : "bg-[#14171F] border border-slate-800"
@@ -46,7 +46,7 @@ export default async function PricingPage() {
             >
               {isPopular && (
                 <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
-                  <span className="px-3 py-1 rounded-full bg-gradient-to-r from-amber-400 to-amber-600 text-slate-950 text-[11px] font-bold uppercase tracking-wider shadow-md">
+                  <span className="px-3 py-1 rounded-full bg-linear-to-r from-amber-400 to-amber-600 text-slate-950 text-[11px] font-bold uppercase tracking-wider shadow-md">
                     Paling Populer
                   </span>
                 </div>
