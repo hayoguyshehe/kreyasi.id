@@ -17,7 +17,7 @@ export default async function MainLayout({
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#0B0D11] text-slate-100">
+    <div className="min-h-screen flex flex-col bg-[#FAF7F2] text-[#2A211B]">
       <Navbar user={user} />
       <main className="flex-1">{children}</main>
       <Footer />

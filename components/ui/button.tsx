@@ -23,27 +23,27 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     const baseStyles =
-      "inline-flex items-center justify-center font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#0B0D11] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer select-none active:scale-[0.98]";
+      "inline-flex items-center justify-center font-medium rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#FAF7F2] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer select-none active:scale-[0.98]";
 
     const variants = {
       primary:
-        "bg-amber-500 hover:bg-amber-400 text-slate-950 font-semibold focus:ring-amber-500 shadow-md hover:shadow-amber-500/20",
+        "bg-[#C5A059] hover:bg-[#B38E44] text-white font-semibold shadow-sm hover:shadow-md hover:shadow-[#C5A059]/20 focus:ring-[#C5A059]",
       gold:
-        "gold-gradient-bg hover:brightness-110 font-semibold focus:ring-[#D4AF37] gold-glow",
+        "bg-linear-to-r from-[#C5A059] via-[#BE964E] to-[#B38E44] hover:brightness-105 text-white font-semibold shadow-sm hover:shadow-md hover:shadow-[#C5A059]/25 focus:ring-[#C5A059]",
       secondary:
-        "bg-slate-800 hover:bg-slate-700 text-slate-100 focus:ring-slate-600 border border-slate-700/60",
+        "bg-[#F3ECE4] hover:bg-[#EAE2D8] text-[#2A211B] font-medium border border-[#E4DBD0] focus:ring-[#C5A059]",
       outline:
-        "border border-slate-700 hover:border-amber-500/60 text-slate-200 hover:text-amber-400 bg-transparent focus:ring-amber-500",
+        "border border-[#D9CDBF] hover:border-[#C5A059] text-[#2A211B] hover:text-[#9A7527] bg-white/80 hover:bg-[#FDF9F3] focus:ring-[#C5A059]",
       ghost:
-        "text-slate-300 hover:text-white hover:bg-slate-800/60 focus:ring-slate-600",
+        "text-[#5A4D45] hover:text-[#2A211B] hover:bg-[#F3ECE4] focus:ring-[#C5A059]",
       danger:
-        "bg-red-600 hover:bg-red-500 text-white font-medium focus:ring-red-500 shadow-md",
+        "bg-[#8C3A27] hover:bg-[#782823] text-white font-medium shadow-sm focus:ring-[#8C3A27]",
     };
 
     const sizes = {
-      sm: "text-xs px-3 py-1.5 gap-1.5",
-      md: "text-sm px-4 py-2 gap-2",
-      lg: "text-base px-6 py-3 gap-2.5",
+      sm: "text-xs px-3.5 py-1.5 gap-1.5",
+      md: "text-sm px-4.5 py-2 gap-2",
+      lg: "text-base px-6 py-2.5 gap-2.5",
       icon: "p-2 aspect-square",
     };
 
@@ -54,7 +54,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         className={cn(baseStyles, variants[variant], sizes[size], className)}
         {...props}
       >
-        {isLoading && <Loader2 className="w-4 h-4 animate-spin" />}
+        {isLoading && <Loader2 className="w-4 h-4 animate-spin text-current" />}
         {children}
       </button>
     );
