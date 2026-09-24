@@ -8,9 +8,9 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen flex flex-col justify-between bg-[#0F1411] text-slate-100 relative overflow-hidden">
+    <div className="min-h-screen flex flex-col justify-between bg-[#FAF7F2] text-[#2A211B] relative overflow-hidden font-sans">
       {/* Background ambient lighting effects */}
-      <div className="absolute top-[-10%] left-1/2 -translate-x-1/2 w-175 h-87.5 bg-[#4C6957]/15 blur-[130px] rounded-full pointer-events-none" />
+      <div className="absolute top-[-10%] left-1/2 -translate-x-1/2 w-175 h-87.5 bg-[#4C6957]/10 blur-[130px] rounded-full pointer-events-none" />
       <div className="absolute bottom-[-10%] right-[-5%] w-112.5 h-75 bg-[#C5A059]/10 blur-[120px] rounded-full pointer-events-none" />
 
       {/* Header / Logo */}
@@ -20,7 +20,7 @@ export default function AuthLayout({
           className="inline-flex items-center gap-2 group transition-transform duration-200 hover:scale-105"
         >
           <Image
-            src="/images/logo/kreyasi-logo-web-2.png"
+            src="/images/logo/kreyasi-logo-web-1.png"
             alt="Kreyasi.id"
             width={160}
             height={50}
@@ -36,8 +36,8 @@ export default function AuthLayout({
       </main>
 
       {/* Footer */}
-      <footer className="relative z-10 py-6 text-center text-xs text-slate-500">
-        <p>© {new Date().getFullYear()} Kreyasi.id — Platform Undangan Digital Modern.</p>
+      <footer className="relative z-10 py-6 text-center text-xs text-[#8A7C71]">
+        <p>© {new Date().getFullYear()} Kreyasi.id — Platform Undangan Digital Elegan.</p>
       </footer>
     </div>
   );

@@ -61,27 +61,27 @@ function LoginForm() {
   };
 
   return (
-    <Card variant="glass" className="w-full">
+    <Card variant="default" className="w-full bg-white border border-[#EAE3D8] shadow-md shadow-[#2A211B]/5">
       <CardHeader className="text-center pb-6">
-        <CardTitle className="text-2xl font-bold font-serif text-white">
+        <CardTitle className="text-2xl font-bold font-serif text-[#2A211B]">
           Selamat Datang Kembali
         </CardTitle>
-        <CardDescription>
+        <CardDescription className="text-sm text-[#6B5E55]">
           Masuk ke akun Anda untuk mengelola undangan digital
         </CardDescription>
       </CardHeader>
 
       <CardContent className="space-y-4">
         {message && (
-          <div className="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center gap-2.5 text-xs text-emerald-300">
-            <CheckCircle2 className="w-4 h-4 shrink-0" />
+          <div className="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center gap-2.5 text-xs text-emerald-800">
+            <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600" />
             <span>{message}</span>
           </div>
         )}
 
         {error && (
-          <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/30 flex items-center gap-2.5 text-xs text-red-400">
-            <AlertCircle className="w-4 h-4 shrink-0" />
+          <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/30 flex items-center gap-2.5 text-xs text-red-700">
+            <AlertCircle className="w-4 h-4 shrink-0 text-red-600" />
             <span>{error}</span>
           </div>
         )}
@@ -90,7 +90,7 @@ function LoginForm() {
         <Button
           type="button"
           variant="secondary"
-          className="w-full flex items-center justify-center gap-3 bg-slate-900/90 border-slate-700/80 hover:bg-slate-800"
+          className="w-full flex items-center justify-center gap-3 bg-white border border-[#EAE3D8] text-[#2A211B] hover:bg-[#FAF7F2] shadow-xs"
           onClick={handleGoogleSignIn}
           isLoading={isGoogleLoading}
         >
@@ -112,12 +112,12 @@ function LoginForm() {
               d="M12 23.5c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.4-6.4-5.2L1.9 16.5C3.7 20.2 7.5 23.5 12 23.5z"
             />
           </svg>
-          <span>Masuk dengan Google</span>
+          <span className="font-medium text-xs sm:text-sm">Masuk dengan Google</span>
         </Button>
 
         <div className="relative flex items-center justify-center my-4">
-          <div className="border-t border-slate-800 w-full" />
-          <span className="bg-[#14171F] px-3 text-[11px] uppercase tracking-wider text-slate-500 absolute">
+          <div className="border-t border-[#EAE3D8] w-full" />
+          <span className="bg-white px-3 text-[11px] uppercase tracking-wider text-[#8A7C71] absolute font-medium">
             atau gunakan email
           </span>
         </div>
@@ -155,12 +155,12 @@ function LoginForm() {
         </form>
       </CardContent>
 
-      <CardFooter className="justify-center border-t border-slate-800/60 pt-4">
-        <p className="text-xs text-slate-400">
+      <CardFooter className="justify-center border-t border-[#EAE3D8] pt-4">
+        <p className="text-xs text-[#6B5E55]">
           Belum memiliki akun Kreyasi?{" "}
           <Link
             href="/register"
-            className="text-amber-400 font-semibold hover:underline hover:text-amber-300 ml-1"
+            className="text-[#4C6957] font-semibold hover:underline hover:text-[#385041] ml-1"
           >
             Daftar Sekarang
           </Link>
