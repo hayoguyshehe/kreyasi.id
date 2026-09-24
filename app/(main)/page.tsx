@@ -303,11 +303,11 @@ export default function HomePage() {
                 className="paper-card rounded-2xl overflow-hidden group hover:border-[#C5A059] transition-all"
               >
                 <div className="h-52 bg-linear-to-br from-[#FAF8F5] to-[#EFE8DE] relative flex items-center justify-center border-b border-[#EAE3D8]">
-                  <div className="w-28 h-36 rounded-lg border border-[#DFC798] bg-white p-3 text-center flex flex-col justify-between shadow-xs">
-                    <span className="text-[8px] text-[#8C6A28] uppercase font-serif">Kreyasi</span>
-                    <span className="text-[10px] font-bold text-[#2A211B] font-serif line-clamp-1">{tpl.title}</span>
+                  <div className="w-32 h-40 rounded-xl border border-[#DFC798] bg-white p-3 text-center flex flex-col justify-between shadow-xs">
+                    <span className="text-[8px] text-[#8C6A28] uppercase font-serif tracking-wider">Kreyasi</span>
+                    <span className="text-[10px] font-bold text-[#2A211B] font-serif leading-tight">{tpl.title}</span>
                     <Heart className="w-3.5 h-3.5 text-[#C5A059] mx-auto" />
-                    <span className="text-[7px] text-[#7A6E65]">Dimas & Amanda</span>
+                    <span className="text-[8px] text-[#7A6E65]">Dimas & Amanda</span>
                   </div>
                   <div className="absolute top-3 left-3">
                     <Badge variant="gold">{tpl.category}</Badge>
