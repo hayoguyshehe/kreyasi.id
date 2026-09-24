@@ -76,6 +76,13 @@ export default async function DashboardLayout({
               <CreditCard className="w-4 h-4 text-amber-400" />
               <span>Riwayat Transaksi</span>
             </Link>
+            <Link
+              href="/dashboard/profile"
+              className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800/60 transition-colors"
+            >
+              <User className="w-4 h-4 text-amber-400" />
+              <span>Profil & Keamanan</span>
+            </Link>
 
             {/* Link Admin jika role ADMIN atau SUPERADMIN */}
             {(user.role === "ADMIN" || user.role === "SUPERADMIN") && (
@@ -95,17 +102,21 @@ export default async function DashboardLayout({
         {/* User Card & Logout in Sidebar Footer */}
         <div className="p-4 border-t border-slate-800/80 bg-slate-950/40">
           <div className="flex items-center justify-between gap-3">
-            <div className="flex items-center gap-2.5 overflow-hidden">
-              <div className="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-amber-400 shrink-0">
+            <Link
+              href="/dashboard/profile"
+              className="flex items-center gap-2.5 overflow-hidden group hover:opacity-90 transition-opacity flex-1 min-w-0"
+              title="Buka Pengaturan Profil"
+            >
+              <div className="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-amber-400 shrink-0 group-hover:border-amber-500/50">
                 <User className="w-4 h-4" />
               </div>
               <div className="truncate">
-                <p className="text-xs font-semibold text-white truncate">
+                <p className="text-xs font-semibold text-white truncate group-hover:text-amber-300 transition-colors">
                   {user.name || "Pengguna"}
                 </p>
                 <p className="text-[10px] text-slate-500 truncate">{user.email}</p>
               </div>
-            </div>
+            </Link>
             <form
               action={async () => {
                 "use server";

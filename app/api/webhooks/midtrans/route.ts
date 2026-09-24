@@ -93,9 +93,14 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // 5. Update dalam transaksi atomik
+    let isAlreadyProcessed = false;
+
+    // 5. Update dalam transaksi atomik dengan row-level lock (SELECT ... FOR UPDATE)
     await prisma.$transaction(async (tx) => {
-      // Re-fetch dalam transaksi untuk perlindungan race condition
+      // Row lock untuk mengantrekan request webhook paralel pada baris order yang sama
+      await tx.$queryRaw`SELECT id FROM orders WHERE id = ${order.id} FOR UPDATE`;
+
+      // Re-fetch dalam transaksi untuk membaca status ter-commit paling mutakhir
       const currentOrder = await tx.order.findUnique({
         where: { id: order.id },
         include: { invitation: true, package: true },
@@ -105,6 +110,7 @@ export async function POST(request: NextRequest) {
 
       // Idempotensi race guard di dalam transaksi
       if (currentOrder.status === "PAID" && targetStatus === "PAID") {
+        isAlreadyProcessed = true;
         return;
       }
 
@@ -161,6 +167,17 @@ export async function POST(request: NextRequest) {
         }
       }
     });
+
+    if (isAlreadyProcessed) {
+      console.log(
+        `[Midtrans Webhook] Order ${order_id} telah diselesaikan oleh transaksi paralel lain (terproteksi row-lock). Mengabaikan pemrosesan ulang.`
+      );
+      return NextResponse.json({
+        success: true,
+        message: "Webhook already processed (idempotent with row lock)",
+        data: { orderId: order.id, status: "PAID", isDuplicate: true },
+      });
+    }
 
     console.log(
       `[Midtrans Webhook] Berhasil memproses order ${order_id} -> Status: ${targetStatus}`

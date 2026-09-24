@@ -11,6 +11,7 @@ import {
   ArrowRight,
   Calendar,
   ExternalLink,
+  KeyRound,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -21,7 +22,13 @@ export default async function DashboardPage() {
   const session = await auth();
   const userId = session?.user?.id;
 
-  const [invitations, totalGuests, totalRsvps] = await Promise.all([
+  const [currentUser, invitations, totalGuests, totalRsvps] = await Promise.all([
+    userId
+      ? prisma.user.findUnique({
+          where: { id: userId },
+          select: { passwordHash: true },
+        })
+      : null,
     prisma.invitation.findMany({
       where: { userId },
       include: {
@@ -62,6 +69,31 @@ export default async function DashboardPage() {
           </Button>
         </Link>
       </div>
+
+      {/* Banner Khusus User Google-Only (passwordHash === null) */}
+      {currentUser && currentUser.passwordHash === null && (
+        <div className="p-4 sm:p-5 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-lg shadow-amber-500/5">
+          <div className="flex items-start sm:items-center gap-3">
+            <div className="p-2.5 rounded-xl bg-amber-500/20 text-amber-400 shrink-0">
+              <KeyRound className="w-5 h-5" />
+            </div>
+            <div>
+              <p className="text-xs sm:text-sm font-semibold text-white">
+                Akun Google Terdeteksi — Belum Mengatur Kata Sandi
+              </p>
+              <p className="text-[11px] sm:text-xs text-amber-200/80 mt-0.5">
+                Tambahkan kata sandi agar Anda juga bisa masuk menggunakan form email & password kapan saja.
+              </p>
+            </div>
+          </div>
+          <Link href="/dashboard/profile">
+            <Button variant="gold" size="sm" className="w-full sm:w-auto text-xs shrink-0 whitespace-nowrap">
+              <span>Atur Kata Sandi Sekarang</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Button>
+          </Link>
+        </div>
+      )}
 
       {/* Stats Cards Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
