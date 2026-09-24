@@ -46,7 +46,7 @@ export default async function PricingPage() {
             >
               {isPopular && (
                 <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
-                  <span className="px-3 py-1 rounded-full bg-linear-to-r from-[#C5A059] to-[#9A7527] text-white text-[11px] font-bold uppercase tracking-wider shadow-sm">
+                  <span className="px-3 py-1 rounded-full bg-linear-to-r from-[#C5A059] to-[#9A7527] text-white text-[11px] font-bold uppercase tracking-wider shadow-sm whitespace-nowrap">
                     Paling Populer
                   </span>
                 </div>
