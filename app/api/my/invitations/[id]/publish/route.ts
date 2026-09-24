@@ -32,6 +32,56 @@ export async function POST(
       );
     }
 
+    // Validasi kelengkapan data wajib sebelum dipublikasikan menjadi undangan resmi
+    const content = (invitation.content as any) || {};
+    const isWedding = invitation.eventCategory === "PERNIKAHAN";
+    const missingFields: string[] = [];
+
+    if (isWedding) {
+      if (!content.couple?.groomName?.trim()) {
+        missingFields.push("Nama Mempelai Pria");
+      }
+      if (!content.couple?.brideName?.trim()) {
+        missingFields.push("Nama Mempelai Wanita");
+      }
+    } else {
+      if (!content.person?.name?.trim()) {
+        missingFields.push("Nama Tokoh / Yang Berbahagia");
+      }
+    }
+
+    if (!invitation.eventDate) {
+      missingFields.push("Tanggal Acara");
+    }
+
+    if (!content.mapsUrl?.trim()) {
+      missingFields.push("Link Google Maps Lokasi Acara");
+    }
+
+    // Validasi sesi acara (minimal akad dan resepsi untuk pernikahan)
+    const events = content.events || [];
+    if (isWedding) {
+      const hasAkad = events.some((e: any) => e.name?.toLowerCase().includes("akad") && e.venueAddress?.trim());
+      const hasResepsi = events.some((e: any) => e.name?.toLowerCase().includes("resepsi") && e.venueAddress?.trim());
+      if (!hasAkad) missingFields.push("Rincian Akad (Tanggal, Waktu, Lokasi)");
+      if (!hasResepsi) missingFields.push("Rincian Resepsi (Tanggal, Waktu, Lokasi)");
+    } else {
+      if (events.length === 0 || !events[0]?.venueAddress?.trim()) {
+        missingFields.push("Waktu dan Lokasi Acara Utama");
+      }
+    }
+
+    if (missingFields.length > 0) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: `Mohon lengkapi data utama berikut sebelum mempublikasikan undangan: ${missingFields.join(", ")}. Data pendukung seperti Galeri Foto, Love Story, dan Amplop Kado dapat dilengkapi nanti.`,
+          missingFields,
+        },
+        { status: 400 }
+      );
+    }
+
     // Cek apakah paket berbayar dan sudah lunas
     const isFree = invitation.package.priceIdr === 0;
     const isPaid = invitation.order?.status === "PAID";

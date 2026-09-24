@@ -11,25 +11,53 @@ export interface InvitationContent {
 
   /** Khusus kategori PERNIKAHAN */
   couple?: {
-    groomName: string;
+    groomName: string; // Nama Mempelai Pria (*Beserta Gelar Jika Ada)
     groomNickname?: string;
-    brideName: string;
+    groomParents?: string; // Nama Orang Tua Mempelai Pria (*Beserta Gelar Jika Ada)
+    brideName: string; // Nama Mempelai Wanita (*Beserta Gelar Jika Ada)
     brideNickname?: string;
-    groomParents?: string;
-    brideParents?: string;
+    brideParents?: string; // Nama Orang Tua Mempelai Wanita (*Beserta Gelar Jika Ada)
   };
 
   /** Khusus ULANG_TAHUN / KHITANAN_AQIQAH / EVENT_UMUM */
   person?: {
     name: string;
     nickname?: string;
+    parentsOrOrganizer?: string;
   };
 
+  /** Link Google Maps Lokasi Acara */
+  mapsUrl?: string;
+
+  /** Request Backsound Lagu Undangan */
+  requestMusic?: string;
+
+  /** Rangkaian Acara (Akad, Resepsi, dsb.) */
   events: InvitationEvent[];
+  sameLocationAsAkad?: boolean;
 
-  loveStory?: { title: string; body: string }[];
+  /** Cerita Perjalanan Cinta (Love Story) */
+  loveStory?: {
+    stage: "PERTEMUAN" | "PENDEKATAN" | "LAMARAN" | "MENIKAH" | string;
+    title?: string;
+    body: string;
+  }[];
+  needsLoveStoryHelp?: boolean; // Pilihan "Boleh min" vs "Tidak min"
 
-  gallery: { mediaId: string; caption?: string }[];
+  /** Wedding Gift / Amplop & Kado Fisik */
+  weddingGift?: {
+    description?: string;
+    accounts?: {
+      bankName: string;
+      accountNumber: string;
+      accountName: string;
+    }[];
+    qrisImageUrl?: string;
+    physicalGiftAddress?: string;
+  };
+
+  gallery: { mediaId: string; caption?: string; url?: string }[];
+  galleryPhotos?: string[]; // Slot foto 1, 2, dst.
 
   backgroundMusicMediaId?: string;
 
@@ -51,6 +79,7 @@ export interface InvitationEvent {
   endTime?: string;
   venueName: string;
   venueAddress: string;
+  mapsUrl?: string;
   mapsLat?: number;
   mapsLng?: number;
 }

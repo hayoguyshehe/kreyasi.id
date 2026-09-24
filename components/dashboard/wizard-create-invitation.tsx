@@ -145,7 +145,7 @@ export function WizardCreateInvitation({
     <div className="max-w-3xl mx-auto space-y-8">
       {/* Stepper Header */}
       <div className="flex items-center justify-between relative">
-        <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-slate-800 -translate-y-1/2 z-0" />
+        <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-[#EAE3D8] -translate-y-1/2 z-0" />
         {[
           { num: 1, label: "Kategori Acara" },
           { num: 2, label: "Paket Harga" },
@@ -155,21 +155,21 @@ export function WizardCreateInvitation({
           const isCurrent = step === s.num;
 
           return (
-            <div key={s.num} className="relative z-10 flex flex-col items-center gap-1.5 bg-[#0B0D11] px-3">
+            <div key={s.num} className="relative z-10 flex flex-col items-center gap-1.5 bg-[#FAF7F2] px-3">
               <div
                 className={`w-9 h-9 rounded-full flex items-center justify-center font-bold text-xs transition-all ${
                   isDone
-                    ? "bg-emerald-500 text-slate-950 font-bold"
+                    ? "bg-[#4C6957] text-white font-bold"
                     : isCurrent
-                    ? "bg-amber-500 text-slate-950 shadow-md shadow-amber-500/30"
-                    : "bg-slate-800 text-slate-400 border border-slate-700"
+                    ? "bg-[#C5A059] text-white shadow-md shadow-[#C5A059]/30"
+                    : "bg-white text-[#7A6D63] border border-[#EAE3D8]"
                 }`}
               >
                 {isDone ? <CheckCircle2 className="w-5 h-5" /> : s.num}
               </div>
               <span
                 className={`text-[11px] font-medium ${
-                  isCurrent ? "text-amber-400 font-semibold" : "text-slate-500"
+                  isCurrent ? "text-[#4C6957] font-semibold" : "text-[#7A6D63]"
                 }`}
               >
                 {s.label}
@@ -180,17 +180,17 @@ export function WizardCreateInvitation({
       </div>
 
       {error && (
-        <div className="p-3.5 rounded-xl bg-red-500/10 border border-red-500/30 text-xs text-red-400">
+        <div className="p-3.5 rounded-xl bg-red-500/10 border border-red-500/30 text-xs text-red-600">
           {error}
         </div>
       )}
 
       {/* STEP 1: Pilih Kategori */}
       {step === 1 && (
-        <Card variant="subtle" className="p-6 sm:p-8 space-y-6">
+        <Card variant="default" className="p-6 sm:p-8 space-y-6 border-[#EAE3D8] shadow-xs">
           <div className="text-center space-y-1">
-            <h2 className="text-xl font-bold font-serif text-white">Pilih Kategori Acara</h2>
-            <p className="text-xs text-slate-400">Untuk acara apa undangan digital ini dibuat?</p>
+            <h2 className="text-xl font-bold font-serif text-[#2A211B]">Pilih Kategori Acara</h2>
+            <p className="text-xs text-[#6B5E55]">Untuk acara apa undangan digital ini dibuat?</p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -200,16 +200,16 @@ export function WizardCreateInvitation({
                 onClick={() => setSelectedCategory(cat.id)}
                 className={`p-5 rounded-xl border cursor-pointer transition-all flex items-center gap-4 ${
                   selectedCategory === cat.id
-                    ? "bg-amber-500/10 border-amber-500 shadow-md shadow-amber-500/10 text-white"
-                    : "bg-[#14171F] border-slate-800 text-slate-300 hover:border-slate-700"
+                    ? "bg-[#FAF7F2] border-[#4C6957] ring-1 ring-[#4C6957] shadow-sm text-[#2A211B]"
+                    : "bg-white border-[#EAE3D8] text-[#5A4D44] hover:border-[#DFC798]"
                 }`}
               >
-                <div className="p-3 rounded-xl bg-slate-900 border border-slate-800">
+                <div className="p-3 rounded-xl bg-[#FAF7F2] border border-[#EAE3D8]">
                   {getCategoryIcon(cat.slug)}
                 </div>
                 <div>
-                  <h3 className="font-semibold text-sm">{cat.name}</h3>
-                  <span className="text-xs text-slate-500">Desain tematik khusus</span>
+                  <h3 className="font-semibold text-sm text-[#2A211B]">{cat.name}</h3>
+                  <span className="text-xs text-[#7A6D63]">Desain tematik khusus</span>
                 </div>
               </div>
             ))}
@@ -217,9 +217,9 @@ export function WizardCreateInvitation({
 
           <div className="flex justify-end pt-4">
             <Button
-              variant="gold"
+              variant="sage"
               onClick={() => setStep(2)}
-              className="gap-2"
+              className="gap-2 shadow-sm"
             >
               <span>Lanjut: Pilih Paket</span>
               <ArrowRight className="w-4 h-4" />
@@ -230,10 +230,10 @@ export function WizardCreateInvitation({
 
       {/* STEP 2: Pilih Paket */}
       {step === 2 && (
-        <Card variant="subtle" className="p-6 sm:p-8 space-y-6">
+        <Card variant="default" className="p-6 sm:p-8 space-y-6 border-[#EAE3D8] shadow-xs">
           <div className="text-center space-y-1">
-            <h2 className="text-xl font-bold font-serif text-white">Pilih Paket Undangan</h2>
-            <p className="text-xs text-slate-400">Sesuaikan paket dengan kebutuhan fitur acara Anda</p>
+            <h2 className="text-xl font-bold font-serif text-[#2A211B]">Pilih Paket Undangan</h2>
+            <p className="text-xs text-[#6B5E55]">Sesuaikan paket dengan kebutuhan fitur acara Anda</p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -245,21 +245,21 @@ export function WizardCreateInvitation({
                   onClick={() => setSelectedPackage(pkg.id)}
                   className={`p-5 rounded-xl border cursor-pointer transition-all flex flex-col justify-between space-y-3 ${
                     isSelected
-                      ? "bg-amber-500/10 border-amber-500 shadow-md shadow-amber-500/10"
-                      : "bg-[#14171F] border-slate-800 hover:border-slate-700"
+                      ? "bg-[#FAF7F2] border-[#4C6957] ring-1 ring-[#4C6957] shadow-sm"
+                      : "bg-white border-[#EAE3D8] hover:border-[#DFC798]"
                   }`}
                 >
                   <div className="space-y-1">
-                    <h3 className="font-bold text-white font-serif">{pkg.name}</h3>
-                    <p className="text-lg font-bold text-amber-400 font-serif">
+                    <h3 className="font-bold text-[#2A211B] font-serif">{pkg.name}</h3>
+                    <p className="text-lg font-bold text-[#4C6957] font-serif">
                       {pkg.priceIdr === 0 ? "Gratis" : formatRupiah(pkg.priceIdr)}
                     </p>
-                    <span className="text-[11px] text-slate-400 block">
+                    <span className="text-[11px] text-[#7A6D63] block">
                       Aktif {pkg.activeDurationDays} hari • Max {pkg.maxGalleryPhotos} Foto
                     </span>
                   </div>
                   {isSelected && (
-                    <Badge variant="gold" className="self-start text-[10px]">
+                    <Badge variant="sage" className="self-start text-[10px]">
                       Terpilih
                     </Badge>
                   )}
@@ -273,7 +273,7 @@ export function WizardCreateInvitation({
               <ArrowLeft className="w-4 h-4" />
               <span>Kembali</span>
             </Button>
-            <Button variant="gold" onClick={() => setStep(3)} className="gap-2">
+            <Button variant="sage" onClick={() => setStep(3)} className="gap-2 shadow-sm">
               <span>Lanjut: Info & Template</span>
               <ArrowRight className="w-4 h-4" />
             </Button>
@@ -283,10 +283,10 @@ export function WizardCreateInvitation({
 
       {/* STEP 3: Template & Info Awal */}
       {step === 3 && (
-        <Card variant="subtle" className="p-6 sm:p-8 space-y-6">
+        <Card variant="default" className="p-6 sm:p-8 space-y-6 border-[#EAE3D8] shadow-xs">
           <div className="text-center space-y-1">
-            <h2 className="text-xl font-bold font-serif text-white">Informasi Dasar & Template</h2>
-            <p className="text-xs text-slate-400">Isi detail acara Anda dan pilih tampilan awal</p>
+            <h2 className="text-xl font-bold font-serif text-[#2A211B]">Informasi Dasar & Template</h2>
+            <p className="text-xs text-[#6B5E55]">Isi detail acara Anda dan pilih tampilan awal</p>
           </div>
 
           {/* Form Info Awal */}
@@ -318,12 +318,12 @@ export function WizardCreateInvitation({
 
           {/* Template Picker */}
           <div className="space-y-3 pt-2">
-            <label className="block text-xs font-semibold text-slate-200">
+            <label className="block text-xs font-semibold text-[#2A211B]">
               Pilih Desain Template:
             </label>
 
             {availableTemplates.length === 0 ? (
-              <div className="p-6 rounded-xl bg-slate-900 text-center text-xs text-slate-400">
+              <div className="p-6 rounded-xl bg-[#FAF7F2] border border-[#EAE3D8] text-center text-xs text-[#7A6D63]">
                 Template untuk kategori ini dengan paket terpilih akan menggunakan template default Kreyasi.
               </div>
             ) : (
@@ -334,16 +334,16 @@ export function WizardCreateInvitation({
                     onClick={() => setSelectedTemplate(tpl.id)}
                     className={`p-3 rounded-xl border cursor-pointer text-center space-y-2 transition-all ${
                       selectedTemplate === tpl.id
-                        ? "bg-amber-500/10 border-amber-500 shadow-md shadow-amber-500/10"
-                        : "bg-[#14171F] border-slate-800 hover:border-slate-700"
+                        ? "bg-[#FAF7F2] border-[#4C6957] ring-1 ring-[#4C6957] shadow-sm"
+                        : "bg-white border-[#EAE3D8] hover:border-[#DFC798]"
                     }`}
                   >
-                    <div className="h-28 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center p-2">
-                      <Sparkles className="w-5 h-5 text-amber-400" />
+                    <div className="h-28 rounded-lg bg-[#FAF7F2] border border-[#EAE3D8] flex items-center justify-center p-2">
+                      <Sparkles className="w-5 h-5 text-[#4C6957]" />
                     </div>
-                    <p className="text-xs font-semibold text-white truncate">{tpl.name}</p>
+                    <p className="text-xs font-semibold text-[#2A211B] truncate">{tpl.name}</p>
                     {selectedTemplate === tpl.id && (
-                      <span className="text-[10px] text-amber-400 font-bold block">✓ Terpilih</span>
+                      <span className="text-[10px] text-[#4C6957] font-bold block">✓ Terpilih</span>
                     )}
                   </div>
                 ))}
@@ -351,16 +351,16 @@ export function WizardCreateInvitation({
             )}
           </div>
 
-          <div className="flex justify-between pt-4 border-t border-slate-800">
+          <div className="flex justify-between pt-4 border-t border-[#EAE3D8]">
             <Button variant="outline" onClick={() => setStep(2)} className="gap-2">
               <ArrowLeft className="w-4 h-4" />
               <span>Kembali</span>
             </Button>
             <Button
-              variant="gold"
+              variant="sage"
               onClick={handleSubmit}
               isLoading={isLoading}
-              className="gap-2 shadow-lg"
+              className="gap-2 shadow-sm"
             >
               <span>Buat Undangan Sekarang</span>
               <ArrowRight className="w-4 h-4" />

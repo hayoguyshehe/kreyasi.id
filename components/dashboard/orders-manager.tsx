@@ -141,47 +141,47 @@ export function OrdersManager({
       <div className="space-y-8">
         {/* Header */}
         <div>
-          <h1 className="text-2xl font-bold font-serif text-white flex items-center gap-2.5">
-            <CreditCard className="w-6 h-6 text-amber-400" />
+          <h1 className="text-2xl font-bold font-serif text-[#2A211B] flex items-center gap-2.5">
+            <CreditCard className="w-6 h-6 text-[#4C6957]" />
             <span>Riwayat Transaksi</span>
           </h1>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-[#6B5E55] mt-1">
             Daftar pesanan paket dan status konfirmasi pembayaran Midtrans Snap.
           </p>
         </div>
 
         {/* Stats Row */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="p-5 rounded-2xl bg-[#14171F] border border-slate-800 space-y-1">
-            <p className="text-xs text-slate-400 font-medium">Total Pesanan</p>
-            <p className="text-2xl font-bold font-serif text-white">{totalOrders}</p>
+          <div className="p-5 rounded-2xl bg-white border border-[#EAE3D8] space-y-1 shadow-xs">
+            <p className="text-xs text-[#6B5E55] font-medium">Total Pesanan</p>
+            <p className="text-2xl font-bold font-serif text-[#2A211B]">{totalOrders}</p>
           </div>
-          <div className="p-5 rounded-2xl bg-[#14171F] border border-slate-800 space-y-1">
-            <p className="text-xs text-slate-400 font-medium">Menunggu Pembayaran</p>
-            <p className="text-2xl font-bold font-serif text-amber-400">{pendingOrders}</p>
+          <div className="p-5 rounded-2xl bg-white border border-[#EAE3D8] space-y-1 shadow-xs">
+            <p className="text-xs text-[#6B5E55] font-medium">Menunggu Pembayaran</p>
+            <p className="text-2xl font-bold font-serif text-[#C5A059]">{pendingOrders}</p>
           </div>
-          <div className="p-5 rounded-2xl bg-[#14171F] border border-slate-800 space-y-1">
-            <p className="text-xs text-slate-400 font-medium">Pembayaran Berhasil</p>
-            <p className="text-2xl font-bold font-serif text-emerald-400">{paidOrders}</p>
+          <div className="p-5 rounded-2xl bg-white border border-[#EAE3D8] space-y-1 shadow-xs">
+            <p className="text-xs text-[#6B5E55] font-medium">Pembayaran Berhasil</p>
+            <p className="text-2xl font-bold font-serif text-[#4C6957]">{paidOrders}</p>
           </div>
         </div>
 
         {errorMessage && (
-          <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-xs text-red-400 flex items-center gap-2">
+          <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-xs text-red-600 flex items-center gap-2">
             <AlertCircle className="w-4 h-4 shrink-0" />
             <span>{errorMessage}</span>
           </div>
         )}
 
         {/* Table List */}
-        <div className="rounded-2xl bg-[#14171F] border border-slate-800 overflow-hidden shadow-xl">
+        <div className="rounded-2xl bg-white border border-[#EAE3D8] overflow-hidden shadow-xs">
           {orders.length === 0 ? (
             <div className="p-12 text-center space-y-3">
-              <div className="w-12 h-12 rounded-full bg-slate-800/80 border border-slate-700 flex items-center justify-center mx-auto text-slate-400">
+              <div className="w-12 h-12 rounded-full bg-[#FAF7F2] border border-[#EAE3D8] flex items-center justify-center mx-auto text-[#7A6D63]">
                 <CreditCard className="w-6 h-6" />
               </div>
-              <p className="text-sm font-medium text-slate-300">Belum ada transaksi</p>
-              <p className="text-xs text-slate-500 max-w-sm mx-auto">
+              <p className="text-sm font-medium text-[#2A211B]">Belum ada transaksi</p>
+              <p className="text-xs text-[#7A6D63] max-w-sm mx-auto">
                 Transaksi akan otomatis tercatat di sini setelah Anda memilih paket berbayar untuk undangan digital Anda.
               </p>
             </div>
@@ -189,7 +189,7 @@ export function OrdersManager({
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse text-xs">
                 <thead>
-                  <tr className="border-b border-slate-800/80 bg-slate-950/40 text-slate-400 uppercase font-semibold text-[11px] tracking-wider">
+                  <tr className="border-b border-[#EAE3D8] bg-[#FAF7F2] text-[#6B5E55] uppercase font-semibold text-[11px] tracking-wider">
                     <th className="py-3.5 px-4">No. Pesanan</th>
                     <th className="py-3.5 px-4">Paket & Undangan</th>
                     <th className="py-3.5 px-4">Nominal</th>
@@ -198,29 +198,29 @@ export function OrdersManager({
                     <th className="py-3.5 px-4 text-right">Aksi</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-800/60 text-slate-300">
+                <tbody className="divide-y divide-[#EAE3D8] text-[#2A211B]">
                   {orders.map((order) => {
                     const isPending = order.status === "PENDING";
                     const isPaid = order.status === "PAID";
 
                     return (
-                      <tr key={order.id} className="hover:bg-slate-800/20 transition-colors">
-                        <td className="py-4 px-4 font-mono font-medium text-amber-300">
+                      <tr key={order.id} className="hover:bg-[#FAF7F2] transition-colors">
+                        <td className="py-4 px-4 font-mono font-medium text-[#4C6957]">
                           {order.midtransOrderId}
                         </td>
                         <td className="py-4 px-4 space-y-0.5">
-                          <p className="font-semibold text-white">
+                          <p className="font-semibold text-[#2A211B]">
                             Paket {order.package.name}
                           </p>
                           {order.invitation ? (
-                            <p className="text-slate-400 text-[11px] truncate max-w-xs">
+                            <p className="text-[#6B5E55] text-[11px] truncate max-w-xs">
                               {order.invitation.eventTitle}
                             </p>
                           ) : (
-                            <span className="text-slate-500 italic text-[11px]">-</span>
+                            <span className="text-[#7A6D63] italic text-[11px]">-</span>
                           )}
                         </td>
-                        <td className="py-4 px-4 font-semibold text-white">
+                        <td className="py-4 px-4 font-semibold text-[#2A211B]">
                           {formatRupiah(order.amountIdr)}
                         </td>
                         <td className="py-4 px-4">
@@ -247,7 +247,7 @@ export function OrdersManager({
                             </Badge>
                           )}
                         </td>
-                        <td className="py-4 px-4 text-slate-400 whitespace-nowrap">
+                        <td className="py-4 px-4 text-[#6B5E55] whitespace-nowrap">
                           {formatDateIndonesia(order.createdAt)}
                         </td>
                         <td className="py-4 px-4 text-right whitespace-nowrap">
@@ -257,7 +257,7 @@ export function OrdersManager({
                               size="sm"
                               onClick={() => handlePay(order)}
                               disabled={payingOrderId === order.id}
-                              className="text-xs shadow-md shadow-amber-500/20"
+                              className="text-xs shadow-sm"
                             >
                               {payingOrderId === order.id ? (
                                 <span className="flex items-center gap-1.5">
@@ -272,7 +272,7 @@ export function OrdersManager({
 
                           {isPaid && order.invitation && (
                             <Link href={`/dashboard/invitations/${order.invitation.id}`}>
-                              <Button variant="outline" size="sm" className="text-xs gap-1">
+                              <Button variant="outline" size="sm" className="text-xs gap-1 hover:border-[#4C6957] hover:text-[#4C6957]">
                                 <span>Detail</span>
                                 <ExternalLink className="w-3 h-3" />
                               </Button>

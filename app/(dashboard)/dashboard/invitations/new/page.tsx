@@ -18,10 +18,10 @@ export default async function NewInvitationPage() {
   return (
     <div className="space-y-6">
       <div className="text-center space-y-1">
-        <h1 className="text-2xl sm:text-3xl font-bold font-serif text-white tracking-tight">
+        <h1 className="text-2xl sm:text-3xl font-bold font-serif text-[#2A211B] tracking-tight">
           Buat Undangan Digital Baru
         </h1>
-        <p className="text-xs sm:text-sm text-slate-400">
+        <p className="text-xs sm:text-sm text-[#6B5E55]">
           Ikuti 3 langkah mudah berikut untuk mulai merancang undangan Anda
         </p>
       </div>

@@ -78,16 +78,16 @@ export function SetPasswordCard({ hasPassword: initialHasPassword, userEmail }: 
   };
 
   return (
-    <div className="rounded-2xl bg-[#14171F] border border-slate-800 p-6 md:p-8 space-y-6 shadow-xl">
+    <div className="rounded-2xl bg-white border border-[#EAE3D8] p-6 md:p-8 space-y-6 shadow-xs">
       <div className="flex items-start gap-4">
-        <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 shrink-0">
+        <div className="w-12 h-12 rounded-xl bg-[#4C6957]/10 border border-[#4C6957]/20 flex items-center justify-center text-[#4C6957] shrink-0">
           <KeyRound className="w-6 h-6" />
         </div>
         <div className="space-y-1">
-          <h2 className="text-lg font-bold font-serif text-white">
+          <h2 className="text-lg font-bold font-serif text-[#2A211B]">
             {hasPassword ? "Ubah Kata Sandi" : "Atur Kata Sandi (Set Password)"}
           </h2>
-          <p className="text-xs text-slate-400 leading-relaxed">
+          <p className="text-xs text-[#6B5E55] leading-relaxed">
             {hasPassword
               ? "Perbarui kata sandi akun Anda untuk meningkatkan keamanan."
               : "Akun Anda terdaftar melalui Google OAuth dan belum memiliki kata sandi mandiri. Atur kata sandi agar Anda dapat masuk menggunakan formulir Email & Password maupun Google."}
@@ -96,10 +96,10 @@ export function SetPasswordCard({ hasPassword: initialHasPassword, userEmail }: 
       </div>
 
       {!hasPassword && (
-        <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-start gap-3">
-          <AlertCircle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
-          <div className="text-xs text-amber-200/90 leading-relaxed">
-            <strong>Akun Khusus Google:</strong> Saat ini Anda hanya bisa login lewat tombol Google.
+        <div className="p-4 rounded-xl bg-[#FFF9ED] border border-[#DFC798] flex items-start gap-3">
+          <AlertCircle className="w-4 h-4 text-[#8C6D2B] shrink-0 mt-0.5" />
+          <div className="text-xs text-[#6B5E55] leading-relaxed">
+            <strong className="text-[#2A211B]">Akun Khusus Google:</strong> Saat ini Anda hanya bisa login lewat tombol Google.
             Setelah menambahkan kata sandi di bawah, Anda bisa login dengan kedua cara.
           </div>
         </div>
@@ -107,8 +107,8 @@ export function SetPasswordCard({ hasPassword: initialHasPassword, userEmail }: 
 
       {successMessage && (
         <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-start gap-3">
-          <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
-          <div className="text-xs text-emerald-200 leading-relaxed">
+          <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
+          <div className="text-xs text-emerald-800 leading-relaxed font-medium">
             {successMessage}
           </div>
         </div>
@@ -116,8 +116,8 @@ export function SetPasswordCard({ hasPassword: initialHasPassword, userEmail }: 
 
       {errorMessage && (
         <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/30 flex items-start gap-3">
-          <AlertCircle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
-          <div className="text-xs text-red-200 leading-relaxed">
+          <AlertCircle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
+          <div className="text-xs text-red-700 leading-relaxed">
             {errorMessage}
           </div>
         </div>
@@ -126,7 +126,7 @@ export function SetPasswordCard({ hasPassword: initialHasPassword, userEmail }: 
       <form onSubmit={handleSubmit} className="space-y-4 max-w-lg">
         {hasPassword && (
           <div className="space-y-1.5">
-            <label className="text-xs font-medium text-slate-300">
+            <label className="text-xs font-semibold text-[#2A211B]">
               Kata Sandi Saat Ini
             </label>
             <div className="relative">
@@ -135,7 +135,7 @@ export function SetPasswordCard({ hasPassword: initialHasPassword, userEmail }: 
                 value={currentPassword}
                 onChange={(e) => setCurrentPassword(e.target.value)}
                 placeholder="Masukkan kata sandi saat ini"
-                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/80 border border-slate-800 text-white text-xs placeholder:text-slate-500 focus:outline-none focus:border-amber-500"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-[#EAE3D8] text-[#2A211B] text-xs placeholder:text-[#9A8D83] focus:outline-none focus:border-[#4C6957]"
                 required
               />
             </div>
@@ -143,7 +143,7 @@ export function SetPasswordCard({ hasPassword: initialHasPassword, userEmail }: 
         )}
 
         <div className="space-y-1.5">
-          <label className="text-xs font-medium text-slate-300">
+          <label className="text-xs font-semibold text-[#2A211B]">
             {hasPassword ? "Kata Sandi Baru" : "Buat Kata Sandi"}
           </label>
           <div className="relative">
@@ -152,14 +152,14 @@ export function SetPasswordCard({ hasPassword: initialHasPassword, userEmail }: 
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Minimal 8 karakter"
-              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/80 border border-slate-800 text-white text-xs placeholder:text-slate-500 focus:outline-none focus:border-amber-500 pr-10"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-[#EAE3D8] text-[#2A211B] text-xs placeholder:text-[#9A8D83] focus:outline-none focus:border-[#4C6957] pr-10"
               required
               minLength={8}
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-[#7A6D63] hover:text-[#2A211B]"
             >
               {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
             </button>
@@ -167,7 +167,7 @@ export function SetPasswordCard({ hasPassword: initialHasPassword, userEmail }: 
         </div>
 
         <div className="space-y-1.5">
-          <label className="text-xs font-medium text-slate-300">
+          <label className="text-xs font-semibold text-[#2A211B]">
             Konfirmasi Kata Sandi Baru
           </label>
           <input
@@ -175,7 +175,7 @@ export function SetPasswordCard({ hasPassword: initialHasPassword, userEmail }: 
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             placeholder="Ketik ulang kata sandi baru"
-            className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/80 border border-slate-800 text-white text-xs placeholder:text-slate-500 focus:outline-none focus:border-amber-500"
+            className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-[#EAE3D8] text-[#2A211B] text-xs placeholder:text-[#9A8D83] focus:outline-none focus:border-[#4C6957]"
             required
             minLength={8}
           />
@@ -184,10 +184,10 @@ export function SetPasswordCard({ hasPassword: initialHasPassword, userEmail }: 
         <div className="pt-2">
           <Button
             type="submit"
-            variant="gold"
+            variant="sage"
             size="md"
             isLoading={isLoading}
-            className="w-full sm:w-auto"
+            className="w-full sm:w-auto shadow-sm"
           >
             <Lock className="w-4 h-4" />
             <span>{hasPassword ? "Perbarui Kata Sandi" : "Simpan Kata Sandi"}</span>

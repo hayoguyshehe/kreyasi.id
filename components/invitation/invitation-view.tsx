@@ -9,6 +9,7 @@ import { GallerySection } from "@/components/invitation/gallery-section";
 import { RsvpForm } from "@/components/invitation/rsvp-form";
 import { GuestbookSection } from "@/components/invitation/guestbook-section";
 import { DigitalGiftSection } from "@/components/invitation/digital-gift-section";
+import { LoveStorySection } from "@/components/invitation/love-story-section";
 import { Heart, Sparkles, Video } from "lucide-react";
 import { formatDateIndonesia } from "@/lib/utils";
 
@@ -28,6 +29,35 @@ export function InvitationView({
   const couple = content.couple;
   const person = content.person;
   const theme = content.theme || { primaryColor: "#D4AF37", fontFamily: "Plus Jakarta Sans" };
+
+  // Combine media from DB with galleryPhotos in content
+  const dbMedia = (invitation.media || []).map((m: any) => ({
+    id: m.id,
+    url: m.fileUrl || m.url,
+    type: m.mediaType || m.type || "PHOTO",
+  }));
+  const contentMedia = (content.galleryPhotos || [])
+    .filter(Boolean)
+    .map((url: string, idx: number) => ({
+      id: `content-photo-${idx}`,
+      url,
+      type: "PHOTO",
+    }));
+  const galleryMedia = dbMedia.length > 0 ? dbMedia : contentMedia;
+
+  // Combine gift accounts from DB with weddingGift in content
+  const dbAccounts = invitation.giftAccounts || [];
+  const contentAccounts = (content.weddingGift?.accounts || [])
+    .filter((a: any) => a.accountNumber || a.bankName)
+    .map((a: any, idx: number) => ({
+      id: `gift-${idx}`,
+      type: "BANK",
+      bankName: a.bankName,
+      accountNumber: a.accountNumber,
+      accountName: a.accountName,
+      qrisImageUrl: idx === 0 ? content.weddingGift?.qrisImageUrl : null,
+    }));
+  const giftAccounts = dbAccounts.length > 0 ? dbAccounts : contentAccounts;
 
   // Increment view counter once per load
   useEffect(() => {
@@ -172,11 +202,18 @@ export function InvitationView({
           </div>
         )}
 
+        {/* LOVE STORY */}
+        <LoveStorySection story={content.loveStory} />
+
         {/* GALLERY */}
-        <GallerySection media={invitation.media || []} />
+        <GallerySection media={galleryMedia} />
 
         {/* DIGITAL GIFT */}
-        <DigitalGiftSection accounts={invitation.giftAccounts || []} />
+        <DigitalGiftSection
+          accounts={giftAccounts}
+          description={content.weddingGift?.description}
+          physicalGiftAddress={content.weddingGift?.physicalGiftAddress}
+        />
 
         {/* RSVP FORM */}
         <RsvpForm

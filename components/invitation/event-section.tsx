@@ -8,8 +8,9 @@ interface EventItem {
   date: string;
   startTime: string;
   endTime?: string;
-  venueName: string;
+  venueName?: string;
   venueAddress: string;
+  mapsUrl?: string;
 }
 
 export function EventSection({ events }: { events: EventItem[] }) {
@@ -29,9 +30,11 @@ export function EventSection({ events }: { events: EventItem[] }) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
         {events.map((evt, idx) => {
           const mapsQuery = encodeURIComponent(
-            `${evt.venueName} ${evt.venueAddress}`
+            `${evt.venueName || ""} ${evt.venueAddress}`
           );
-          const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${mapsQuery}`;
+          const finalMapsUrl = evt.mapsUrl?.trim()
+            ? evt.mapsUrl
+            : `https://www.google.com/maps/search/?api=1&query=${mapsQuery}`;
 
           return (
             <div
@@ -68,7 +71,7 @@ export function EventSection({ events }: { events: EventItem[] }) {
 
               <div className="pt-2">
                 <a
-                  href={mapsUrl}
+                  href={finalMapsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-block w-full"

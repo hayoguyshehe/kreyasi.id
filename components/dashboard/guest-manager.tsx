@@ -226,13 +226,13 @@ export function GuestManager({
       {/* Action and Search Controls */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="relative flex-1 max-w-sm">
-          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[#7A6D63]" />
           <input
             type="text"
             placeholder="Cari nama atau no WhatsApp..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-amber-500"
+            className="w-full pl-9 pr-4 py-2 rounded-xl bg-white border border-[#EAE3D8] text-xs text-[#2A211B] placeholder:text-[#9A8D83] focus:outline-none focus:border-[#4C6957]"
           />
         </div>
 
@@ -241,16 +241,16 @@ export function GuestManager({
             variant="outline"
             size="sm"
             onClick={() => setIsImportOpen(true)}
-            className="gap-1.5 text-xs"
+            className="gap-1.5 text-xs hover:border-[#4C6957] hover:text-[#4C6957]"
           >
-            <FileSpreadsheet className="w-4 h-4 text-emerald-400" />
+            <FileSpreadsheet className="w-4 h-4 text-emerald-600" />
             <span>Import Massal</span>
           </Button>
           <Button
-            variant="gold"
+            variant="sage"
             size="sm"
             onClick={() => setIsAddOpen(true)}
-            className="gap-1.5 text-xs shadow-md"
+            className="gap-1.5 text-xs shadow-sm"
           >
             <Plus className="w-4 h-4" />
             <span>Tambah Tamu</span>
@@ -259,23 +259,23 @@ export function GuestManager({
       </div>
 
       {/* Quota Notice */}
-      <div className="flex items-center justify-between text-xs text-slate-400 bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+      <div className="flex items-center justify-between text-xs text-[#6B5E55] bg-white p-3.5 rounded-xl border border-[#EAE3D8] shadow-xs">
         <span>
-          Total Tamu Terdaftar: <strong className="text-white">{guests.length}</strong>
+          Total Tamu Terdaftar: <strong className="text-[#2A211B]">{guests.length}</strong>
           {maxGuests !== null && ` / ${maxGuests} kuota paket`}
         </span>
         {maxGuests !== null && guests.length >= maxGuests && (
-          <span className="text-amber-400 font-medium">
+          <span className="text-[#C5A059] font-medium">
             Kuota tamu penuh. Upgrade paket untuk menambah lebih banyak tamu.
           </span>
         )}
       </div>
 
       {/* Guest Table */}
-      <Card variant="subtle" className="overflow-hidden">
+      <Card variant="default" className="overflow-hidden border-[#EAE3D8] shadow-xs">
         <div className="overflow-x-auto">
           <table className="w-full text-xs text-left">
-            <thead className="bg-[#1C212C] border-b border-slate-800 text-slate-300">
+            <thead className="bg-[#FAF7F2] border-b border-[#EAE3D8] text-[#6B5E55]">
               <tr>
                 <th className="p-4 font-semibold">Nama Tamu</th>
                 <th className="p-4 font-semibold">WhatsApp</th>
@@ -284,32 +284,32 @@ export function GuestManager({
                 <th className="p-4 font-semibold text-right">Aksi & Bagikan</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800/60 text-slate-300">
+            <tbody className="divide-y divide-[#EAE3D8] text-[#2A211B]">
               {filteredGuests.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="p-8 text-center text-slate-500">
+                  <td colSpan={5} className="p-8 text-center text-[#7A6D63]">
                     Belum ada tamu yang terdaftar atau sesuai pencarian.
                   </td>
                 </tr>
               ) : (
                 filteredGuests.map((guest) => (
-                  <tr key={guest.id} className="hover:bg-slate-900/40 transition-colors">
+                  <tr key={guest.id} className="hover:bg-[#FAF7F2] transition-colors">
                     <td className="p-4">
-                      <span className="font-semibold text-white block">{guest.name}</span>
-                      <span className="text-[10px] text-slate-500">
+                      <span className="font-semibold text-[#2A211B] block">{guest.name}</span>
+                      <span className="text-[10px] text-[#7A6D63]">
                         Porsi: {guest.invitedCount} orang
                       </span>
                     </td>
-                    <td className="p-4 text-slate-400">
+                    <td className="p-4 text-[#6B5E55]">
                       {guest.whatsapp || "-"}
                     </td>
                     <td className="p-4">
                       {guest.openedAt ? (
-                        <span className="inline-flex items-center gap-1 text-[11px] text-emerald-400">
+                        <span className="inline-flex items-center gap-1 text-[11px] text-emerald-600 font-medium">
                           <CheckCircle2 className="w-3.5 h-3.5" /> Dibuka
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1 text-[11px] text-slate-500">
+                        <span className="inline-flex items-center gap-1 text-[11px] text-[#7A6D63]">
                           <Clock className="w-3.5 h-3.5" /> Belum
                         </span>
                       )}

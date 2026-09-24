@@ -117,6 +117,53 @@ export async function PUT(
       data: updateData,
     });
 
+    // Sinkronisasi data amplop & kado digital ke tabel gift_accounts jika disertakan
+    if (content?.weddingGift) {
+      try {
+        await prisma.giftAccount.deleteMany({ where: { invitationId: id } });
+        const accountsToCreate: {
+          invitationId: string;
+          type: string;
+          bankName: string | null;
+          accountNumber: string | null;
+          accountName: string | null;
+          qrisImageUrl: string | null;
+        }[] = [];
+
+        if (Array.isArray(content.weddingGift.accounts)) {
+          for (const acc of content.weddingGift.accounts) {
+            if (acc.accountNumber?.trim() || acc.bankName?.trim()) {
+              accountsToCreate.push({
+                invitationId: id,
+                type: "BANK_TRANSFER",
+                bankName: acc.bankName || "Bank / E-Wallet",
+                accountNumber: acc.accountNumber || "",
+                accountName: acc.accountName || "",
+                qrisImageUrl: null,
+              });
+            }
+          }
+        }
+
+        if (content.weddingGift.qrisImageUrl?.trim()) {
+          accountsToCreate.push({
+            invitationId: id,
+            type: "QRIS",
+            bankName: "QRIS",
+            accountNumber: null,
+            accountName: null,
+            qrisImageUrl: content.weddingGift.qrisImageUrl,
+          });
+        }
+
+        if (accountsToCreate.length > 0) {
+          await prisma.giftAccount.createMany({ data: accountsToCreate });
+        }
+      } catch (syncErr) {
+        console.error("Error syncing gift accounts:", syncErr);
+      }
+    }
+
     return NextResponse.json({
       success: true,
       message: "Konten undangan berhasil disimpan",
