@@ -71,8 +71,8 @@ export function TemplateGallery({
           onClick={() => setSelectedCategory("all")}
           className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
             selectedCategory === "all"
-              ? "bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20"
-              : "bg-slate-900/80 text-slate-400 hover:text-white border border-slate-800"
+              ? "bg-[#4C6957] text-white shadow-sm shadow-[#4C6957]/25"
+              : "bg-white text-[#6B5E55] hover:text-[#2A211B] border border-[#EAE3D8]"
           }`}
         >
           Semua Kategori ({initialTemplates.length})
@@ -84,8 +84,8 @@ export function TemplateGallery({
             onClick={() => setSelectedCategory(cat.slug)}
             className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
               selectedCategory === cat.slug
-                ? "bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20"
-                : "bg-slate-900/80 text-slate-400 hover:text-white border border-slate-800"
+                ? "bg-[#4C6957] text-white shadow-sm shadow-[#4C6957]/25"
+                : "bg-white text-[#6B5E55] hover:text-[#2A211B] border border-[#EAE3D8]"
             }`}
           >
             {cat.name}
@@ -98,31 +98,31 @@ export function TemplateGallery({
         {filteredTemplates.map((template) => (
           <div
             key={template.id}
-            className="rounded-2xl overflow-hidden bg-[#14171F] border border-slate-800 group hover:border-amber-500/50 transition-all duration-300 flex flex-col justify-between"
+            className="paper-card rounded-2xl overflow-hidden group hover:border-[#4C6957] transition-all flex flex-col justify-between"
           >
             <div>
               {/* Preview Thumbnail Container */}
-              <div className="h-60 bg-linear-to-br from-slate-900 via-slate-850 to-slate-950 relative overflow-hidden flex items-center justify-center">
-                <div className="absolute inset-0 bg-amber-500/5 group-hover:bg-amber-500/10 transition-colors" />
+              <div className="h-60 bg-linear-to-br from-[#FAF8F5] to-[#EFE8DE] relative overflow-hidden flex items-center justify-center border-b border-[#EAE3D8]">
+                <div className="absolute inset-0 bg-[#4C6957]/5 group-hover:bg-[#4C6957]/10 transition-colors" />
 
-                {/* Placeholder decorative frame */}
-                <div className="w-36 h-48 rounded-xl border border-amber-500/30 bg-[#0B0D11] p-3 text-center flex flex-col justify-between shadow-xl group-hover:scale-105 transition-transform duration-300">
-                  <div className="border border-amber-500/20 rounded p-1">
-                    <p className="text-[7px] text-amber-300 font-serif uppercase tracking-widest">
+                {/* Decorative stationery card frame */}
+                <div className="w-36 h-48 rounded-xl border border-[#DFC798] bg-white p-3 text-center flex flex-col justify-between shadow-xs group-hover:scale-105 transition-transform duration-300">
+                  <div className="border border-[#DFC798]/40 rounded p-1">
+                    <p className="text-[7px] text-[#8C6A28] font-serif uppercase tracking-widest">
                       {template.category.name}
                     </p>
-                    <p className="text-[10px] font-bold text-white font-serif mt-1">
+                    <p className="text-[10px] font-bold text-[#2A211B] font-serif mt-1">
                       {template.name}
                     </p>
                   </div>
                   <div className="space-y-1">
-                    <div className="w-8 h-8 rounded-full bg-amber-500/20 mx-auto flex items-center justify-center">
-                      <Sparkles className="w-4 h-4 text-amber-400" />
+                    <div className="w-8 h-8 rounded-full bg-[#FAF2E4] mx-auto flex items-center justify-center">
+                      <Sparkles className="w-4 h-4 text-[#C5A059]" />
                     </div>
-                    <p className="text-[7px] text-slate-400">Dimas & Amanda</p>
+                    <p className="text-[7px] text-[#7A6E65]">Dimas & Amanda</p>
                   </div>
-                  <span className="text-[6px] text-slate-400 block border-t border-slate-800 pt-1">
-                    Kreyasi Digital
+                  <span className="text-[6px] text-[#8E837B] block border-t border-[#EAE3D8] pt-1">
+                    Kreyasi.id
                   </span>
                 </div>
 
@@ -132,14 +132,14 @@ export function TemplateGallery({
                 </div>
 
                 {/* Quick preview overlay on hover */}
-                <div className="absolute inset-0 bg-slate-950/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3 backdrop-blur-[2px]">
+                <div className="absolute inset-0 bg-[#2A211B]/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3 backdrop-blur-[2px]">
                   <Button
                     variant="secondary"
                     size="sm"
-                    className="gap-1.5 text-xs shadow-lg"
+                    className="gap-1.5 text-xs shadow-md bg-white hover:bg-[#FAF7F2]"
                     onClick={() => setPreviewTemplate(template)}
                   >
-                    <Eye className="w-3.5 h-3.5" />
+                    <Eye className="w-3.5 h-3.5 text-[#4C6957]" />
                     <span>Live Preview</span>
                   </Button>
                 </div>
@@ -148,15 +148,15 @@ export function TemplateGallery({
               {/* Template Info */}
               <div className="p-5 space-y-2">
                 <div className="flex items-center justify-between">
-                  <h3 className="font-semibold text-white text-base group-hover:text-amber-300 transition-colors">
+                  <h3 className="font-serif font-bold text-[#2A211B] text-base group-hover:text-[#4C6957] transition-colors">
                     {template.name}
                   </h3>
-                  <span className="text-[11px] font-medium text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-full border border-amber-500/20">
+                  <span className="text-[11px] font-medium text-[#4C6957] bg-[#EEF3EF] px-2.5 py-0.5 rounded-full border border-[#C6D5C7]">
                     Mulai {getTierName(template.minPackageTier)}
                   </span>
                 </div>
-                <p className="text-xs text-slate-400">
-                  Tema elegan responsif dengan animasi transisi halus, galeri foto, RSVP, dan amplop kado.
+                <p className="text-xs text-[#6B5E55] leading-relaxed">
+                  Tema elegan responsif dengan animasi transisi halus, galeri foto, RSVP WhatsApp, dan amplop digital.
                 </p>
               </div>
             </div>
@@ -175,8 +175,8 @@ export function TemplateGallery({
                 href={`/register?template=${template.slug}`}
                 className="flex-1"
               >
-                <Button variant="gold" size="sm" className="w-full text-xs justify-center gap-1">
-                  <span>Gunakan</span>
+                <Button variant="sage" size="sm" className="w-full text-xs gap-1.5 justify-center">
+                  <span>Pilih Desain</span>
                   <ArrowRight className="w-3 h-3" />
                 </Button>
               </Link>

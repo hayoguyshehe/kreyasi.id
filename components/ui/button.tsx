@@ -4,7 +4,7 @@ import { Loader2 } from "lucide-react";
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "outline" | "ghost" | "gold" | "danger";
+  variant?: "primary" | "secondary" | "outline" | "ghost" | "gold" | "sage" | "danger";
   size?: "sm" | "md" | "lg" | "icon";
   isLoading?: boolean;
 }
@@ -27,15 +27,17 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     const variants = {
       primary:
-        "bg-[#C5A059] hover:bg-[#B38E44] text-white font-semibold shadow-sm hover:shadow-md hover:shadow-[#C5A059]/20 focus:ring-[#C5A059]",
+        "bg-[#4C6957] hover:bg-[#3C5445] text-white font-semibold shadow-sm hover:shadow-md hover:shadow-[#4C6957]/20 focus:ring-[#4C6957]",
+      sage:
+        "bg-[#4C6957] hover:bg-[#3C5445] text-white font-semibold shadow-sm hover:shadow-md hover:shadow-[#4C6957]/20 focus:ring-[#4C6957]",
       gold:
         "bg-linear-to-r from-[#C5A059] via-[#BE964E] to-[#B38E44] hover:brightness-105 text-white font-semibold shadow-sm hover:shadow-md hover:shadow-[#C5A059]/25 focus:ring-[#C5A059]",
       secondary:
-        "bg-[#F3ECE4] hover:bg-[#EAE2D8] text-[#2A211B] font-medium border border-[#E4DBD0] focus:ring-[#C5A059]",
+        "bg-[#F3ECE4] hover:bg-[#EAE2D8] text-[#2A211B] font-medium border border-[#E4DBD0] focus:ring-[#4C6957]",
       outline:
-        "border border-[#D9CDBF] hover:border-[#C5A059] text-[#2A211B] hover:text-[#9A7527] bg-white/80 hover:bg-[#FDF9F3] focus:ring-[#C5A059]",
+        "border border-[#D9CDBF] hover:border-[#4C6957] text-[#2A211B] hover:text-[#4C6957] bg-white/80 hover:bg-[#F4F8F5] focus:ring-[#4C6957]",
       ghost:
-        "text-[#5A4D45] hover:text-[#2A211B] hover:bg-[#F3ECE4] focus:ring-[#C5A059]",
+        "text-[#5A4D45] hover:text-[#2A211B] hover:bg-[#EEF3EF] focus:ring-[#4C6957]",
       danger:
         "bg-[#8C3A27] hover:bg-[#782823] text-white font-medium shadow-sm focus:ring-[#8C3A27]",
     };

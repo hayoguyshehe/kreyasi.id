@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { redirect } from "next/navigation";
 import { auth, signOut } from "@/lib/auth";
 import {
@@ -55,13 +56,15 @@ export default async function AdminLayout({
         <div className="p-6 space-y-8">
           {/* Logo & Role Badge */}
           <div className="space-y-2">
-            <Link href="/admin" className="inline-flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center text-slate-950 font-bold shadow-md shadow-amber-500/20">
-                <ShieldAlert className="w-4 h-4 text-slate-950" />
-              </div>
-              <span className="text-xl font-bold tracking-tight text-white font-serif">
-                Kreyasi<span className="text-amber-400">.Admin</span>
-              </span>
+            <Link href="/admin" className="inline-flex items-center gap-2 group">
+              <Image
+                src="/images/logo/kreyasi-logo-web-2.png"
+                alt="Kreyasi.id Admin"
+                width={120}
+                height={38}
+                className="h-7 w-auto object-contain transition-transform group-hover:scale-[1.02]"
+              />
+              <span className="text-xs font-serif font-bold text-amber-400">Admin</span>
             </Link>
             <div className="flex items-center gap-2">
               <Badge variant="gold" className="text-[10px] tracking-wider uppercase font-semibold py-0.5">

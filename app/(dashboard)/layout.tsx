@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { redirect } from "next/navigation";
 import { auth, signOut } from "@/lib/auth";
 import {
@@ -34,13 +35,14 @@ export default async function DashboardLayout({
       <aside className="w-full md:w-64 bg-[#12151D] border-b md:border-b-0 md:border-r border-slate-800/80 flex flex-col justify-between shrink-0">
         <div className="p-6 space-y-8">
           {/* Logo */}
-          <Link href="/" className="inline-flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-linear-to-br from-amber-400 to-amber-600 flex items-center justify-center text-slate-950 font-bold shadow-md shadow-amber-500/20">
-              <Sparkles className="w-4 h-4 text-slate-950" />
-            </div>
-            <span className="text-xl font-bold tracking-tight text-white font-serif">
-              Kreyasi<span className="text-amber-400">.id</span>
-            </span>
+          <Link href="/" className="inline-flex items-center gap-2 group">
+            <Image
+              src="/images/logo/kreyasi-logo-web-2.png"
+              alt="Kreyasi.id"
+              width={130}
+              height={42}
+              className="h-8 w-auto object-contain transition-transform group-hover:scale-[1.02]"
+            />
           </Link>
 
           {/* Quick Create CTA */}

@@ -2,8 +2,9 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Sparkles, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface NavbarProps {
@@ -29,13 +30,15 @@ export function Navbar({ user }: NavbarProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="w-9 h-9 rounded-xl bg-linear-to-br from-[#C5A059] to-[#9A7527] flex items-center justify-center text-white font-bold shadow-sm shadow-[#C5A059]/20 group-hover:scale-105 transition-transform">
-              <Sparkles className="w-4 h-4 text-white" />
-            </div>
-            <span className="text-2xl font-bold tracking-tight text-[#2A211B] font-serif">
-              Kreyasi<span className="text-[#C5A059]">.id</span>
-            </span>
+          <Link href="/" className="flex items-center gap-2 group py-1">
+            <Image
+              src="/images/logo/kreyasi-logo-web-1.png"
+              alt="Kreyasi.id"
+              width={140}
+              height={45}
+              className="h-9 sm:h-10 w-auto object-contain transition-transform group-hover:scale-[1.02]"
+              priority
+            />
           </Link>
 
           {/* Desktop Nav Links */}
@@ -51,8 +54,8 @@ export function Navbar({ user }: NavbarProps) {
                   href={link.href}
                   className={`text-sm transition-colors ${
                     isActive
-                      ? "text-[#9A7527] font-semibold"
-                      : "text-[#6B5E55] hover:text-[#2A211B]"
+                      ? "text-[#4C6957] font-semibold"
+                      : "text-[#6B5E55] hover:text-[#4C6957]"
                   }`}
                 >
                   {link.name}
@@ -112,7 +115,7 @@ export function Navbar({ user }: NavbarProps) {
                 key={link.name}
                 href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className="px-3 py-2.5 rounded-xl text-base font-medium text-[#2A211B] hover:bg-[#F3ECE4] hover:text-[#9A7527] transition-colors"
+                className="px-3 py-2.5 rounded-xl text-base font-medium text-[#2A211B] hover:bg-[#F3ECE4] hover:text-[#4C6957] transition-colors"
               >
                 {link.name}
               </Link>

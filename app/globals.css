@@ -8,10 +8,18 @@
   --surface-hover: #F9F5EF;
   --surface-card: #FFFFFF;
   --foreground: #2A211B;
-  --foreground-muted: #6B5E55;
-  --foreground-subtle: #96887E;
+  --foreground-muted: #5E534B;
+  --foreground-subtle: #8E8279;
 
-  /* Antique Gold Foil Accents */
+  /* Brand Signature: Heritage Botanical Sage Green (From Official Logo #4C6957) */
+  --brand-sage: #4C6957;
+  --brand-sage-hover: #3C5445;
+  --brand-sage-light: #EEF3EF;
+  --brand-sage-dark: #2C3E33;
+  --brand-sage-medium: #758C7E;
+  --brand-sage-glow: rgba(76, 105, 87, 0.18);
+
+  /* Antique Gold Foil Accents (Secondary Luxury Foil) */
   --primary-gold: #C5A059;
   --primary-gold-hover: #B38E44;
   --primary-gold-light: #FBF4E6;
@@ -21,13 +29,12 @@
   /* Indonesian Wedding Romance Accents */
   --accent-rose: #D4A59A;
   --accent-rose-light: #FAECE9;
-  --accent-sage: #8E9A89;
-  --accent-sage-light: #EEF3ED;
   --accent-terracotta: #8C3A27;
 
   /* Hairline Borders & Frames */
   --border-subtle: rgba(42, 33, 27, 0.08);
   --border-warm: #EAE3D8;
+  --border-sage: rgba(76, 105, 87, 0.25);
   --border-gold: rgba(197, 160, 89, 0.35);
 
   --radius-sm: 0.375rem;

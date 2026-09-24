@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   Sparkles,
   CheckCircle2,
@@ -58,13 +59,13 @@ export default function HomePage() {
           {/* Hallmarks of Quality */}
           <div className="flex flex-wrap items-center justify-center gap-6 pt-5 text-xs text-[#7A6E65]">
             <span className="flex items-center gap-1.5">
-              <CheckCircle2 className="w-4 h-4 text-[#8E9A89]" /> Tanpa Perlu Skill Desain
+              <CheckCircle2 className="w-4 h-4 text-[#4C6957]" /> Tanpa Perlu Skill Desain
             </span>
             <span className="flex items-center gap-1.5">
-              <CheckCircle2 className="w-4 h-4 text-[#8E9A89]" /> Tautan WhatsApp Siap Kirim
+              <CheckCircle2 className="w-4 h-4 text-[#4C6957]" /> Tautan WhatsApp Siap Kirim
             </span>
             <span className="flex items-center gap-1.5">
-              <CheckCircle2 className="w-4 h-4 text-[#8E9A89]" /> Langsung Aktif Seketika
+              <CheckCircle2 className="w-4 h-4 text-[#4C6957]" /> Langsung Aktif Seketika
             </span>
           </div>
         </div>
@@ -84,6 +85,17 @@ export default function HomePage() {
                 <div className="inline-block px-4 py-1.5 rounded-full bg-white border border-[#EAE3D8] text-xs text-[#6B5E55] shadow-2xs">
                   Kepada Yth. Bapak/Ibu/Saudara/i:{" "}
                   <strong className="text-[#2A211B] font-semibold">Budi Santoso & Partner</strong>
+                </div>
+
+                {/* Authentic Botanical Monogram Crest */}
+                <div className="flex justify-center pt-1">
+                  <Image
+                    src="/images/logo/kreyasi-profile.png"
+                    alt="Kreyasi Seal"
+                    width={48}
+                    height={48}
+                    className="w-12 h-12 rounded-full shadow-sm border-2 border-white ring-1 ring-[#4C6957]/30"
+                  />
                 </div>
 
                 <div className="space-y-2">
@@ -170,7 +182,7 @@ export default function HomePage() {
       {/* 3. WEDDING CEREMONIAL PILLARS */}
       <section className="py-24 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto space-y-16">
         <div className="text-center max-w-2xl mx-auto space-y-3">
-          <Badge variant="gold">Fitur Lengkap & Bermartabat</Badge>
+          <Badge variant="sage">Fitur Lengkap & Bermartabat</Badge>
           <h2 className="text-3xl sm:text-4xl font-serif font-bold text-[#2A211B]">
             Setiap Detail Dirancang untuk Memuliakan Tamu Anda
           </h2>
@@ -181,8 +193,8 @@ export default function HomePage() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
           {/* Feature 1 */}
-          <div className="paper-card rounded-2xl p-7 space-y-4 hover:border-[#C5A059]/60 transition-colors">
-            <div className="w-12 h-12 rounded-xl bg-[#FAF2E4] border border-[#EBD5B2] flex items-center justify-center text-[#8C6A28]">
+          <div className="paper-card rounded-2xl p-7 space-y-4 hover:border-[#4C6957]/60 transition-colors">
+            <div className="w-12 h-12 rounded-xl bg-[#EEF3EF] border border-[#C6D5C7] flex items-center justify-center text-[#4C6957]">
               <Smartphone className="w-6 h-6" />
             </div>
             <h3 className="text-lg font-serif font-bold text-[#2A211B]">
@@ -207,8 +219,8 @@ export default function HomePage() {
           </div>
 
           {/* Feature 3 */}
-          <div className="paper-card rounded-2xl p-7 space-y-4 hover:border-[#C5A059]/60 transition-colors">
-            <div className="w-12 h-12 rounded-xl bg-[#FAF2E4] border border-[#EBD5B2] flex items-center justify-center text-[#8C6A28]">
+          <div className="paper-card rounded-2xl p-7 space-y-4 hover:border-[#4C6957]/60 transition-colors">
+            <div className="w-12 h-12 rounded-xl bg-[#EEF3EF] border border-[#C6D5C7] flex items-center justify-center text-[#4C6957]">
               <Gift className="w-6 h-6" />
             </div>
             <h3 className="text-lg font-serif font-bold text-[#2A211B]">
@@ -233,8 +245,8 @@ export default function HomePage() {
           </div>
 
           {/* Feature 5 */}
-          <div className="paper-card rounded-2xl p-7 space-y-4 hover:border-[#C5A059]/60 transition-colors">
-            <div className="w-12 h-12 rounded-xl bg-[#FAF2E4] border border-[#EBD5B2] flex items-center justify-center text-[#8C6A28]">
+          <div className="paper-card rounded-2xl p-7 space-y-4 hover:border-[#4C6957]/60 transition-colors">
+            <div className="w-12 h-12 rounded-xl bg-[#EEF3EF] border border-[#C6D5C7] flex items-center justify-center text-[#4C6957]">
               <Music className="w-6 h-6" />
             </div>
             <h3 className="text-lg font-serif font-bold text-[#2A211B]">
@@ -246,8 +258,8 @@ export default function HomePage() {
           </div>
 
           {/* Feature 6 */}
-          <div className="paper-card rounded-2xl p-7 space-y-4 hover:border-[#C5A059]/60 transition-colors">
-            <div className="w-12 h-12 rounded-xl bg-[#FAF2E4] border border-[#EBD5B2] flex items-center justify-center text-[#8C6A28]">
+          <div className="paper-card rounded-2xl p-7 space-y-4 hover:border-[#4C6957]/60 transition-colors">
+            <div className="w-12 h-12 rounded-xl bg-[#EEF3EF] border border-[#C6D5C7] flex items-center justify-center text-[#4C6957]">
               <ShieldCheck className="w-6 h-6" />
             </div>
             <h3 className="text-lg font-serif font-bold text-[#2A211B]">
@@ -310,7 +322,9 @@ export default function HomePage() {
                     <span className="text-[8px] text-[#7A6E65]">Dimas & Amanda</span>
                   </div>
                   <div className="absolute top-3 left-3">
-                    <Badge variant="gold">{tpl.category}</Badge>
+                    <Badge variant={tpl.category === "Modern Elegan" ? "sage" : "gold"}>
+                      {tpl.category}
+                    </Badge>
                   </div>
                 </div>
                 <div className="p-5 space-y-3">
@@ -383,7 +397,7 @@ export default function HomePage() {
             ].map((faq, idx) => (
               <div key={idx} className="paper-card rounded-xl p-5 space-y-2">
                 <h3 className="text-sm font-semibold text-[#2A211B] flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-[#8C6A28] shrink-0" />
+                  <CheckCircle2 className="w-4 h-4 text-[#4C6957] shrink-0" />
                   {faq.q}
                 </h3>
                 <p className="text-xs text-[#6B5E55] pl-6 leading-relaxed">{faq.a}</p>
@@ -396,6 +410,15 @@ export default function HomePage() {
       {/* 7. FINAL INVITATION CTA */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto text-center">
         <div className="paper-card-gold rounded-3xl p-10 sm:p-14 space-y-6 relative bg-white">
+          <div className="flex justify-center">
+            <Image
+              src="/images/logo/kreyasi-profile.png"
+              alt="Kreyasi Seal"
+              width={64}
+              height={64}
+              className="w-16 h-16 rounded-full shadow-md border-2 border-white ring-2 ring-[#4C6957]/20"
+            />
+          </div>
           <h2 className="text-3xl sm:text-4xl font-serif font-bold text-[#2A211B] max-w-lg mx-auto">
             Mulai Rangkai Momen Bahagia Anda Sekarang
           </h2>

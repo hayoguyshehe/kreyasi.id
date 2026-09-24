@@ -1,27 +1,29 @@
 import React from "react";
 import Link from "next/link";
-import { Sparkles, Heart, ShieldCheck, Mail, Phone } from "lucide-react";
+import Image from "next/image";
+import { Heart, ShieldCheck, Mail, Phone } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer className="bg-[#241E19] text-[#A69B92] text-sm border-t border-[#382E26]">
+    <footer className="bg-[#18201B] text-[#9EA9A1] text-sm border-t border-[#232E27]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
           {/* Brand Col */}
           <div className="lg:col-span-2 space-y-4">
-            <Link href="/" className="inline-flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-xl bg-linear-to-br from-[#C5A059] to-[#9A7527] flex items-center justify-center text-white font-bold shadow-sm shadow-[#C5A059]/20">
-                <Sparkles className="w-4 h-4 text-white" />
-              </div>
-              <span className="text-xl font-bold tracking-tight text-[#FBF9F5] font-serif">
-                Kreyasi<span className="text-[#C5A059]">.id</span>
-              </span>
+            <Link href="/" className="inline-flex items-center gap-2.5 group">
+              <Image
+                src="/images/logo/kreyasi-logo-web-2.png"
+                alt="Kreyasi.id"
+                width={140}
+                height={45}
+                className="h-9 w-auto object-contain transition-transform group-hover:scale-[1.02]"
+              />
             </Link>
-            <p className="text-sm text-[#A69B92] max-w-sm leading-relaxed">
+            <p className="text-sm text-[#9EA9A1] max-w-sm leading-relaxed">
               Platform undangan pernikahan & acara digital dengan estetika elegan khas Indonesia.
               Praktis, khidmat, terintegrasi RSVP langsung, amplop kado digital, dan navigasi lokasi.
             </p>
-            <div className="flex items-center gap-3 pt-2 text-xs text-[#8E837B]">
+            <div className="flex items-center gap-3 pt-2 text-xs text-[#758279]">
               <span className="inline-flex items-center gap-1.5 text-[#C5A059] bg-[#C5A059]/10 px-2.5 py-1 rounded-full border border-[#C5A059]/25">
                 <ShieldCheck className="w-3.5 h-3.5" /> Terenkripsi & Terpercaya
               </span>
@@ -103,7 +105,7 @@ export function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-14 pt-8 border-t border-[#382E26] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#7A7068]">
+        <div className="mt-14 pt-8 border-t border-[#232E27] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#758279]">
           <p>© {new Date().getFullYear()} Kreyasi.id. Seluruh hak cipta dilindungi undang-undang.</p>
           <div className="flex items-center gap-2">
             <span>Dirancang dengan</span>

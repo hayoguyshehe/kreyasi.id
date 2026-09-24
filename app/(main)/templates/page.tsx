@@ -22,11 +22,11 @@ export default async function TemplatesPage() {
   return (
     <div className="py-16 md:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-12">
       <div className="text-center max-w-3xl mx-auto space-y-4">
-        <Badge variant="gold">Koleksi Desain Eksklusif</Badge>
-        <h1 className="text-3xl sm:text-5xl font-bold font-serif text-white tracking-tight">
+        <Badge variant="sage">Koleksi Desain Eksklusif</Badge>
+        <h1 className="text-3xl sm:text-5xl font-bold font-serif text-[#2A211B] tracking-tight">
           Katalog Template Undangan Digital
         </h1>
-        <p className="text-sm sm:text-base text-slate-400 max-w-2xl mx-auto">
+        <p className="text-sm sm:text-base text-[#6B5E55] max-w-2xl mx-auto">
           Temukan ragam pilihan desain undangan mulai dari adat tradisional, minimalis modern, hingga floral romantis yang dapat disesuaikan sesuka hati.
         </p>
       </div>
