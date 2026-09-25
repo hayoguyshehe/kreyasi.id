@@ -112,6 +112,19 @@ export function verifyWebhookSignature(notification: {
 }
 
 /**
+ * Buat signature valid untuk pengujian / internal verification
+ */
+export function generateWebhookSignature(notification: {
+  order_id: string;
+  status_code: string;
+  gross_amount: string;
+}): string {
+  const { order_id, status_code, gross_amount } = notification;
+  const payload = `${order_id}${status_code}${gross_amount}${MIDTRANS_SERVER_KEY}`;
+  return crypto.createHash("sha512").update(payload).digest("hex");
+}
+
+/**
  * Ambil status transaksi dari Midtrans API (untuk double-check).
  */
 export async function getTransactionStatus(orderId: string) {

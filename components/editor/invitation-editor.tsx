@@ -64,6 +64,7 @@ export function InvitationEditor({
   const router = useRouter();
   const isWedding = initialData.eventCategory === "PERNIKAHAN";
   const content = initialData.content || {};
+  const adminWaNumber = process.env.NEXT_PUBLIC_ADMIN_WHATSAPP_NUMBER || "6281234567890";
 
   // Active section tab
   const [activeSection, setActiveSection] = useState<
@@ -801,7 +802,7 @@ export function InvitationEditor({
                   chat admin jika terkendala dalam mengambil link dari google maps
                 </span>
                 <a
-                  href="https://wa.me/6281234567890?text=Halo%20Admin%20Kreyasi,%20saya%20terkendala%20mengambil%20link%20Google%20Maps%20untuk%20undangan%20saya.%20Mohon%20bantuannya."
+                  href={`https://wa.me/${adminWaNumber}?text=${encodeURIComponent("Halo Admin Kreyasi, saya terkendala mengambil link Google Maps untuk undangan saya. Mohon bantuannya.")}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1 text-[#4C6957] font-semibold hover:underline"
@@ -1114,8 +1115,19 @@ export function InvitationEditor({
               </div>
 
               {needsLoveStoryHelp && (
-                <div className="p-3 rounded-xl bg-[#FFF9ED] text-[11px] text-[#8C6D2B] leading-relaxed">
-                  ❤️ <strong>Bagus sekali!</strong> Tuliskan saja poin-poin cerita singkat di atas, tim penulis profesional Kreyasi akan membantu merangkai kalimatnya menjadi narasi yang puitis dan berkesan.
+                <div className="p-3.5 rounded-xl bg-[#FFF9ED] border border-[#DFC798]/60 text-xs text-[#8C6D2B] leading-relaxed flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div>
+                    ❤️ <strong>Bagus sekali!</strong> Tuliskan saja poin-poin cerita singkat di atas, tim penulis profesional Kreyasi akan membantu merangkai kalimatnya menjadi narasi yang puitis dan berkesan.
+                  </div>
+                  <a
+                    href={`https://wa.me/${adminWaNumber}?text=${encodeURIComponent("Halo Admin Kreyasi, saya ingin dibantu merangkai Love Story untuk undangan pernikahan saya. Mohon arahannya.")}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#4C6957] text-white text-xs font-semibold hover:bg-[#385041] transition-colors shrink-0 shadow-xs"
+                  >
+                    <MessageCircle className="w-3.5 h-3.5" />
+                    <span>Hubungi Penulis Kreyasi</span>
+                  </a>
                 </div>
               )}
             </div>

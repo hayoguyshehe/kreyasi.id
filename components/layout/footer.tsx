@@ -88,7 +88,14 @@ export function Footer() {
               </li>
               <li className="flex items-center gap-2">
                 <Phone className="w-4 h-4 text-[#C5A059] shrink-0" />
-                <span>0812-3456-7890 (WhatsApp)</span>
+                <a
+                  href={`https://wa.me/${process.env.NEXT_PUBLIC_ADMIN_WHATSAPP_NUMBER || "6281234567890"}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-[#C5A059] transition-colors"
+                >
+                  +{process.env.NEXT_PUBLIC_ADMIN_WHATSAPP_NUMBER || "6281234567890"} (WhatsApp)
+                </a>
               </li>
               <li className="pt-1">
                 <Link href="/login" className="hover:text-[#C5A059] transition-colors">
