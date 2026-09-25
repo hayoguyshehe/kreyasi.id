@@ -42,7 +42,10 @@ export default async function DashboardOrdersPage() {
     payment: o.payment,
   }));
 
-  const midtransClientKey = process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY;
+  const midtransClientKey =
+    process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY ||
+    process.env.MIDTRANS_CLIENT_KEY ||
+    "";
   const isProduction = process.env.MIDTRANS_IS_PRODUCTION === "true";
 
   return (

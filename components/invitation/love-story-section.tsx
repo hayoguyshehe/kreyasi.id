@@ -63,12 +63,12 @@ export function LoveStorySection({ story }: { story?: LoveStoryData }) {
           return (
             <div key={idx} className="relative group">
               {/* Timeline marker */}
-              <div className="absolute -left-[35px] sm:-left-[43px] top-1.5 w-8 h-8 rounded-full bg-slate-900 border-2 border-amber-400 flex items-center justify-center text-amber-400 shadow-md shadow-amber-500/20 group-hover:scale-110 transition-transform">
+              <div className="absolute -left-8.75 sm:-left-10.75 top-1.5 w-8 h-8 rounded-full bg-slate-900 border-2 border-amber-400 flex items-center justify-center text-amber-400 shadow-md shadow-amber-500/20 group-hover:scale-110 transition-transform">
                 <Icon className="w-3.5 h-3.5" />
               </div>
 
               {/* Story Card */}
-              <div className="p-5 rounded-2xl bg-gradient-to-br from-[#1C212C] to-[#12151D] border border-slate-800 shadow-lg space-y-2">
+              <div className="p-5 rounded-2xl bg-linear-to-br from-[#1C212C] to-[#12151D] border border-slate-800 shadow-lg space-y-2">
                 <span className="text-[11px] uppercase tracking-wider font-bold text-amber-400 font-serif">
                   {m.label}
                 </span>
