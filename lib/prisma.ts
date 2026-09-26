@@ -10,13 +10,18 @@ function createPrismaClient(): PrismaClient {
   const connectionString =
     process.env.DATABASE_URL ||
     "postgresql://postgres:postgres@localhost:5432/placeholder";
-  const pool = new Pool({ connectionString });
+  const pool = new Pool({
+    connectionString,
+    max: 5, // Batasi jumlah koneksi per container serverless
+    connectionTimeoutMillis: 5000,
+    idleTimeoutMillis: 10000,
+  });
   const adapter = new PrismaPg(pool);
   return new PrismaClient({ adapter });
 }
 
 export const prisma = globalForPrisma.prisma ?? createPrismaClient();
 
-if (process.env.NODE_ENV !== "production") {
-  globalForPrisma.prisma = prisma;
-}
+// Selalu simpan di globalThis agar container serverless yang hangat (warm lambda) dapat menggunakan kembali koneksi yang sama
+globalForPrisma.prisma = prisma;
+

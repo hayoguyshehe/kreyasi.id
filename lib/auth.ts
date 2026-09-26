@@ -66,23 +66,32 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (user) {
         token.id = user.id;
         token.role = user.role;
+        token.lastChecked = Date.now();
       }
 
-      // Re-check status user (suspended atau tidak) ke database setiap kali token digunakan / di-refresh
+      // Re-check status user (suspended atau tidak) ke database secara berkala (tiap 60 detik)
+      // Menghilangkan redundant round-trip database query pada setiap perpindahan halaman
       if (token.id) {
-        const dbUser = await prisma.user.findUnique({
-          where: { id: token.id as string },
-          select: { isSuspended: true, role: true },
-        });
+        const now = Date.now();
+        const lastChecked = (token.lastChecked as number) || 0;
+        const shouldRecheck = now - lastChecked > 60 * 1000;
 
-        // Jika akun telah dihapus atau disuspend oleh admin, batalkan token
-        if (!dbUser || dbUser.isSuspended) {
-          return null as unknown as typeof token;
+        if (shouldRecheck) {
+          const dbUser = await prisma.user.findUnique({
+            where: { id: token.id as string },
+            select: { isSuspended: true, role: true },
+          });
+
+          // Jika akun telah dihapus atau disuspend oleh admin, batalkan token
+          if (!dbUser || dbUser.isSuspended) {
+            return null as unknown as typeof token;
+          }
+
+          // Sinkronisasi status dan role terkini dari database
+          token.role = dbUser.role;
+          token.isSuspended = dbUser.isSuspended;
+          token.lastChecked = now;
         }
-
-        // Sinkronisasi status dan role terkini dari database
-        token.role = dbUser.role;
-        token.isSuspended = dbUser.isSuspended;
       }
 
       return token;
