@@ -75,24 +75,24 @@ export function RsvpForm({
   return (
     <section className="space-y-6 max-w-xl mx-auto">
       <div className="text-center space-y-2">
-        <p className="text-xs uppercase tracking-[0.25em] text-amber-400 font-semibold">
+        <p className="text-xs uppercase tracking-[0.25em] text-[#8C6A28] font-semibold">
           Konfirmasi Kehadiran
         </p>
-        <h2 className="text-2xl sm:text-3xl font-serif font-bold text-white">
+        <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#2A211B]">
           RSVP Tamu Undangan
         </h2>
-        <p className="text-xs text-slate-400">
+        <p className="text-xs text-stone-500">
           Mohon konfirmasi kehadiran Anda untuk membantu persiapan jamuan acara kami.
         </p>
       </div>
 
-      <div className="p-6 sm:p-8 rounded-3xl bg-[#14171F]/90 border border-slate-800 shadow-2xl">
+      <div className="p-6 sm:p-8 rounded-3xl bg-white border border-[#C5A059]/20 shadow-xl shadow-[#C5A059]/5">
         {feedback && (
           <div
             className={`p-4 rounded-xl text-xs flex items-center gap-2.5 mb-6 ${
               feedback.type === "success"
-                ? "bg-emerald-500/10 border border-emerald-500/30 text-emerald-300"
-                : "bg-red-500/10 border border-red-500/30 text-red-400"
+                ? "bg-emerald-50 border border-emerald-200 text-emerald-700"
+                : "bg-red-50 border border-red-200 text-red-700"
             }`}
           >
             {feedback.type === "success" ? (
@@ -117,7 +117,7 @@ export function RsvpForm({
 
           {/* Status Selection */}
           <div className="space-y-1.5">
-            <label className="block text-xs font-semibold text-slate-300">
+            <label className="block text-xs font-semibold text-stone-600">
               Apakah Anda Berkenan Hadir?
             </label>
             <div className="grid grid-cols-3 gap-2">
@@ -132,8 +132,8 @@ export function RsvpForm({
                   onClick={() => setStatus(opt.val as any)}
                   className={`py-2.5 px-2 rounded-xl text-xs font-semibold transition-all border ${
                     status === opt.val
-                      ? "bg-amber-500 text-slate-950 border-amber-400 shadow-md shadow-amber-500/20"
-                      : "bg-slate-900/80 text-slate-400 border-slate-800 hover:text-white hover:border-slate-700"
+                      ? "bg-[#C5A059] text-white border-[#C5A059] shadow-md shadow-[#C5A059]/20"
+                      : "bg-[#F5EFEB] text-stone-500 border-transparent hover:text-[#2A211B] hover:border-[#C5A059]/30"
                   }`}
                 >
                   {opt.label}
@@ -144,13 +144,13 @@ export function RsvpForm({
 
           {status === "HADIR" && (
             <div className="space-y-1.5">
-              <label className="block text-xs font-semibold text-slate-300">
+              <label className="block text-xs font-semibold text-stone-600">
                 Jumlah Hadirin
               </label>
               <select
                 value={attendeeCount}
                 onChange={(e) => setAttendeeCount(parseInt(e.target.value, 10))}
-                className="w-full rounded-xl bg-slate-900 border border-slate-800 p-2.5 text-xs text-white focus:outline-none focus:border-amber-500"
+                className="w-full rounded-xl bg-white border border-stone-200 p-2.5 text-xs text-[#2A211B] focus:outline-none focus:ring-2 focus:ring-[#4C6957]/50 focus:border-transparent transition-all"
               >
                 {Array.from({ length: maxAttendees }, (_, i) => i + 1).map(
                   (num) => (
@@ -173,7 +173,7 @@ export function RsvpForm({
           <Button
             type="submit"
             variant="gold"
-            className="w-full gap-2 shadow-xl mt-2"
+            className="w-full gap-2 shadow-xl shadow-[#C5A059]/20 mt-2 bg-linear-to-r from-[#C5A059] to-[#8C6A28] text-white hover:opacity-90 border-none"
             isLoading={isLoading}
           >
             <Send className="w-4 h-4" />
