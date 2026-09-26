@@ -28,7 +28,7 @@ export function InvitationView({
   const content = invitation.content || {};
   const couple = content.couple;
   const person = content.person;
-  const theme = content.theme || { primaryColor: "#D4AF37", fontFamily: "Plus Jakarta Sans" };
+  const theme = content.theme || { primaryColor: "#C5A059", fontFamily: "Plus Jakarta Sans" };
 
   // Combine media from DB with galleryPhotos in content
   const dbMedia = (invitation.media || []).map((m: any) => ({
@@ -66,9 +66,9 @@ export function InvitationView({
 
   return (
     <div
-      className="min-h-screen bg-[#0B0D11] text-slate-100 relative selection:bg-amber-500 selection:text-slate-950 font-sans"
+      className="min-h-screen bg-[#FAF7F2] text-[#2A211B] relative selection:bg-[#C5A059] selection:text-white font-sans"
       style={{
-        ["--primary-gold" as any]: theme.primaryColor || "#D4AF37",
+        ["--primary-gold" as any]: theme.primaryColor || "#C5A059",
       }}
     >
       {/* 1. Envelope Cover Modal */}
@@ -85,32 +85,32 @@ export function InvitationView({
       <MusicPlayer shouldPlay={isEnvelopeOpen} />
 
       {/* Ambient Lighting Glows */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-amber-500/10 blur-[150px] pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-[#C5A059]/15 blur-[150px] pointer-events-none" />
 
       {/* Main Container */}
       <div className="max-w-2xl mx-auto px-4 py-16 sm:py-24 space-y-20 relative z-10">
         {/* HERO SECTION */}
         <section className="text-center space-y-6 pt-4">
-          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 mx-auto flex items-center justify-center text-slate-950 shadow-lg shadow-amber-500/20">
-            <Heart className="w-6 h-6 fill-slate-950" />
+          <div className="w-12 h-12 rounded-full bg-linear-to-br from-[#C5A059] to-[#8C6A28] mx-auto flex items-center justify-center text-white shadow-lg shadow-[#C5A059]/20">
+            <Heart className="w-6 h-6 fill-white" />
           </div>
 
           <div className="space-y-2">
-            <p className="text-xs uppercase tracking-[0.3em] text-amber-400 font-semibold font-serif">
+            <p className="text-xs uppercase tracking-[0.3em] text-[#8C6A28] font-semibold font-serif">
               The Wedding of
             </p>
-            <h1 className="text-4xl sm:text-5xl font-serif font-bold text-white leading-tight">
+            <h1 className="text-4xl sm:text-5xl font-serif font-bold text-[#2A211B] leading-tight">
               {couple ? (
                 <>
                   <span>{couple.groomNickname || couple.groomName}</span>
-                  <span className="text-amber-400 font-sans mx-3">&</span>
+                  <span className="text-[#8C6A28] font-sans mx-3">&</span>
                   <span>{couple.brideNickname || couple.brideName}</span>
                 </>
               ) : (
                 person?.name || invitation.eventTitle
               )}
             </h1>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-stone-500">
               {formatDateIndonesia(invitation.eventDate)}
             </p>
           </div>
@@ -123,8 +123,8 @@ export function InvitationView({
 
         {/* QUOTE SECTION */}
         {content.quote && (
-          <section className="text-center max-w-lg mx-auto p-6 rounded-3xl bg-slate-900/40 border border-slate-800 space-y-2">
-            <p className="text-xs sm:text-sm text-slate-300 italic font-serif leading-relaxed">
+          <section className="text-center max-w-lg mx-auto p-6 rounded-3xl bg-[#F5EFEB]/50 border border-[#C5A059]/20 space-y-2">
+            <p className="text-xs sm:text-sm text-stone-600 italic font-serif leading-relaxed">
               &quot;{content.quote}&quot;
             </p>
           </section>
@@ -134,43 +134,43 @@ export function InvitationView({
         {couple && (
           <section className="space-y-8 text-center">
             <div className="space-y-2">
-              <p className="text-xs uppercase tracking-[0.25em] text-amber-400 font-semibold">
+              <p className="text-xs uppercase tracking-[0.25em] text-[#8C6A28] font-semibold">
                 Mempelai yang Berbahagia
               </p>
-              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-white">
+              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#2A211B]">
                 Kedua Mempelai
               </h2>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {/* Groom */}
-              <div className="p-6 rounded-3xl bg-[#14171F]/80 border border-slate-800 space-y-3">
-                <div className="w-20 h-20 rounded-full bg-slate-800 border border-amber-500/40 mx-auto flex items-center justify-center text-amber-400">
+              <div className="p-6 rounded-3xl bg-white border border-[#C5A059]/20 shadow-sm space-y-3">
+                <div className="w-20 h-20 rounded-full bg-[#F5EFEB] border border-[#C5A059]/40 mx-auto flex items-center justify-center text-[#8C6A28]">
                   <Sparkles className="w-8 h-8" />
                 </div>
-                <h3 className="text-lg font-bold font-serif text-white">
+                <h3 className="text-lg font-bold font-serif text-[#2A211B]">
                   {couple.groomName}
                 </h3>
                 {couple.groomParents && (
-                  <p className="text-xs text-slate-400">
+                  <p className="text-xs text-stone-500">
                     Putra tercinta dari: <br />
-                    <strong className="text-slate-200">{couple.groomParents}</strong>
+                    <strong className="text-stone-600">{couple.groomParents}</strong>
                   </p>
                 )}
               </div>
 
               {/* Bride */}
-              <div className="p-6 rounded-3xl bg-[#14171F]/80 border border-slate-800 space-y-3">
-                <div className="w-20 h-20 rounded-full bg-slate-800 border border-amber-500/40 mx-auto flex items-center justify-center text-amber-400">
+              <div className="p-6 rounded-3xl bg-white border border-[#C5A059]/20 shadow-sm space-y-3">
+                <div className="w-20 h-20 rounded-full bg-[#F5EFEB] border border-[#C5A059]/40 mx-auto flex items-center justify-center text-[#8C6A28]">
                   <Sparkles className="w-8 h-8" />
                 </div>
-                <h3 className="text-lg font-bold font-serif text-white">
+                <h3 className="text-lg font-bold font-serif text-[#2A211B]">
                   {couple.brideName}
                 </h3>
                 {couple.brideParents && (
-                  <p className="text-xs text-slate-400">
+                  <p className="text-xs text-stone-500">
                     Putri tercinta dari: <br />
-                    <strong className="text-slate-200">{couple.brideParents}</strong>
+                    <strong className="text-stone-600">{couple.brideParents}</strong>
                   </p>
                 )}
               </div>
@@ -183,11 +183,11 @@ export function InvitationView({
 
         {/* LIVE STREAMING BUTTON IF ANY */}
         {content.liveStreamingUrl && (
-          <div className="text-center p-6 rounded-3xl glass-panel-gold space-y-3">
-            <h3 className="text-base font-serif font-bold text-white">
+          <div className="text-center p-6 rounded-3xl bg-white border border-[#C5A059]/30 shadow-md space-y-3">
+            <h3 className="text-base font-serif font-bold text-[#2A211B]">
               Siaran Langsung Acara (Live Streaming)
             </h3>
-            <p className="text-xs text-slate-300">
+            <p className="text-xs text-stone-600">
               Bagi keluarga & kerabat yang berhalangan hadir langsung, saksikan momen sakral kami melalui tayangan online:
             </p>
             <a
@@ -230,8 +230,8 @@ export function InvitationView({
         />
 
         {/* FOOTER & WATERMARK */}
-        <footer className="text-center pt-12 pb-6 border-t border-slate-800/60 space-y-3">
-          <p className="text-xs font-serif text-slate-400">
+        <footer className="text-center pt-12 pb-6 border-t border-[#F5EFEB] space-y-3">
+          <p className="text-xs font-serif text-stone-500">
             Ungkapan terima kasih yang tulus dari keluarga besar kami.
           </p>
           <div className="pt-2">
@@ -239,10 +239,10 @@ export function InvitationView({
               href="https://kreyasi.id"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-[11px] text-slate-500 hover:text-amber-400 transition-colors"
+              className="inline-flex items-center gap-1.5 text-[11px] text-stone-400 hover:text-[#8C6A28] transition-colors"
             >
               <span>Powered by</span>
-              <strong className="text-amber-400">Kreyasi.id</strong>
+              <strong className="text-[#8C6A28]">Kreyasi.id</strong>
             </a>
           </div>
         </footer>
