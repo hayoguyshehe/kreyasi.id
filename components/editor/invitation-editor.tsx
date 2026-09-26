@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import Script from "next/script";
 import { useRouter } from "next/navigation";
 import {
   Save,
@@ -58,8 +59,12 @@ interface InvitationData {
 
 export function InvitationEditor({
   initialData,
+  midtransClientKey,
+  isProduction = false,
 }: {
   initialData: InvitationData;
+  midtransClientKey?: string;
+  isProduction?: boolean;
 }) {
   const router = useRouter();
   const isWedding = initialData.eventCategory === "PERNIKAHAN";
@@ -462,6 +467,56 @@ export function InvitationEditor({
       const pubData = await pubRes.json();
 
       if (!pubRes.ok) {
+        if (pubRes.status === 402 && pubData.requiresPayment) {
+          // Trigger checkout
+          const checkoutRes = await fetch("/api/checkout", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ invitationId: initialData.id }),
+          });
+          const checkoutData = await checkoutRes.json();
+          if (!checkoutData.success) {
+            setFeedback({
+              type: "error",
+              text: checkoutData.error || "Gagal menginisiasi pembayaran.",
+            });
+            setIsPublishing(false);
+            return;
+          }
+          const { token, redirectUrl } = checkoutData.data;
+          
+          // @ts-ignore
+          if (window.snap && token) {
+            // @ts-ignore
+            window.snap.pay(token, {
+              onSuccess: () => {
+                router.refresh();
+                // Try publish again after payment success
+                handlePublish();
+              },
+              onPending: () => {
+                router.refresh();
+                // Try publish again just in case
+                handlePublish();
+              },
+              onError: () => {
+                setFeedback({
+                  type: "error",
+                  text: "Pembayaran gagal. Silakan coba kembali.",
+                });
+                setIsPublishing(false);
+              },
+              onClose: () => {
+                setIsPublishing(false);
+              },
+            });
+            return;
+          } else if (redirectUrl) {
+            window.location.href = redirectUrl;
+            return;
+          }
+        }
+
         setFeedback({
           type: "error",
           text: pubData.error || "Gagal mempublikasikan undangan.",
@@ -487,8 +542,20 @@ export function InvitationEditor({
     }
   };
 
+  const snapSrc = isProduction
+    ? "https://app.midtrans.com/snap/snap.js"
+    : "https://app.sandbox.midtrans.com/snap/snap.js";
+
   return (
-    <div className="space-y-6">
+    <>
+      {midtransClientKey && (
+        <Script
+          src={snapSrc}
+          data-client-key={midtransClientKey}
+          strategy="lazyOnload"
+        />
+      )}
+      <div className="space-y-6">
       {/* Top Action Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#EAE3D8]">
         <div className="flex items-center gap-3">
@@ -1551,5 +1618,6 @@ export function InvitationEditor({
         </div>
       </div>
     </div>
+    </>
   );
 }

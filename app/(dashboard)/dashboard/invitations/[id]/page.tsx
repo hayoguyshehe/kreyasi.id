@@ -40,6 +40,8 @@ export default async function InvitationDetailPage(props: {
         ...invitation,
         eventDate: invitation.eventDate.toISOString(),
       }}
+      midtransClientKey={process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY}
+      isProduction={process.env.NEXT_PUBLIC_MIDTRANS_IS_PRODUCTION === "true"}
     />
   );
 }
