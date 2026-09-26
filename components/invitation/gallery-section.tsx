@@ -19,10 +19,10 @@ export function GallerySection({ media }: { media: MediaItem[] }) {
   return (
     <section className="space-y-6">
       <div className="text-center space-y-2">
-        <p className="text-xs uppercase tracking-[0.25em] text-amber-400 font-semibold">
+        <p className="text-xs uppercase tracking-[0.25em] text-[#8C6A28] font-semibold">
           Potret Kenangan
         </p>
-        <h2 className="text-2xl sm:text-3xl font-serif font-bold text-white">
+        <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#2A211B]">
           Galeri Foto
         </h2>
       </div>
@@ -32,7 +32,7 @@ export function GallerySection({ media }: { media: MediaItem[] }) {
           <div
             key={photo.id || idx}
             onClick={() => setSelectedPhoto(photo.url)}
-            className="aspect-square rounded-2xl overflow-hidden bg-slate-900 border border-slate-800 cursor-pointer group relative shadow-md"
+            className="aspect-square rounded-2xl overflow-hidden bg-[#F5EFEB] border border-[#C5A059]/20 cursor-pointer group relative shadow-md shadow-[#C5A059]/5"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
@@ -41,8 +41,8 @@ export function GallerySection({ media }: { media: MediaItem[] }) {
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
               loading="lazy"
             />
-            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white">
-              <Camera className="w-6 h-6 text-amber-400" />
+            <div className="absolute inset-0 bg-white/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-[#2A211B]">
+              <Camera className="w-6 h-6 text-[#8C6A28]" />
             </div>
           </div>
         ))}
@@ -51,12 +51,12 @@ export function GallerySection({ media }: { media: MediaItem[] }) {
       {/* Lightbox Modal */}
       {selectedPhoto && (
         <div
-          className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4 backdrop-blur-md"
+          className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4 backdrop-blur-md"
           onClick={() => setSelectedPhoto(null)}
         >
           <button
             onClick={() => setSelectedPhoto(null)}
-            className="absolute top-6 right-6 p-2 rounded-full bg-slate-800/80 text-white hover:bg-slate-700 transition-colors"
+            className="absolute top-6 right-6 p-2 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
           >
             <X className="w-6 h-6" />
           </button>
