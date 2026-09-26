@@ -56,12 +56,12 @@ export function CountdownTimer({ targetDate }: CountdownProps) {
       {units.map((unit) => (
         <div
           key={unit.label}
-          className="p-3 sm:p-4 rounded-2xl bg-[#14171F]/80 border border-slate-800 text-center shadow-lg"
+          className="p-3 sm:p-4 rounded-2xl bg-white border border-[#C5A059]/20 text-center shadow-md shadow-[#C5A059]/5"
         >
-          <span className="block text-2xl sm:text-3xl font-bold font-mono text-amber-400">
+          <span className="block text-2xl sm:text-3xl font-bold font-mono text-[#8C6A28]">
             {String(unit.val).padStart(2, "0")}
           </span>
-          <span className="text-[10px] sm:text-xs text-slate-400 uppercase tracking-wider block mt-1">
+          <span className="text-[10px] sm:text-xs text-stone-500 uppercase tracking-wider block mt-1">
             {unit.label}
           </span>
         </div>

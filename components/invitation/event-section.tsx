@@ -19,10 +19,10 @@ export function EventSection({ events }: { events: EventItem[] }) {
   return (
     <section className="space-y-6">
       <div className="text-center space-y-2">
-        <p className="text-xs uppercase tracking-[0.25em] text-amber-400 font-semibold">
+        <p className="text-xs uppercase tracking-[0.25em] text-[#8C6A28] font-semibold">
           Rangkaian Waktu & Lokasi
         </p>
-        <h2 className="text-2xl sm:text-3xl font-serif font-bold text-white">
+        <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#2A211B]">
           Agenda Acara
         </h2>
       </div>
@@ -39,32 +39,32 @@ export function EventSection({ events }: { events: EventItem[] }) {
           return (
             <div
               key={idx}
-              className="p-6 sm:p-8 rounded-3xl bg-[#14171F]/90 border border-slate-800 text-center space-y-5 shadow-xl hover:border-amber-500/40 transition-colors"
+              className="p-6 sm:p-8 rounded-3xl bg-white border border-[#C5A059]/20 text-center space-y-5 shadow-md shadow-[#C5A059]/5 hover:border-[#C5A059]/50 transition-colors"
             >
-              <div className="inline-block px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-xs font-bold text-amber-300 font-serif">
+              <div className="inline-block px-4 py-1.5 rounded-full bg-[#F5EFEB] border border-[#C5A059]/30 text-xs font-bold text-[#8C6A28] font-serif">
                 {evt.name}
               </div>
 
-              <div className="space-y-2 text-xs text-slate-300">
+              <div className="space-y-2 text-xs text-stone-600">
                 <div className="flex items-center justify-center gap-2">
-                  <Calendar className="w-4 h-4 text-amber-400" />
-                  <span className="font-semibold text-white">
+                  <Calendar className="w-4 h-4 text-[#C5A059]" />
+                  <span className="font-semibold text-[#2A211B]">
                     {formatDateIndonesia(evt.date)}
                   </span>
                 </div>
                 <div className="flex items-center justify-center gap-2">
-                  <Clock className="w-4 h-4 text-amber-400" />
+                  <Clock className="w-4 h-4 text-[#C5A059]" />
                   <span>
                     Pukul {evt.startTime} {evt.endTime ? `- ${evt.endTime}` : "WIB"}
                   </span>
                 </div>
               </div>
 
-              <div className="space-y-1 pt-2 border-t border-slate-800/80">
-                <p className="text-sm font-bold text-white font-serif">
+              <div className="space-y-1 pt-2 border-t border-[#F5EFEB]">
+                <p className="text-sm font-bold text-[#2A211B] font-serif">
                   {evt.venueName}
                 </p>
-                <p className="text-xs text-slate-400 max-w-xs mx-auto leading-relaxed">
+                <p className="text-xs text-stone-500 max-w-xs mx-auto leading-relaxed">
                   {evt.venueAddress}
                 </p>
               </div>
@@ -79,7 +79,7 @@ export function EventSection({ events }: { events: EventItem[] }) {
                   <Button
                     variant="outline"
                     size="sm"
-                    className="w-full gap-2 text-xs hover:border-amber-500 hover:text-amber-300"
+                    className="w-full gap-2 text-xs text-stone-600 border-stone-200 hover:border-[#C5A059] hover:text-[#8C6A28] hover:bg-[#F5EFEB]/50"
                   >
                     <Navigation className="w-3.5 h-3.5" />
                     <span>Buka Petunjuk Arah Google Maps</span>
