@@ -198,14 +198,14 @@ export function TemplateGallery({
         >
           <div className="space-y-6">
             {/* Viewport switch: Mobile or Desktop */}
-            <div className="flex items-center justify-center gap-2 border-b border-slate-800 pb-4">
+            <div className="flex items-center justify-center gap-2 border-b border-[#EAE3D8] pb-4">
               <button
                 type="button"
                 onClick={() => setPreviewDevice("mobile")}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-colors ${
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-colors cursor-pointer ${
                   previewDevice === "mobile"
-                    ? "bg-amber-500 text-slate-950 font-semibold"
-                    : "text-slate-400 hover:text-white"
+                    ? "bg-[#4C6957] text-white font-semibold shadow-xs"
+                    : "text-[#6B5E55] hover:text-[#2A211B] bg-white border border-[#EAE3D8]"
                 }`}
               >
                 <Smartphone className="w-4 h-4" /> Tampilan Mobile
@@ -213,10 +213,10 @@ export function TemplateGallery({
               <button
                 type="button"
                 onClick={() => setPreviewDevice("desktop")}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-colors ${
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5 transition-colors cursor-pointer ${
                   previewDevice === "desktop"
-                    ? "bg-amber-500 text-slate-950 font-semibold"
-                    : "text-slate-400 hover:text-white"
+                    ? "bg-[#4C6957] text-white font-semibold shadow-xs"
+                    : "text-[#6B5E55] hover:text-[#2A211B] bg-white border border-[#EAE3D8]"
                 }`}
               >
                 <Monitor className="w-4 h-4" /> Tampilan Layar Penuh
@@ -224,32 +224,32 @@ export function TemplateGallery({
             </div>
 
             {/* Mockup Frame */}
-            <div className="flex justify-center bg-[#090B0E] p-4 sm:p-8 rounded-2xl border border-slate-800">
+            <div className="flex justify-center bg-[#F5EFEB]/50 p-4 sm:p-8 rounded-2xl border border-[#EAE3D8]">
               <div
-                className={`transition-all duration-300 rounded-2xl overflow-hidden border border-slate-700 bg-[#12151D] shadow-2xl p-6 text-center space-y-5 ${
+                className={`transition-all duration-300 rounded-2xl overflow-hidden border border-[#C5A059]/30 bg-white shadow-xl shadow-[#C5A059]/5 p-6 text-center space-y-5 ${
                   previewDevice === "mobile" ? "w-85" : "w-full max-w-lg"
                 }`}
               >
                 <div className="space-y-1">
-                  <p className="text-[10px] uppercase tracking-[0.25em] text-amber-400 font-semibold">
+                  <p className="text-[10px] uppercase tracking-[0.25em] text-[#8C6A28] font-semibold font-serif">
                     The Wedding of
                   </p>
-                  <h3 className="text-2xl font-serif text-white font-bold">
+                  <h3 className="text-2xl font-serif text-[#2A211B] font-bold">
                     Dimas & Amanda
                   </h3>
-                  <p className="text-xs text-slate-400">
+                  <p className="text-xs text-[#7A6E65]">
                     Sabtu, 28 November 2026 • Grand Ballroom
                   </p>
                 </div>
 
-                <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 text-xs text-slate-300 space-y-2">
-                  <p className="italic font-serif text-amber-200">
+                <div className="p-4 rounded-xl bg-[#FAF7F2] border border-[#EAE3D8] text-xs text-[#52463E] space-y-2">
+                  <p className="italic font-serif text-[#2A211B]">
                     &quot;Dan di antara tanda-tanda kebesaran-Nya diciptakan-Nya untukmu pasangan hidup dari jenismu sendiri...&quot;
                   </p>
                 </div>
 
                 <div className="space-y-2">
-                  <div className="p-3 rounded-lg bg-amber-500/10 border border-amber-500/30 text-xs text-amber-300 font-medium">
+                  <div className="p-3 rounded-lg bg-[#EEF3EF] border border-[#C6D5C7] text-xs text-[#2C4A37] font-medium">
                     ✨ Template ini mendukung: Countdown, Audio Otomatis, Galeri Foto, Google Maps & QRIS
                   </div>
                 </div>
@@ -259,7 +259,7 @@ export function TemplateGallery({
                     href={`/register?template=${previewTemplate.slug}`}
                     onClick={() => setPreviewTemplate(null)}
                   >
-                    <Button variant="gold" className="w-full gap-2 justify-center">
+                    <Button variant="gold" className="w-full gap-2 justify-center shadow-md">
                       <span>Pilih Template Ini Sekarang</span>
                       <ArrowRight className="w-4 h-4" />
                     </Button>

@@ -29,6 +29,22 @@ export function InvitationView({
   const couple = content.couple;
   const person = content.person;
   const theme = content.theme || { primaryColor: "#C5A059", fontFamily: "Plus Jakarta Sans" };
+  const templateTheme = invitation.template?.themeConfig || {};
+
+  // Section order from template config, or fallback to default
+  const sectionOrder: string[] = templateTheme.sections || [
+    "cover",
+    "quote",
+    "couple",
+    "countdown",
+    "events",
+    "love-story",
+    "gallery",
+    "gift",
+    "rsvp",
+    "guestbook",
+    "closing",
+  ];
 
   // Combine media from DB with galleryPhotos in content
   const dbMedia = (invitation.media || []).map((m: any) => ({
@@ -64,75 +80,31 @@ export function InvitationView({
     fetch(`/api/invitations/${invitation.slug}/view`, { method: "POST" }).catch(() => {});
   }, [invitation.slug]);
 
-  return (
-    <div
-      className="min-h-screen bg-[#FAF7F2] text-[#2A211B] relative selection:bg-[#C5A059] selection:text-white font-sans"
-      style={{
-        ["--primary-gold" as any]: theme.primaryColor || "#C5A059",
-      }}
-    >
-      {/* 1. Envelope Cover Modal */}
-      {!isEnvelopeOpen && (
-        <EnvelopeCover
-          coverTitle={invitation.eventTitle}
-          eventDate={invitation.eventDate}
-          guestName={guestName}
-          onOpen={() => setIsEnvelopeOpen(true)}
-        />
-      )}
+  // Helper: get couple display names
+  const groomDisplayName = couple?.groomNickname || couple?.groomName || "";
+  const brideDisplayName = couple?.brideNickname || couple?.brideName || "";
 
-      {/* Floating Background Music Player */}
-      <MusicPlayer shouldPlay={isEnvelopeOpen} />
+  // Section renderers
+  const renderSection = (sectionId: string) => {
+    switch (sectionId) {
+      case "cover":
+        // Cover is rendered as the envelope overlay, not inside the main flow
+        return null;
 
-      {/* Ambient Lighting Glows */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-[#C5A059]/15 blur-[150px] pointer-events-none" />
-
-      {/* Main Container */}
-      <div className="max-w-2xl mx-auto px-4 py-16 sm:py-24 space-y-20 relative z-10">
-        {/* HERO SECTION */}
-        <section className="text-center space-y-6 pt-4">
-          <div className="w-12 h-12 rounded-full bg-linear-to-br from-[#C5A059] to-[#8C6A28] mx-auto flex items-center justify-center text-white shadow-lg shadow-[#C5A059]/20">
-            <Heart className="w-6 h-6 fill-white" />
-          </div>
-
-          <div className="space-y-2">
-            <p className="text-xs uppercase tracking-[0.3em] text-[#8C6A28] font-semibold font-serif">
-              The Wedding of
-            </p>
-            <h1 className="text-4xl sm:text-5xl font-serif font-bold text-[#2A211B] leading-tight">
-              {couple ? (
-                <>
-                  <span>{couple.groomNickname || couple.groomName}</span>
-                  <span className="text-[#8C6A28] font-sans mx-3">&</span>
-                  <span>{couple.brideNickname || couple.brideName}</span>
-                </>
-              ) : (
-                person?.name || invitation.eventTitle
-              )}
-            </h1>
-            <p className="text-xs text-stone-500">
-              {formatDateIndonesia(invitation.eventDate)}
-            </p>
-          </div>
-
-          {/* Countdown Component */}
-          <div className="pt-4">
-            <CountdownTimer targetDate={invitation.eventDate} />
-          </div>
-        </section>
-
-        {/* QUOTE SECTION */}
-        {content.quote && (
-          <section className="text-center max-w-lg mx-auto p-6 rounded-3xl bg-[#F5EFEB]/50 border border-[#C5A059]/20 space-y-2">
+      case "quote":
+        if (!content.quote) return null;
+        return (
+          <section key="quote" className="text-center max-w-lg mx-auto p-6 rounded-3xl bg-[#F5EFEB]/50 border border-[#C5A059]/20 space-y-2">
             <p className="text-xs sm:text-sm text-stone-600 italic font-serif leading-relaxed">
               &quot;{content.quote}&quot;
             </p>
           </section>
-        )}
+        );
 
-        {/* BRIDE & GROOM PROFILES */}
-        {couple && (
-          <section className="space-y-8 text-center">
+      case "couple":
+        if (!couple) return null;
+        return (
+          <section key="couple" className="space-y-8 text-center">
             <div className="space-y-2">
               <p className="text-xs uppercase tracking-[0.25em] text-[#8C6A28] font-semibold">
                 Mempelai yang Berbahagia
@@ -176,19 +148,35 @@ export function InvitationView({
               </div>
             </div>
           </section>
-        )}
+        );
 
-        {/* EVENT AGENDA */}
-        <EventSection events={content.events || []} />
+      case "countdown":
+        return (
+          <section key="countdown" className="text-center space-y-4">
+            <div className="space-y-2">
+              <p className="text-xs uppercase tracking-[0.25em] text-[#8C6A28] font-semibold">
+                Menghitung Hari
+              </p>
+              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#2A211B]">
+                Hitung Mundur
+              </h2>
+            </div>
+            <CountdownTimer targetDate={invitation.eventDate} />
+          </section>
+        );
 
-        {/* LIVE STREAMING BUTTON IF ANY */}
-        {content.liveStreamingUrl && (
-          <div className="text-center p-6 rounded-3xl bg-white border border-[#C5A059]/30 shadow-md space-y-3">
+      case "events":
+        return <EventSection key="events" events={content.events || []} />;
+
+      case "live-streaming":
+        if (!content.liveStreamingUrl) return null;
+        return (
+          <div key="live-streaming" className="text-center p-6 rounded-3xl bg-white border border-[#C5A059]/30 shadow-md space-y-3">
             <h3 className="text-base font-serif font-bold text-[#2A211B]">
               Siaran Langsung Acara (Live Streaming)
             </h3>
             <p className="text-xs text-stone-600">
-              Bagi keluarga & kerabat yang berhalangan hadir langsung, saksikan momen sakral kami melalui tayangan online:
+              Bagi keluarga &amp; kerabat yang berhalangan hadir langsung, saksikan momen sakral kami melalui tayangan online:
             </p>
             <a
               href={content.liveStreamingUrl}
@@ -200,52 +188,155 @@ export function InvitationView({
               <span>Tonton Siaran Langsung</span>
             </a>
           </div>
-        )}
+        );
 
-        {/* LOVE STORY */}
-        <LoveStorySection story={content.loveStory} />
+      case "love-story":
+        return <LoveStorySection key="love-story" story={content.loveStory} />;
 
-        {/* GALLERY */}
-        <GallerySection media={galleryMedia} />
+      case "gallery":
+        return <GallerySection key="gallery" media={galleryMedia} />;
 
-        {/* DIGITAL GIFT */}
-        <DigitalGiftSection
-          accounts={giftAccounts}
-          description={content.weddingGift?.description}
-          physicalGiftAddress={content.weddingGift?.physicalGiftAddress}
-        />
+      case "gift":
+        return (
+          <DigitalGiftSection
+            key="gift"
+            accounts={giftAccounts}
+            description={content.weddingGift?.description}
+            physicalGiftAddress={content.weddingGift?.physicalGiftAddress}
+          />
+        );
 
-        {/* RSVP FORM */}
-        <RsvpForm
-          slug={invitation.slug}
-          guestPersonalSlug={guestPersonalSlug}
+      case "rsvp":
+        return (
+          <RsvpForm
+            key="rsvp"
+            slug={invitation.slug}
+            guestPersonalSlug={guestPersonalSlug}
+            guestName={guestName}
+          />
+        );
+
+      case "guestbook":
+        return (
+          <GuestbookSection
+            key="guestbook"
+            slug={invitation.slug}
+            initialMessages={invitation.guestbook || []}
+            defaultSenderName={guestName}
+          />
+        );
+
+      case "closing":
+        return (
+          <section key="closing" className="text-center space-y-8 pt-8">
+            {/* Closing personal message */}
+            <div className="p-8 rounded-3xl bg-white border border-[#C5A059]/20 shadow-md space-y-4 max-w-md mx-auto">
+              <div className="w-12 h-12 rounded-full bg-linear-to-br from-[#C5A059] to-[#8C6A28] mx-auto flex items-center justify-center text-white shadow-lg shadow-[#C5A059]/20">
+                <Heart className="w-6 h-6 fill-white" />
+              </div>
+              <p className="text-xs text-stone-500 leading-relaxed">
+                Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila
+                Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restu
+                kepada kami.
+              </p>
+              <div className="pt-2 space-y-1">
+                <p className="text-[11px] uppercase tracking-[0.2em] text-[#8C6A28] font-semibold">
+                  Kami yang berbahagia
+                </p>
+                <h3 className="text-xl font-serif font-bold text-[#2A211B]">
+                  {couple
+                    ? `${groomDisplayName} & ${brideDisplayName}`
+                    : person?.name || invitation.eventTitle}
+                </h3>
+              </div>
+            </div>
+
+            {/* Footer Branding */}
+            <footer className="pt-4 pb-6 border-t border-[#F5EFEB] space-y-3">
+              <p className="text-xs font-serif text-stone-500">
+                Ungkapan terima kasih yang tulus dari keluarga besar kami.
+              </p>
+              <div className="pt-2">
+                <a
+                  href="https://kreyasi.id"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-[11px] text-stone-400 hover:text-[#8C6A28] transition-colors"
+                >
+                  <span>Powered by</span>
+                  <strong className="text-[#8C6A28]">Kreyasi.id</strong>
+                </a>
+              </div>
+            </footer>
+          </section>
+        );
+
+      // Legacy fallback for old templates — "footer" maps to closing
+      case "footer":
+        return renderSection("closing");
+
+      case "video":
+        return renderSection("live-streaming");
+
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div
+      className="min-h-screen bg-[#FAF7F2] text-[#2A211B] relative selection:bg-[#C5A059] selection:text-white font-sans"
+      style={{
+        ["--primary-gold" as any]: theme.primaryColor || "#C5A059",
+      }}
+    >
+      {/* 1. Envelope Cover Modal */}
+      {!isEnvelopeOpen && (
+        <EnvelopeCover
+          coverTitle={invitation.eventTitle}
+          eventDate={invitation.eventDate}
           guestName={guestName}
+          onOpen={() => setIsEnvelopeOpen(true)}
         />
+      )}
 
-        {/* GUESTBOOK WISHES FEED */}
-        <GuestbookSection
-          slug={invitation.slug}
-          initialMessages={invitation.guestbook || []}
-          defaultSenderName={guestName}
-        />
+      {/* Floating Background Music Player */}
+      <MusicPlayer shouldPlay={isEnvelopeOpen} />
 
-        {/* FOOTER & WATERMARK */}
-        <footer className="text-center pt-12 pb-6 border-t border-[#F5EFEB] space-y-3">
-          <p className="text-xs font-serif text-stone-500">
-            Ungkapan terima kasih yang tulus dari keluarga besar kami.
-          </p>
-          <div className="pt-2">
-            <a
-              href="https://kreyasi.id"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-[11px] text-stone-400 hover:text-[#8C6A28] transition-colors"
-            >
-              <span>Powered by</span>
-              <strong className="text-[#8C6A28]">Kreyasi.id</strong>
-            </a>
+      {/* Ambient Lighting Glows */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-[#C5A059]/15 blur-[150px] pointer-events-none" />
+
+      {/* Main Container */}
+      <div className="max-w-2xl mx-auto px-4 py-16 sm:py-24 space-y-20 relative z-10">
+        {/* HERO SECTION — always rendered first */}
+        <section className="text-center space-y-6 pt-4">
+          <div className="w-12 h-12 rounded-full bg-linear-to-br from-[#C5A059] to-[#8C6A28] mx-auto flex items-center justify-center text-white shadow-lg shadow-[#C5A059]/20">
+            <Heart className="w-6 h-6 fill-white" />
           </div>
-        </footer>
+
+          <div className="space-y-2">
+            <p className="text-xs uppercase tracking-[0.3em] text-[#8C6A28] font-semibold font-serif">
+              The Wedding of
+            </p>
+            <h1 className="text-4xl sm:text-5xl font-serif font-bold text-[#2A211B] leading-tight">
+              {couple ? (
+                <>
+                  <span>{groomDisplayName}</span>
+                  <span className="text-[#8C6A28] font-sans mx-3">&</span>
+                  <span>{brideDisplayName}</span>
+                </>
+              ) : (
+                person?.name || invitation.eventTitle
+              )}
+            </h1>
+            <p className="text-xs text-stone-500">
+              {formatDateIndonesia(invitation.eventDate)}
+            </p>
+          </div>
+        </section>
+
+        {/* Render sections in template-defined order */}
+        {sectionOrder.map((sectionId) => renderSection(sectionId))}
       </div>
     </div>
   );
