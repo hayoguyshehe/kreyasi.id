@@ -26,11 +26,13 @@ export default async function NewInvitationPage() {
         </p>
       </div>
 
-      <WizardCreateInvitation
-        categories={categories}
-        packages={packages}
-        templates={templates}
-      />
+      <React.Suspense fallback={<div className="p-8 text-center text-sm text-[#7A6D63]">Memuat wizard pembuatan undangan...</div>}>
+        <WizardCreateInvitation
+          categories={categories}
+          packages={packages}
+          templates={templates}
+        />
+      </React.Suspense>
     </div>
   );
 }

@@ -21,7 +21,11 @@ function LoginForm() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
   const message = searchParams.get("message");
-
+  
+  // Extract package from package param or callbackUrl
+  const packageParam = searchParams.get("package");
+  const extractedPackage = packageParam || (callbackUrl.includes("package=") ? new URLSearchParams(callbackUrl.split("?")[1]).get("package") : null);
+  
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -159,7 +163,7 @@ function LoginForm() {
         <p className="text-xs text-[#6B5E55]">
           Belum memiliki akun Kreyasi?{" "}
           <Link
-            href="/register"
+            href={extractedPackage ? `/register?package=${extractedPackage}` : "/register"}
             className="text-[#4C6957] font-semibold hover:underline hover:text-[#385041] ml-1"
           >
             Daftar Sekarang

@@ -5,10 +5,12 @@ import { formatRupiah } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Check, X, Sparkles, HelpCircle, ArrowRight } from "lucide-react";
+import { auth } from "@/lib/auth";
 
 export const revalidate = 3600; // Cache 1 jam
 
 export default async function PricingPage() {
+  const session = await auth();
   const packages = await prisma.package.findMany({
     where: { isActive: true },
     orderBy: { sortOrder: "asc" },
@@ -119,7 +121,7 @@ export default async function PricingPage() {
               </div>
 
               <div className="pt-6 mt-4 border-t border-[#EAE3D8]">
-                <Link href={`/register?package=${pkg.slug}`}>
+                <Link href={session?.user ? `/dashboard/invitations/new?package=${pkg.slug}` : `/register?package=${pkg.slug}`}>
                   <Button
                     variant={isPopular ? "gold" : "outline"}
                     className="w-full text-xs justify-center"

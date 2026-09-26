@@ -1,16 +1,18 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, Suspense } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { Mail, Lock, User, AlertCircle } from "lucide-react";
 
-export default function RegisterPage() {
+function RegisterForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const packageSlug = searchParams.get("package");
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -65,9 +67,16 @@ export default function RegisterPage() {
       });
 
       if (loginRes?.ok) {
-        router.push("/dashboard");
+        if (packageSlug) {
+          router.push(`/dashboard/invitations/new?package=${packageSlug}`);
+        } else {
+          router.push("/dashboard");
+        }
       } else {
-        router.push("/login?message=Pendaftaran berhasil! Silakan masuk ke akun Anda.");
+        const loginUrl = packageSlug
+          ? `/login?callbackUrl=/dashboard/invitations/new?package=${packageSlug}&message=Pendaftaran berhasil! Silakan masuk ke akun Anda.`
+          : "/login?message=Pendaftaran berhasil! Silakan masuk ke akun Anda.";
+        router.push(loginUrl);
       }
     } catch {
       setError("Terjadi kesalahan jaringan. Silakan periksa koneksi Anda.");
@@ -77,7 +86,10 @@ export default function RegisterPage() {
 
   const handleGoogleSignIn = () => {
     setIsGoogleLoading(true);
-    signIn("google", { callbackUrl: "/dashboard" });
+    const callbackUrl = packageSlug
+      ? `/dashboard/invitations/new?package=${packageSlug}`
+      : "/dashboard";
+    signIn("google", { callbackUrl });
   };
 
   return (
@@ -191,7 +203,7 @@ export default function RegisterPage() {
         <p className="text-xs text-[#6B5E55]">
           Sudah punya akun Kreyasi?{" "}
           <Link
-            href="/login"
+            href={packageSlug ? `/login?callbackUrl=/dashboard/invitations/new?package=${packageSlug}` : "/login"}
             className="text-[#4C6957] font-semibold hover:underline hover:text-[#385041] ml-1"
           >
             Masuk di Sini
@@ -199,5 +211,13 @@ export default function RegisterPage() {
         </p>
       </CardFooter>
     </Card>
+  );
+}
+
+export default function RegisterPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <RegisterForm />
+    </Suspense>
   );
 }

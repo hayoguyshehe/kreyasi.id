@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import React, { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   Sparkles,
   ArrowRight,
@@ -58,15 +58,29 @@ export function WizardCreateInvitation({
   templates,
 }: WizardProps) {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const packageSlug = searchParams.get("package");
+
   const [step, setStep] = useState<number>(1);
 
   // Form State
+  const initialPkg = packages.find((p) => p.slug === packageSlug) || packages[0];
   const [selectedCategory, setSelectedCategory] = useState<string>(
     categories[0]?.id || ""
   );
   const [selectedPackage, setSelectedPackage] = useState<string>(
-    packages[0]?.id || ""
+    initialPkg?.id || ""
   );
+
+  useEffect(() => {
+    if (packageSlug) {
+      const match = packages.find((p) => p.slug === packageSlug);
+      if (match) {
+        setSelectedPackage(match.id);
+      }
+    }
+  }, [packageSlug, packages]);
+
   const [selectedTemplate, setSelectedTemplate] = useState<string>(
     templates[0]?.id || ""
   );
@@ -258,11 +272,18 @@ export function WizardCreateInvitation({
                       Aktif {pkg.activeDurationDays} hari • Max {pkg.maxGalleryPhotos} Foto
                     </span>
                   </div>
-                  {isSelected && (
-                    <Badge variant="sage" className="self-start text-[10px]">
-                      Terpilih
-                    </Badge>
-                  )}
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    {isSelected && (
+                      <Badge variant="sage" className="self-start text-[10px]">
+                        Terpilih
+                      </Badge>
+                    )}
+                    {pkg.slug === packageSlug && (
+                      <Badge variant="gold" className="self-start text-[10px]">
+                        Pilihan dari Pricing
+                      </Badge>
+                    )}
+                  </div>
                 </div>
               );
             })}
