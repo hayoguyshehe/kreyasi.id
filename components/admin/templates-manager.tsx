@@ -54,6 +54,18 @@ export function TemplatesManager({
   const [categoryId, setCategoryId] = useState(categories[0]?.id || "");
   const [minPackageTier, setMinPackageTier] = useState("0");
   const [previewImageUrl, setPreviewImageUrl] = useState("");
+  const [layout, setLayout] = useState<"luxury" | "classic" | "modern" | "minimal">("luxury");
+  const [primaryColor, setPrimaryColor] = useState("#C5A059");
+  const [fontDisplay, setFontDisplay] = useState("Cinzel");
+
+  const handleNameChange = (val: string) => {
+    setName(val);
+    const autoSlug = val
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "");
+    setSlug(autoSlug);
+  };
 
   const handleToggleActive = async (template: TemplateItem) => {
     if (!template.isActive && template.qaStatus !== "RESPONSIVE_OK") {
@@ -82,8 +94,8 @@ export function TemplatesManager({
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name || !slug || !categoryId || !previewImageUrl) {
-      alert("Harap lengkapi semua field form.");
+    if (!name || !slug || !categoryId) {
+      alert("Harap lengkapi nama, slug, dan kategori template.");
       return;
     }
 
@@ -97,8 +109,29 @@ export function TemplatesManager({
           slug,
           categoryId,
           minPackageTier: Number(minPackageTier),
-          previewImageUrl,
-          isActive: true,
+          previewImageUrl: previewImageUrl.trim() || "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80",
+          isActive: false, // Default false until QA RESPONSIVE_OK
+          themeConfig: {
+            primaryColor,
+            secondaryColor: "#8C6A28",
+            accentColor: "#4C6957",
+            fontFamily: "Plus Jakarta Sans",
+            fontDisplay,
+            layout,
+            sections: [
+              "cover",
+              "quote",
+              "couple",
+              "countdown",
+              "events",
+              "love-story",
+              "gallery",
+              "gift",
+              "rsvp",
+              "guestbook",
+              "closing",
+            ],
+          },
         }),
       });
 
@@ -324,16 +357,75 @@ export function TemplatesManager({
             </div>
           </div>
 
+          <div className="grid grid-cols-3 gap-3">
+            <div className="space-y-1.5">
+              <label className="text-[#2A211B] font-medium">Gaya Layout</label>
+              <select
+                value={layout}
+                onChange={(e) => setLayout(e.target.value as any)}
+                className="w-full px-3.5 py-2 bg-white border border-[#EAE3D8] rounded-xl text-[#2A211B] focus:outline-none focus:border-[#4C6957]"
+              >
+                <option value="luxury">Luxury (Mewah & Elegan)</option>
+                <option value="classic">Classic (Tradisional/Klasik)</option>
+                <option value="modern">Modern (Clean & Kontemporer)</option>
+                <option value="minimal">Minimal (Monokrom Simpel)</option>
+              </select>
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-[#2A211B] font-medium">Font Judul</label>
+              <select
+                value={fontDisplay}
+                onChange={(e) => setFontDisplay(e.target.value)}
+                className="w-full px-3.5 py-2 bg-white border border-[#EAE3D8] rounded-xl text-[#2A211B] focus:outline-none focus:border-[#4C6957]"
+              >
+                <option value="Cinzel">Cinzel (Roman Serif)</option>
+                <option value="Playfair Display">Playfair Display (Editorial)</option>
+                <option value="Cormorant Garamond">Cormorant Garamond (Elegance)</option>
+                <option value="Great Vibes">Great Vibes (Calligraphy Script)</option>
+                <option value="Plus Jakarta Sans">Plus Jakarta Sans (Modern Sans)</option>
+              </select>
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-[#2A211B] font-medium">Warna Utama</label>
+              <div className="flex items-center gap-2">
+                <input
+                  type="color"
+                  value={primaryColor}
+                  onChange={(e) => setPrimaryColor(e.target.value)}
+                  className="w-9 h-9 rounded-lg border border-[#EAE3D8] cursor-pointer p-0.5 bg-white"
+                />
+                <input
+                  type="text"
+                  value={primaryColor}
+                  onChange={(e) => setPrimaryColor(e.target.value)}
+                  className="w-full px-2 py-1.5 bg-white border border-[#EAE3D8] rounded-lg text-[#2A211B] font-mono text-[11px]"
+                />
+              </div>
+            </div>
+          </div>
+
           <div className="space-y-1.5">
-            <label className="text-[#2A211B] font-medium">URL Gambar Preview</label>
+            <label className="text-[#2A211B] font-medium">URL Gambar Sampul / Preview (Katalog)</label>
             <input
               type="text"
-              required
-              placeholder="/templates/nama-template.jpg"
+              placeholder="https://images.unsplash.com/... atau /templates/preview.jpg"
               value={previewImageUrl}
               onChange={(e) => setPreviewImageUrl(e.target.value)}
               className="w-full px-3.5 py-2 bg-white border border-[#EAE3D8] rounded-xl text-[#2A211B] placeholder-[#7A6D63] focus:outline-none focus:border-[#4C6957] focus:ring-1 focus:ring-[#4C6957]/20 font-mono text-[11px]"
             />
+            <p className="text-[10px] text-[#7A6D63]">
+              Kosongkan untuk memakai gambar placeholder elegan default.
+            </p>
+          </div>
+
+          {/* QA Gate Guidance Banner */}
+          <div className="p-3 bg-[#FAF7F2] border border-[#EAE3D8] rounded-xl text-[11px] text-[#6B5E55] space-y-1">
+            <span className="font-semibold text-[#2A211B] block">Alur Gerbang QA Responsif:</span>
+            <p>
+              Template baru akan otomatis berstatus <strong>PENDING_REVIEW</strong>. Setelah disimpan, Anda dapat langsung membuka halaman kelola template untuk mengunggah animasi Lottie dan menguji tampilan di 4 resolusi layar sebelum diaktifkan.
+            </p>
           </div>
 
           <div className="flex justify-end gap-2 pt-4 border-t border-[#EAE3D8]">

@@ -63,6 +63,77 @@ export function TemplateDetailAndAssets({ template: initialTemplate }: TemplateD
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const [statusMessage, setStatusMessage] = useState<{ text: string; isError?: boolean } | null>(null);
 
+  // Theme Configuration State
+  const [themeConfig, setThemeConfig] = useState(() => {
+    const raw = initialTemplate.themeConfig || {};
+    const defaultSections = [
+      { id: "cover", animation: { assetKey: "hero-animation", position: "top" } },
+      { id: "quote" },
+      { id: "couple" },
+      { id: "countdown" },
+      { id: "events" },
+      { id: "love-story" },
+      { id: "gallery" },
+      { id: "gift" },
+      { id: "rsvp" },
+      { id: "guestbook" },
+      { id: "closing" },
+    ];
+    return {
+      primaryColor: raw.primaryColor || "#C5A059",
+      secondaryColor: raw.secondaryColor || "#8C6A28",
+      accentColor: raw.accentColor || "#4C6957",
+      fontFamily: raw.fontFamily || "Plus Jakarta Sans",
+      fontDisplay: raw.fontDisplay || "Cinzel",
+      layout: raw.layout || "luxury",
+      sections: Array.isArray(raw.sections) && raw.sections.length > 0 ? raw.sections : defaultSections,
+    };
+  });
+  const [isThemeSaving, setIsThemeSaving] = useState(false);
+
+  const handleSaveTheme = async () => {
+    setIsThemeSaving(true);
+    setStatusMessage(null);
+    try {
+      const res = await fetch(`/api/admin/templates/${template.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ themeConfig }),
+      });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.error);
+      setTemplate((prev) => ({ ...prev, themeConfig: data.data.themeConfig }));
+      setStatusMessage({ text: "Konfigurasi tema dan asosiasi animasi section berhasil disimpan!" });
+    } catch (err: any) {
+      alert(err.message || "Gagal menyimpan konfigurasi tema");
+    } finally {
+      setIsThemeSaving(false);
+    }
+  };
+
+  const updateSectionAnimation = (sectionId: string, assetKey: string, position: "top" | "bottom" = "top") => {
+    setThemeConfig((prev: any) => {
+      const currentSections = prev.sections || [];
+      const updated = currentSections.map((sec: any) => {
+        const id = typeof sec === "string" ? sec : sec.id;
+        if (id !== sectionId) return sec;
+        if (!assetKey) {
+          return { id };
+        }
+        return {
+          id,
+          animation: {
+            assetKey,
+            position,
+            speed: 1,
+            loop: true,
+          },
+        };
+      });
+      return { ...prev, sections: updated };
+    });
+  };
+
   const handleCopy = (key: string) => {
     navigator.clipboard.writeText(key);
     setCopiedKey(key);
@@ -295,6 +366,200 @@ export function TemplateDetailAndAssets({ template: initialTemplate }: TemplateD
                 Buka Layar Uji Responsif
               </Button>
             </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* Theme & Section Animation Configurator Card */}
+      <div className="p-6 rounded-2xl bg-white border border-[#EAE3D8] shadow-sm space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#EAE3D8]">
+          <div>
+            <h2 className="text-lg font-serif font-bold text-[#2A211B] flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-[#C5A059]" />
+              <span>Konfigurasi Desain &amp; Animasi Section (Theme Config)</span>
+            </h2>
+            <p className="text-xs text-[#6B5E55] mt-0.5">
+              Atur palet warna, tipografi, dan tautkan animasi Lottie ke setiap section modular undangan.
+            </p>
+          </div>
+
+          <Button
+            type="button"
+            variant="sage"
+            size="sm"
+            onClick={handleSaveTheme}
+            disabled={isThemeSaving}
+            className="text-xs gap-1.5 shadow-sm"
+          >
+            {isThemeSaving ? (
+              <RotateCw className="w-3.5 h-3.5 animate-spin" />
+            ) : (
+              <Check className="w-3.5 h-3.5" />
+            )}
+            <span>Simpan Konfigurasi Desain</span>
+          </Button>
+        </div>
+
+        {/* Global Palette & Typography Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="space-y-1.5 text-xs">
+            <label className="text-[#2A211B] font-medium">Gaya Layout</label>
+            <select
+              value={themeConfig.layout}
+              onChange={(e) => setThemeConfig({ ...themeConfig, layout: e.target.value as any })}
+              className="w-full px-3 py-2 bg-white border border-[#EAE3D8] rounded-xl text-[#2A211B] focus:outline-none focus:border-[#4C6957]"
+            >
+              <option value="luxury">Luxury (Mewah &amp; Elegan)</option>
+              <option value="classic">Classic (Tradisional/Klasik)</option>
+              <option value="modern">Modern (Clean &amp; Kontemporer)</option>
+              <option value="minimal">Minimal (Monokrom Simpel)</option>
+            </select>
+          </div>
+
+          <div className="space-y-1.5 text-xs">
+            <label className="text-[#2A211B] font-medium">Font Judul (Display)</label>
+            <select
+              value={themeConfig.fontDisplay}
+              onChange={(e) => setThemeConfig({ ...themeConfig, fontDisplay: e.target.value })}
+              className="w-full px-3 py-2 bg-white border border-[#EAE3D8] rounded-xl text-[#2A211B] focus:outline-none focus:border-[#4C6957]"
+            >
+              <option value="Cinzel">Cinzel (Roman Serif)</option>
+              <option value="Playfair Display">Playfair Display (Editorial)</option>
+              <option value="Cormorant Garamond">Cormorant Garamond (Elegance)</option>
+              <option value="Great Vibes">Great Vibes (Calligraphy Script)</option>
+              <option value="Plus Jakarta Sans">Plus Jakarta Sans (Modern Sans)</option>
+            </select>
+          </div>
+
+          <div className="space-y-1.5 text-xs">
+            <label className="text-[#2A211B] font-medium">Warna Utama (Gold/Primary)</label>
+            <div className="flex items-center gap-2">
+              <input
+                type="color"
+                value={themeConfig.primaryColor}
+                onChange={(e) => setThemeConfig({ ...themeConfig, primaryColor: e.target.value })}
+                className="w-9 h-9 rounded-lg border border-[#EAE3D8] cursor-pointer p-0.5 bg-white"
+              />
+              <input
+                type="text"
+                value={themeConfig.primaryColor}
+                onChange={(e) => setThemeConfig({ ...themeConfig, primaryColor: e.target.value })}
+                className="w-full px-2.5 py-1.5 bg-white border border-[#EAE3D8] rounded-lg text-[#2A211B] font-mono text-[11px]"
+              />
+            </div>
+          </div>
+
+          <div className="space-y-1.5 text-xs">
+            <label className="text-[#2A211B] font-medium">Warna Aksen (Accent/Sage)</label>
+            <div className="flex items-center gap-2">
+              <input
+                type="color"
+                value={themeConfig.accentColor}
+                onChange={(e) => setThemeConfig({ ...themeConfig, accentColor: e.target.value })}
+                className="w-9 h-9 rounded-lg border border-[#EAE3D8] cursor-pointer p-0.5 bg-white"
+              />
+              <input
+                type="text"
+                value={themeConfig.accentColor}
+                onChange={(e) => setThemeConfig({ ...themeConfig, accentColor: e.target.value })}
+                className="w-full px-2.5 py-1.5 bg-white border border-[#EAE3D8] rounded-lg text-[#2A211B] font-mono text-[11px]"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Section Animation Mapping Table */}
+        <div className="space-y-3 pt-2">
+          <div className="flex items-center justify-between">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-[#6B5E55]">
+              Pemetaan Animasi Lottie per Section Undangan
+            </h3>
+            <span className="text-[11px] text-[#7A6D63]">
+              {assets.filter((a) => a.type === "LOTTIE").length} animasi Lottie tersedia
+            </span>
+          </div>
+
+          <div className="border border-[#EAE3D8] rounded-xl overflow-hidden divide-y divide-[#EAE3D8]">
+            {[
+              { id: "cover", label: "Cover & Monogram Utama" },
+              { id: "quote", label: "Kutipan Ayat / Kata Mutiara" },
+              { id: "couple", label: "Profil Mempelai (Groom & Bride)" },
+              { id: "countdown", label: "Hitung Mundur Acara (Countdown)" },
+              { id: "events", label: "Rangkaian Acara (Akad & Resepsi)" },
+              { id: "love-story", label: "Kisah Cinta (Love Story)" },
+              { id: "gallery", label: "Galeri Foto & Video" },
+              { id: "gift", label: "Kado Digital & No. Rekening" },
+              { id: "rsvp", label: "Konfirmasi Kehadiran (RSVP)" },
+              { id: "guestbook", label: "Buku Ucapan & Doa Tamu" },
+              { id: "closing", label: "Salam Penutup" },
+            ].map((sectionDef) => {
+              const currentSecConfig = (themeConfig.sections || []).find((s: any) =>
+                (typeof s === "string" ? s : s.id) === sectionDef.id
+              );
+              const currentAssetKey =
+                typeof currentSecConfig === "object"
+                  ? currentSecConfig?.animation?.assetKey || ""
+                  : "";
+              const currentPos =
+                typeof currentSecConfig === "object"
+                  ? currentSecConfig?.animation?.position || "top"
+                  : "top";
+
+              return (
+                <div
+                  key={sectionDef.id}
+                  className="p-3 bg-white hover:bg-[#FAF7F2]/50 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs"
+                >
+                  <div className="sm:w-1/3">
+                    <span className="font-semibold text-[#2A211B] block">{sectionDef.label}</span>
+                    <span className="font-mono text-[10px] text-[#8C6A28]">id: {sectionDef.id}</span>
+                  </div>
+
+                  <div className="flex-1 flex flex-wrap items-center gap-3">
+                    <div className="min-w-44 flex-1">
+                      <select
+                        value={currentAssetKey}
+                        onChange={(e) =>
+                          updateSectionAnimation(sectionDef.id, e.target.value, currentPos)
+                        }
+                        className="w-full px-3 py-1.5 bg-[#FAF7F2] border border-[#EAE3D8] rounded-lg text-[#2A211B] focus:outline-none focus:border-[#4C6957] font-mono text-[11px]"
+                      >
+                        <option value="">(Tanpa Animasi)</option>
+                        {assets.map((asset) => (
+                          <option key={asset.id} value={asset.key}>
+                            {asset.key} ({asset.type})
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {currentAssetKey && (
+                      <div className="flex items-center gap-2">
+                        <select
+                          value={currentPos}
+                          onChange={(e) =>
+                            updateSectionAnimation(
+                              sectionDef.id,
+                              currentAssetKey,
+                              e.target.value as any
+                            )
+                          }
+                          className="px-2 py-1.5 bg-[#FAF7F2] border border-[#EAE3D8] rounded-lg text-[#2A211B] focus:outline-none focus:border-[#4C6957] text-[11px]"
+                        >
+                          <option value="top">Posisi: Atas Section</option>
+                          <option value="bottom">Posisi: Bawah Section</option>
+                        </select>
+
+                        <span className="inline-flex items-center gap-1 text-[11px] text-[#4C6957] bg-[#4C6957]/10 px-2 py-0.5 rounded font-medium">
+                          <Check className="w-3 h-3" />
+                          <span>Aktif</span>
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

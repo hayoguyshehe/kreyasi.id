@@ -45,6 +45,13 @@ export function InvitationView({
     getAssetUrlByKey("cover-animation") ||
     getAssetUrlByKey("header-animation");
 
+  const sealLottieUrl =
+    getAssetUrlByKey("envelope-seal") ||
+    getAssetUrlByKey("wax-seal");
+  const sealImageUrl =
+    getAssetUrlByKey("seal-image") ||
+    getAssetUrlByKey("monogram-seal");
+
   // Section order from template config, or fallback to default
   const rawSections: (string | TemplateSectionConfig)[] = templateTheme.sections || [
     "cover",
@@ -346,6 +353,8 @@ export function InvitationView({
           coverTitle={invitation.eventTitle}
           eventDate={invitation.eventDate}
           guestName={guestName}
+          sealLottieUrl={sealLottieUrl}
+          sealImageUrl={sealImageUrl}
           onOpen={() => setIsEnvelopeOpen(true)}
         />
       )}

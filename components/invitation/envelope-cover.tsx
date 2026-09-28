@@ -1,14 +1,18 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import { Heart, MailOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { formatDateIndonesia } from "@/lib/utils";
+import { LottiePlayer } from "@/components/invitation/lottie-player";
 
 interface EnvelopeCoverProps {
   coverTitle: string;
   eventDate: string | Date;
   guestName?: string | null;
+  sealLottieUrl?: string | null;
+  sealImageUrl?: string | null;
   onOpen: () => void;
 }
 
@@ -16,6 +20,8 @@ export function EnvelopeCover({
   coverTitle,
   eventDate,
   guestName,
+  sealLottieUrl,
+  sealImageUrl,
   onOpen,
 }: EnvelopeCoverProps) {
   const [isOpening, setIsOpening] = useState(false);
@@ -40,9 +46,19 @@ export function EnvelopeCover({
       {/* Decorative Envelope Frame */}
       <div className="relative w-full max-w-md rounded-3xl p-8 sm:p-10 bg-white/90 backdrop-blur-sm border border-[#C5A059]/30 text-center space-y-8 shadow-xl shadow-[#C5A059]/5">
         {/* Top Monogram / Wax Seal */}
-        <div className="w-14 h-14 rounded-full bg-linear-to-br from-[#C5A059] to-[#8C6A28] mx-auto flex items-center justify-center text-white shadow-lg shadow-[#C5A059]/30">
-          <Heart className="w-7 h-7 fill-white" />
-        </div>
+        {sealLottieUrl ? (
+          <div className="w-18 h-18 mx-auto -my-2">
+            <LottiePlayer src={sealLottieUrl} loop autoplay className="w-full h-full" />
+          </div>
+        ) : sealImageUrl ? (
+          <div className="w-14 h-14 relative mx-auto">
+            <Image src={sealImageUrl} alt="Wax Seal" fill className="object-contain" />
+          </div>
+        ) : (
+          <div className="w-14 h-14 rounded-full bg-linear-to-br from-[#C5A059] to-[#8C6A28] mx-auto flex items-center justify-center text-white shadow-lg shadow-[#C5A059]/30">
+            <Heart className="w-7 h-7 fill-white" />
+          </div>
+        )}
 
         {/* Title & Subtitle */}
         <div className="space-y-3">
