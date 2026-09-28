@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { assertInvitationAccess } from "@/lib/invitation-access";
 
 export async function GET(
   request: NextRequest,
@@ -8,23 +9,19 @@ export async function GET(
 ) {
   try {
     const session = await auth();
-    if (!session?.user?.id) {
-      return NextResponse.json(
-        { success: false, error: "Unauthorized" },
-        { status: 401 }
-      );
-    }
-
     const { id, guestId } = await context.params;
 
-    const [invitation, guest] = await Promise.all([
-      prisma.invitation.findUnique({ where: { id } }),
-      prisma.guest.findUnique({ where: { id: guestId } }),
-    ]);
+    const access = await assertInvitationAccess(id, session?.user);
+    if (!access.authorized) {
+      return access.response;
+    }
 
-    if (!invitation || !guest || invitation.userId !== session.user.id) {
+    const invitation = access.invitation;
+    const guest = await prisma.guest.findUnique({ where: { id: guestId } });
+
+    if (!guest || guest.invitationId !== id) {
       return NextResponse.json(
-        { success: false, error: "Data undangan atau tamu tidak ditemukan" },
+        { success: false, error: "Data tamu tidak ditemukan" },
         { status: 404 }
       );
     }

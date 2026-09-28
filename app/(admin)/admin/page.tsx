@@ -15,6 +15,7 @@ import {
   ShieldCheck,
   Palette,
   Tag,
+  HeartHandshake,
 } from "lucide-react";
 
 export const metadata = {
@@ -33,6 +34,7 @@ export default async function AdminOverviewPage() {
     totalUsers,
     totalInvitations,
     publishedInvitations,
+    complimentaryInvitations,
     recentOrders,
     recentUsers,
   ] = await Promise.all([
@@ -52,6 +54,7 @@ export default async function AdminOverviewPage() {
     prisma.user.count(),
     prisma.invitation.count(),
     prisma.invitation.count({ where: { status: "PUBLISHED" } }),
+    prisma.invitation.count({ where: { isComplimentary: true } }),
     prisma.order.findMany({
       take: 6,
       orderBy: { createdAt: "desc" },
@@ -90,7 +93,13 @@ export default async function AdminOverviewPage() {
             Ringkasan performa bisnis, aktivitas transaksi Midtrans, dan pengguna platform Kreyasi.
           </p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
+          <Link href="/admin/invitations">
+            <Button variant="outline" size="sm" className="text-xs gap-1.5 text-amber-400 border-amber-500/30 hover:bg-amber-500/10">
+              <HeartHandshake className="w-3.5 h-3.5" />
+              <span>Undangan Kerjasama</span>
+            </Button>
+          </Link>
           <Link href="/admin/templates">
             <Button variant="outline" size="sm" className="text-xs gap-1.5">
               <Palette className="w-3.5 h-3.5" />
@@ -107,7 +116,7 @@ export default async function AdminOverviewPage() {
       </div>
 
       {/* Metrics Row */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
         <div className="p-5 rounded-2xl bg-[#14171F] border border-slate-800 space-y-2">
           <div className="flex items-center justify-between">
             <span className="text-xs text-slate-400 font-medium">Total Pendapatan</span>
@@ -160,6 +169,17 @@ export default async function AdminOverviewPage() {
             Dari {totalInvitations} total draft/undangan
           </p>
         </div>
+
+        <div className="p-5 rounded-2xl bg-[#14171F] border border-amber-500/30 bg-amber-500/5 space-y-2">
+          <div className="flex items-center justify-between">
+            <span className="text-xs text-amber-400 font-medium">Kerjasama (Mitra)</span>
+            <div className="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center">
+              <HeartHandshake className="w-4 h-4" />
+            </div>
+          </div>
+          <p className="text-2xl font-bold font-serif text-amber-400">{complimentaryInvitations}</p>
+          <p className="text-[11px] text-amber-400/80">Gratis fitur penuh</p>
+        </div>
       </div>
 
       {/* Two Columns: Recent Orders & Recent Users */}
@@ -202,10 +222,10 @@ export default async function AdminOverviewPage() {
                       {order.midtransOrderId}
                     </td>
                     <td className="py-3 px-2">
-                      <p className="font-semibold text-white truncate max-w-[120px]">
+                      <p className="font-semibold text-white truncate max-w-30">
                         {order.user.name}
                       </p>
-                      <p className="text-[10px] text-slate-500 truncate max-w-[120px]">
+                      <p className="text-[10px] text-slate-500 truncate max-w-30">
                         {order.user.email}
                       </p>
                     </td>

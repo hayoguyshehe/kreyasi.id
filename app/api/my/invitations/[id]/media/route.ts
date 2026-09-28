@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { assertInvitationAccess } from "@/lib/invitation-access";
 import {
   isR2Configured,
   generatePresignedUploadUrl,
@@ -14,26 +15,17 @@ export async function POST(
 ) {
   try {
     const session = await auth();
-    if (!session?.user?.id) {
-      return NextResponse.json(
-        { success: false, error: "Unauthorized" },
-        { status: 401 }
-      );
-    }
-
     const { id } = await context.params;
 
-    const invitation = await prisma.invitation.findUnique({
-      where: { id },
+    const access = await assertInvitationAccess(id, session?.user, {
       include: { package: true },
     });
 
-    if (!invitation || invitation.userId !== session.user.id) {
-      return NextResponse.json(
-        { success: false, error: "Undangan tidak ditemukan" },
-        { status: 404 }
-      );
+    if (!access.authorized) {
+      return access.response;
     }
+
+    const invitation = access.invitation;
 
     const body = await request.json();
     const { filename, contentType, type = "PHOTO" } = body;

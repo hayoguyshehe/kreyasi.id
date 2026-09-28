@@ -15,6 +15,7 @@ export async function GET() {
       totalUsers,
       totalInvitations,
       publishedInvitations,
+      complimentaryInvitationsCount,
       recentOrders,
       recentUsers,
     ] = await Promise.all([
@@ -43,6 +44,8 @@ export async function GET() {
       prisma.invitation.count(),
       // Undangan Aktif/Published
       prisma.invitation.count({ where: { status: "PUBLISHED" } }),
+      // Undangan Kerjasama / Complimentary
+      prisma.invitation.count({ where: { isComplimentary: true } }),
       // 5 Pesanan Terakhir
       prisma.order.findMany({
         take: 5,
@@ -77,6 +80,7 @@ export async function GET() {
         totalUsers,
         totalInvitations,
         publishedInvitations,
+        complimentaryInvitationsCount,
         recentOrders,
         recentUsers,
       },

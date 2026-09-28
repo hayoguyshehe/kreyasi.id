@@ -3,6 +3,7 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { guestImportBatchSchema } from "@/lib/validators/guest";
 import { generatePersonalSlug } from "@/lib/utils";
+import { assertInvitationAccess } from "@/lib/invitation-access";
 
 export async function POST(
   request: NextRequest,
@@ -19,20 +20,18 @@ export async function POST(
 
     const { id } = await context.params;
 
-    const invitation = await prisma.invitation.findUnique({
-      where: { id },
+    const access = await assertInvitationAccess(id, session?.user, {
       include: {
         package: true,
         _count: { select: { guests: true } },
       },
     });
 
-    if (!invitation || invitation.userId !== session.user.id) {
-      return NextResponse.json(
-        { success: false, error: "Undangan tidak ditemukan" },
-        { status: 404 }
-      );
+    if (!access.authorized) {
+      return access.response;
     }
+
+    const invitation = access.invitation;
 
     const body = await request.json();
     const parsed = guestImportBatchSchema.safeParse(body);
@@ -49,8 +48,8 @@ export async function POST(
 
     const newGuests = parsed.data.guests;
 
-    // Cek limit kapasitas
-    if (invitation.package.maxGuests !== null) {
+    // Cek limit kapasitas (abaikan jika complimentary / kerjasama)
+    if (!invitation.isComplimentary && invitation.package.maxGuests !== null) {
       const remainingQuota =
         invitation.package.maxGuests - invitation._count.guests;
       if (newGuests.length > remainingQuota) {

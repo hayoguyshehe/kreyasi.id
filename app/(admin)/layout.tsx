@@ -7,6 +7,7 @@ import {
   ShieldAlert,
   LayoutDashboard,
   CreditCard,
+  HeartHandshake,
   Users,
   Palette,
   Layers,
@@ -41,6 +42,7 @@ export default async function AdminLayout({
 
   const navLinks = [
     { href: "/admin", label: "Ringkasan", icon: LayoutDashboard },
+    { href: "/admin/invitations", label: "Undangan & Kerjasama", icon: HeartHandshake },
     { href: "/admin/orders", label: "Pesanan & Transaksi", icon: CreditCard },
     { href: "/admin/users", label: "Manajemen Pengguna", icon: Users },
     { href: "/admin/templates", label: "Template Desain", icon: Palette },

@@ -10,6 +10,7 @@ import {
   Eye,
   Mail,
   Edit,
+  Sparkles,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -78,7 +79,7 @@ export default async function MyInvitationsPage() {
               className="overflow-hidden flex flex-col justify-between border-[#EAE3D8] hover:border-[#DFC798] transition-all duration-200 shadow-xs"
             >
               <div className="p-6 space-y-4">
-                <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center justify-between gap-2 flex-wrap">
                   <Badge
                     variant={
                       inv.status === "PUBLISHED"
@@ -90,9 +91,17 @@ export default async function MyInvitationsPage() {
                   >
                     {inv.status}
                   </Badge>
-                  <span className="text-[11px] font-medium text-[#4C6957] bg-[#4C6957]/10 px-2.5 py-0.5 rounded-full border border-[#4C6957]/20">
-                    {inv.package.name}
-                  </span>
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    {inv.isComplimentary && (
+                      <Badge variant="gold" className="text-[10px] py-0 px-2 flex items-center gap-1 shadow-xs">
+                        <Sparkles className="w-2.5 h-2.5" />
+                        <span>Mitra / Gratis</span>
+                      </Badge>
+                    )}
+                    <span className="text-[11px] font-medium text-[#4C6957] bg-[#4C6957]/10 px-2.5 py-0.5 rounded-full border border-[#4C6957]/20">
+                      {inv.package.name}
+                    </span>
+                  </div>
                 </div>
 
                 <div>

@@ -143,7 +143,7 @@ export function TemplatesManager({
             key={tpl.id}
             className="rounded-2xl bg-[#14171F] border border-slate-800 overflow-hidden shadow-xl flex flex-col justify-between"
           >
-            <div className="relative aspect-[4/3] bg-slate-900 overflow-hidden">
+            <div className="relative aspect-4/3 bg-slate-900 overflow-hidden">
               <img
                 src={tpl.previewImageUrl}
                 alt={tpl.name}

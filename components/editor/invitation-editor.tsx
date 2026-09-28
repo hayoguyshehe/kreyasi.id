@@ -42,6 +42,8 @@ interface InvitationData {
   eventDate: string;
   eventCategory: string; // PERNIKAHAN | ULANG_TAHUN | KHITANAN_AQIQAH | EVENT_UMUM
   status: "DRAFT" | "PUBLISHED" | "EXPIRED" | "SUSPENDED";
+  isComplimentary?: boolean;
+  complimentaryNote?: string | null;
   content: any;
   package: {
     id: string;
@@ -566,7 +568,7 @@ export function InvitationEditor({
             <ArrowLeft className="w-5 h-5" />
           </Link>
           <div>
-            <div className="flex items-center gap-2.5">
+            <div className="flex items-center gap-2.5 flex-wrap">
               <h1 className="text-xl font-bold font-serif text-[#2A211B] truncate max-w-md">
                 {eventTitle || (isWedding ? "Undangan Pernikahan" : "Editor Undangan")}
               </h1>
@@ -581,10 +583,21 @@ export function InvitationEditor({
               >
                 {status}
               </Badge>
+              {initialData.isComplimentary && (
+                <Badge variant="gold" className="text-[11px] py-0.5 px-2 flex items-center gap-1 font-semibold shadow-xs">
+                  <Sparkles className="w-3 h-3" />
+                  <span>Kerjasama / Mitra</span>
+                </Badge>
+              )}
             </div>
             <p className="text-xs text-[#6B5E55]">
               Paket: <strong className="text-[#2A211B]">{initialData.package.name}</strong> • Template:{" "}
               <strong className="text-[#2A211B]">{initialData.template.name}</strong>
+              {initialData.isComplimentary && (
+                <span className="text-[#8C6A28] ml-2 font-medium">
+                  (Bypass Pembayaran{initialData.complimentaryNote ? ` • ${initialData.complimentaryNote}` : ""})
+                </span>
+              )}
             </p>
           </div>
         </div>

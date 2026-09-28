@@ -159,7 +159,7 @@ export default async function AdminOrdersPage(props: OrdersPageProps) {
                             href={`/u/${order.invitation.slug}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-[11px] text-amber-400/90 hover:underline block truncate max-w-[200px]"
+                            className="text-[11px] text-amber-400/90 hover:underline block truncate max-w-50"
                           >
                             {order.invitation.eventTitle}
                           </a>
@@ -176,7 +176,7 @@ export default async function AdminOrdersPage(props: OrdersPageProps) {
                             <span className="inline-block font-medium text-[11px] text-slate-200">
                               {order.payment.method}
                             </span>
-                            <p className="text-[10px] font-mono text-slate-500 truncate max-w-[130px]">
+                            <p className="text-[10px] font-mono text-slate-500 truncate max-w-32.5">
                               {order.payment.gatewayRef}
                             </p>
                           </div>

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { assertInvitationAccess } from "@/lib/invitation-access";
 
 export async function DELETE(
   request: NextRequest,
@@ -8,24 +9,11 @@ export async function DELETE(
 ) {
   try {
     const session = await auth();
-    if (!session?.user?.id) {
-      return NextResponse.json(
-        { success: false, error: "Unauthorized" },
-        { status: 401 }
-      );
-    }
-
     const { id, msgId } = await context.params;
 
-    const invitation = await prisma.invitation.findUnique({
-      where: { id },
-    });
-
-    if (!invitation || invitation.userId !== session.user.id) {
-      return NextResponse.json(
-        { success: false, error: "Undangan tidak ditemukan" },
-        { status: 404 }
-      );
+    const access = await assertInvitationAccess(id, session?.user);
+    if (!access.authorized) {
+      return access.response;
     }
 
     await prisma.guestbookMessage.delete({
@@ -51,24 +39,11 @@ export async function PATCH(
 ) {
   try {
     const session = await auth();
-    if (!session?.user?.id) {
-      return NextResponse.json(
-        { success: false, error: "Unauthorized" },
-        { status: 401 }
-      );
-    }
-
     const { id, msgId } = await context.params;
 
-    const invitation = await prisma.invitation.findUnique({
-      where: { id },
-    });
-
-    if (!invitation || invitation.userId !== session.user.id) {
-      return NextResponse.json(
-        { success: false, error: "Undangan tidak ditemukan" },
-        { status: 404 }
-      );
+    const access = await assertInvitationAccess(id, session?.user);
+    if (!access.authorized) {
+      return access.response;
     }
 
     const body = await request.json();

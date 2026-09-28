@@ -4,30 +4,19 @@ import { prisma } from "@/lib/prisma";
 import { addGuestSchema } from "@/lib/validators/guest";
 import { generatePersonalSlug } from "@/lib/utils";
 
+import { assertInvitationAccess } from "@/lib/invitation-access";
+
 export async function GET(
   request: NextRequest,
   context: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await auth();
-    if (!session?.user?.id) {
-      return NextResponse.json(
-        { success: false, error: "Unauthorized" },
-        { status: 401 }
-      );
-    }
-
     const { id } = await context.params;
 
-    const invitation = await prisma.invitation.findUnique({
-      where: { id },
-    });
-
-    if (!invitation || invitation.userId !== session.user.id) {
-      return NextResponse.json(
-        { success: false, error: "Undangan tidak ditemukan" },
-        { status: 404 }
-      );
+    const access = await assertInvitationAccess(id, session?.user);
+    if (!access.authorized) {
+      return access.response;
     }
 
     const guests = await prisma.guest.findMany({
@@ -57,32 +46,24 @@ export async function POST(
 ) {
   try {
     const session = await auth();
-    if (!session?.user?.id) {
-      return NextResponse.json(
-        { success: false, error: "Unauthorized" },
-        { status: 401 }
-      );
-    }
-
     const { id } = await context.params;
 
-    const invitation = await prisma.invitation.findUnique({
-      where: { id },
+    const access = await assertInvitationAccess(id, session?.user, {
       include: {
         package: true,
         _count: { select: { guests: true } },
       },
     });
 
-    if (!invitation || invitation.userId !== session.user.id) {
-      return NextResponse.json(
-        { success: false, error: "Undangan tidak ditemukan" },
-        { status: 404 }
-      );
+    if (!access.authorized) {
+      return access.response;
     }
 
-    // Cek limitasi kapasitas tamu paket
+    const invitation = access.invitation;
+
+    // Cek limitasi kapasitas tamu paket (abaikan jika complimentary / kerjasama)
     if (
+      !invitation.isComplimentary &&
       invitation.package.maxGuests !== null &&
       invitation._count.guests >= invitation.package.maxGuests
     ) {

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { assertInvitationAccess } from "@/lib/invitation-access";
 
 export async function GET(
   request: NextRequest,
@@ -17,8 +18,7 @@ export async function GET(
 
     const { id } = await context.params;
 
-    const invitation = await prisma.invitation.findUnique({
-      where: { id },
+    const access = await assertInvitationAccess(id, session?.user, {
       include: {
         package: true,
         template: true,
@@ -28,19 +28,11 @@ export async function GET(
       },
     });
 
-    if (!invitation) {
-      return NextResponse.json(
-        { success: false, error: "Undangan tidak ditemukan" },
-        { status: 404 }
-      );
+    if (!access.authorized) {
+      return access.response;
     }
 
-    if (invitation.userId !== session.user.id && session.user.role !== "ADMIN" && session.user.role !== "SUPERADMIN") {
-      return NextResponse.json(
-        { success: false, error: "Forbidden" },
-        { status: 403 }
-      );
-    }
+    const invitation = access.invitation;
 
     return NextResponse.json({
       success: true,
@@ -70,23 +62,12 @@ export async function PUT(
 
     const { id } = await context.params;
 
-    const invitation = await prisma.invitation.findUnique({
-      where: { id },
-    });
-
-    if (!invitation) {
-      return NextResponse.json(
-        { success: false, error: "Undangan tidak ditemukan" },
-        { status: 404 }
-      );
+    const access = await assertInvitationAccess(id, session?.user);
+    if (!access.authorized) {
+      return access.response;
     }
 
-    if (invitation.userId !== session.user.id) {
-      return NextResponse.json(
-        { success: false, error: "Forbidden: Bukan pemilik undangan ini" },
-        { status: 403 }
-      );
-    }
+    const invitation = access.invitation;
 
     const body = await request.json();
     const { eventTitle, eventDate, content, slug } = body;
@@ -193,15 +174,9 @@ export async function DELETE(
 
     const { id } = await context.params;
 
-    const invitation = await prisma.invitation.findUnique({
-      where: { id },
-    });
-
-    if (!invitation || invitation.userId !== session.user.id) {
-      return NextResponse.json(
-        { success: false, error: "Undangan tidak ditemukan" },
-        { status: 404 }
-      );
+    const access = await assertInvitationAccess(id, session?.user);
+    if (!access.authorized) {
+      return access.response;
     }
 
     await prisma.invitation.delete({
