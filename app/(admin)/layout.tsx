@@ -55,7 +55,7 @@ export default async function AdminLayout({
     <div className="min-h-screen bg-[#FAF7F2] text-[#2A211B] flex flex-col md:flex-row">
       {/* Admin Sidebar */}
       <aside className="w-full md:w-64 bg-white border-b md:border-b-0 md:border-r border-[#EAE3D8] flex flex-col justify-between shrink-0 shadow-xs">
-        <div className="p-6 space-y-7">
+        <div className="p-4 md:p-6 space-y-4 md:space-y-7">
           {/* Logo & Role Badge */}
           <div className="space-y-2">
             <Link href="/admin" className="inline-flex items-center gap-2 group">
@@ -140,7 +140,7 @@ export default async function AdminLayout({
 
       {/* Admin Content Area */}
       <main className="flex-1 overflow-y-auto bg-[#FAF7F2]">
-        <div className="p-6 md:p-10 max-w-7xl mx-auto space-y-8">
+        <div className="p-4 sm:p-6 md:p-10 max-w-7xl mx-auto space-y-6 md:space-y-8">
           {children}
         </div>
       </main>
