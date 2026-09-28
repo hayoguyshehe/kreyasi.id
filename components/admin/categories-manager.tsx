@@ -73,15 +73,15 @@ export function CategoriesManager({
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold font-serif text-white flex items-center gap-2.5">
-            <FolderTree className="w-6 h-6 text-amber-400" />
+          <h1 className="text-2xl font-bold font-serif text-[#2A211B] flex items-center gap-2.5">
+            <FolderTree className="w-6 h-6 text-[#8C6A28]" />
             <span>Kategori Acara</span>
           </h1>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-[#6B5E55] mt-1">
             Pengelompokan jenis tema dan acara (Pernikahan, Ulang Tahun, Khitanan, Event Umum).
           </p>
         </div>
@@ -89,7 +89,7 @@ export function CategoriesManager({
           variant="gold"
           size="sm"
           onClick={() => setIsModalOpen(true)}
-          className="text-xs gap-1.5 shadow-md shadow-amber-500/20"
+          className="text-xs gap-1.5 shadow-sm"
         >
           <Plus className="w-4 h-4" />
           <span>Tambah Kategori</span>
@@ -101,23 +101,27 @@ export function CategoriesManager({
         {categories.map((cat) => (
           <div
             key={cat.id}
-            className="p-5 rounded-2xl bg-[#14171F] border border-slate-800 space-y-3 flex flex-col justify-between shadow-xl"
+            className="p-5 rounded-2xl bg-white border border-[#EAE3D8] space-y-3 flex flex-col justify-between shadow-sm hover:border-[#D5C7B5] transition-colors"
           >
             <div>
-              <h3 className="text-base font-bold font-serif text-white">{cat.name}</h3>
-              <p className="text-[11px] font-mono text-amber-400 mt-0.5">slug: {cat.slug}</p>
-              <p className="text-xs text-slate-400 mt-2">
+              <h3 className="text-base font-bold font-serif text-[#2A211B]">{cat.name}</h3>
+              <div className="mt-1">
+                <span className="inline-block px-2 py-0.5 rounded bg-[#FAF7F2] border border-[#EAE3D8] text-[11px] font-mono text-[#8C6A28]">
+                  slug: {cat.slug}
+                </span>
+              </div>
+              <p className="text-xs text-[#6B5E55] mt-2.5">
                 {cat._count.templates} template tersedia
               </p>
             </div>
 
-            <div className="pt-3 border-t border-slate-800/80 flex justify-end">
+            <div className="pt-3 border-t border-[#EAE3D8] flex justify-end">
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => handleDelete(cat)}
                 disabled={cat._count.templates > 0}
-                className="text-xs text-red-400 hover:text-red-300 gap-1"
+                className="text-xs text-[#8C3A27] hover:text-[#8C3A27] hover:bg-[#8C3A27]/5 border-[#EAE3D8] hover:border-[#8C3A27]/30 gap-1 disabled:opacity-40"
                 title={
                   cat._count.templates > 0
                     ? "Kategori masih digunakan"
@@ -140,7 +144,7 @@ export function CategoriesManager({
       >
         <form onSubmit={handleCreate} className="space-y-4 text-xs">
           <div className="space-y-1.5">
-            <label className="text-slate-300 font-medium">Nama Kategori</label>
+            <label className="text-[#2A211B] font-medium">Nama Kategori</label>
             <input
               type="text"
               required
@@ -150,28 +154,29 @@ export function CategoriesManager({
                 setName(e.target.value);
                 setSlug(e.target.value.toLowerCase().replace(/[^a-z0-9]+/g, "-"));
               }}
-              className="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-amber-400"
+              className="w-full px-3.5 py-2.5 bg-white border border-[#EAE3D8] rounded-xl text-[#2A211B] placeholder-[#9C8E84] focus:outline-none focus:ring-2 focus:ring-[#4C6957]/20 focus:border-[#4C6957]"
             />
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-slate-300 font-medium">Slug Kategori</label>
+            <label className="text-[#2A211B] font-medium">Slug Kategori</label>
             <input
               type="text"
               required
               placeholder="contoh: wisuda-kelulusan"
               value={slug}
               onChange={(e) => setSlug(e.target.value)}
-              className="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-amber-400"
+              className="w-full px-3.5 py-2.5 bg-white border border-[#EAE3D8] rounded-xl text-[#2A211B] placeholder-[#9C8E84] focus:outline-none focus:ring-2 focus:ring-[#4C6957]/20 focus:border-[#4C6957]"
             />
           </div>
 
-          <div className="flex justify-end gap-3 pt-4 border-t border-slate-800">
+          <div className="flex justify-end gap-3 pt-4 border-t border-[#EAE3D8]">
             <Button
               type="button"
               variant="outline"
               size="sm"
               onClick={() => setIsModalOpen(false)}
+              className="border-[#EAE3D8] text-[#6B5E55] hover:bg-[#FAF7F2] hover:text-[#2A211B]"
             >
               Batal
             </Button>
