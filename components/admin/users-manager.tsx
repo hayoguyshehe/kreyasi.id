@@ -73,48 +73,50 @@ export function UsersManager({ initialUsers }: { initialUsers: UserItem[] }) {
   const adminCount = users.filter((u) => u.role === "ADMIN" || u.role === "SUPERADMIN").length;
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold font-serif text-white flex items-center gap-2.5">
-          <Users className="w-6 h-6 text-amber-400" />
-          <span>Manajemen Pengguna</span>
+        <h1 className="text-2xl font-bold font-serif text-[#2A211B] tracking-tight">
+          Manajemen Pengguna
         </h1>
-        <p className="text-xs text-slate-400 mt-1">
+        <p className="text-xs text-[#6B5E55] mt-1">
           Kelola seluruh akun customer dan administrator, serta kontrol hak akses suspend.
         </p>
       </div>
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="p-5 rounded-2xl bg-[#14171F] border border-slate-800 space-y-1">
-          <p className="text-xs text-slate-400 font-medium">Total Akun Terdaftar</p>
-          <p className="text-2xl font-bold font-serif text-white">{totalUsers}</p>
+        <div className="p-4 rounded-xl bg-white border border-[#EAE3D8] shadow-xs space-y-1">
+          <p className="text-xs text-[#6B5E55] font-medium">Total Akun Terdaftar</p>
+          <p className="text-2xl font-bold font-serif text-[#2A211B]">{totalUsers}</p>
+          <p className="text-[11px] text-[#7A6D63]">akun aktif dan suspend</p>
         </div>
-        <div className="p-5 rounded-2xl bg-[#14171F] border border-slate-800 space-y-1">
-          <p className="text-xs text-slate-400 font-medium">Pengelola (Admin / Super)</p>
-          <p className="text-2xl font-bold font-serif text-amber-400">{adminCount}</p>
+        <div className="p-4 rounded-xl bg-white border border-[#EAE3D8] shadow-xs space-y-1">
+          <p className="text-xs text-[#6B5E55] font-medium">Pengelola (Admin / Super)</p>
+          <p className="text-2xl font-bold font-serif text-[#8C6A28]">{adminCount}</p>
+          <p className="text-[11px] text-[#8C6A28]/80">akses panel admin</p>
         </div>
-        <div className="p-5 rounded-2xl bg-[#14171F] border border-slate-800 space-y-1">
-          <p className="text-xs text-slate-400 font-medium">Akun Disuspend</p>
-          <p className="text-2xl font-bold font-serif text-red-400">{suspendedCount}</p>
+        <div className="p-4 rounded-xl bg-white border border-[#EAE3D8] shadow-xs space-y-1">
+          <p className="text-xs text-[#6B5E55] font-medium">Akun Disuspend</p>
+          <p className="text-2xl font-bold font-serif text-[#8C3A27]">{suspendedCount}</p>
+          <p className="text-[11px] text-[#8C3A27]/80">akses dinonaktifkan</p>
         </div>
       </div>
 
       {/* Table Container */}
-      <div className="rounded-2xl bg-[#14171F] border border-slate-800 overflow-hidden shadow-xl space-y-4 p-5">
+      <div className="rounded-2xl bg-white border border-[#EAE3D8] overflow-hidden shadow-xs space-y-4 p-5">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="relative w-full sm:w-72">
-            <Search className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-[#7A6D63] absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               placeholder="Cari nama, email, no telepon..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 bg-slate-900 border border-slate-700 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-400"
+              className="w-full pl-9 pr-4 py-2 bg-white border border-[#EAE3D8] rounded-xl text-xs text-[#2A211B] placeholder-[#7A6D63] focus:outline-none focus:border-[#4C6957] focus:ring-1 focus:ring-[#4C6957]/20"
             />
           </div>
-          <span className="text-xs text-slate-400">
+          <span className="text-xs text-[#6B5E55]">
             Menampilkan {filteredUsers.length} dari {totalUsers} akun
           </span>
         </div>
@@ -122,20 +124,20 @@ export function UsersManager({ initialUsers }: { initialUsers: UserItem[] }) {
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse text-xs">
             <thead>
-              <tr className="border-b border-slate-800/80 bg-slate-950/20 text-slate-400 uppercase font-semibold text-[11px] tracking-wider">
-                <th className="py-3.5 px-4">Nama & Email</th>
-                <th className="py-3.5 px-4">Kontak</th>
-                <th className="py-3.5 px-4">Role</th>
-                <th className="py-3.5 px-4">Aktivitas</th>
-                <th className="py-3.5 px-4">Status Akun</th>
-                <th className="py-3.5 px-4">Bergabung</th>
-                <th className="py-3.5 px-4 text-right">Aksi</th>
+              <tr className="border-b border-[#EAE3D8] bg-[#F5EFEB]/50 text-[#6B5E55] font-semibold text-xs">
+                <th className="py-3 px-4">Nama &amp; Email</th>
+                <th className="py-3 px-4">Kontak</th>
+                <th className="py-3 px-4">Role</th>
+                <th className="py-3 px-4">Aktivitas</th>
+                <th className="py-3 px-4">Status Akun</th>
+                <th className="py-3 px-4">Bergabung</th>
+                <th className="py-3 px-4 text-right">Aksi</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800/60 text-slate-300">
+            <tbody className="divide-y divide-[#EAE3D8] text-[#2A211B]">
               {filteredUsers.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="py-12 text-center text-slate-500">
+                  <td colSpan={7} className="py-12 text-center text-[#7A6D63]">
                     Tidak ada pengguna yang cocok dengan pencarian.
                   </td>
                 </tr>
@@ -144,59 +146,66 @@ export function UsersManager({ initialUsers }: { initialUsers: UserItem[] }) {
                   const isSuper = user.role === "SUPERADMIN";
 
                   return (
-                    <tr key={user.id} className="hover:bg-slate-800/20 transition-colors">
-                      <td className="py-4 px-4">
-                        <p className="font-semibold text-white">{user.name}</p>
-                        <p className="text-[11px] text-slate-400">{user.email}</p>
+                    <tr key={user.id} className="hover:bg-[#FAF7F2] transition-colors">
+                      <td className="py-3.5 px-4">
+                        <p className="font-semibold text-[#2A211B]">{user.name}</p>
+                        <p className="text-[11px] text-[#7A6D63] font-mono">{user.email}</p>
                       </td>
-                      <td className="py-4 px-4 text-slate-400">
+                      <td className="py-3.5 px-4 text-[#6B5E55]">
                         {user.phone || "-"}
                       </td>
-                      <td className="py-4 px-4">
-                        <Badge
-                          variant={user.role === "CUSTOMER" ? "outline" : "gold"}
-                          className="text-[10px] py-0.5"
+                      <td className="py-3.5 px-4">
+                        <span
+                          className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] font-semibold ${
+                            user.role === "CUSTOMER"
+                              ? "bg-[#F5EFEB] text-[#6B5E55] border border-[#EAE3D8]"
+                              : "bg-[#C5A059]/15 text-[#8C6A28] border border-[#C5A059]/30"
+                          }`}
                         >
                           {user.role}
-                        </Badge>
+                        </span>
                       </td>
-                      <td className="py-4 px-4 text-slate-300 space-y-0.5">
-                        <p>{user._count.invitations} Undangan</p>
-                        <p className="text-[11px] text-slate-500">{user._count.orders} Transaksi</p>
+                      <td className="py-3.5 px-4 space-y-0.5">
+                        <p className="font-medium text-[#2A211B]">{user._count.invitations} Undangan</p>
+                        <p className="text-[11px] text-[#7A6D63]">{user._count.orders} Transaksi</p>
                       </td>
-                      <td className="py-4 px-4">
+                      <td className="py-3.5 px-4">
                         {user.isSuspended ? (
-                          <Badge variant="danger" className="text-[10px] py-0.5">
+                          <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-[#8C3A27]/10 text-[#8C3A27] border border-[#8C3A27]/20">
                             Disuspend
-                          </Badge>
+                          </span>
                         ) : (
-                          <Badge variant="success" className="text-[10px] py-0.5">
+                          <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-[#4C6957]/10 text-[#4C6957] border border-[#4C6957]/20">
                             Aktif
-                          </Badge>
+                          </span>
                         )}
                       </td>
-                      <td className="py-4 px-4 text-slate-400 whitespace-nowrap">
+                      <td className="py-3.5 px-4 text-[#6B5E55] whitespace-nowrap text-[11px]">
                         {formatDateIndonesia(user.createdAt)}
                       </td>
-                      <td className="py-4 px-4 text-right whitespace-nowrap">
+                      <td className="py-3.5 px-4 text-right whitespace-nowrap">
                         {!isSuper && (
                           <Button
-                            variant={user.isSuspended ? "outline" : "danger"}
+                            variant="outline"
                             size="sm"
                             disabled={loadingId === user.id}
                             onClick={() => handleToggleSuspend(user)}
-                            className="text-xs gap-1.5"
+                            className={`text-xs gap-1.5 py-1 px-2.5 h-auto ${
+                              user.isSuspended
+                                ? "text-[#4C6957] border-[#4C6957]/30 hover:bg-[#4C6957]/10"
+                                : "text-[#8C3A27] border-[#8C3A27]/30 hover:bg-[#8C3A27]/10"
+                            }`}
                           >
                             {loadingId === user.id ? (
                               <RotateCw className="w-3.5 h-3.5 animate-spin" />
                             ) : user.isSuspended ? (
                               <>
-                                <UserCheck className="w-3.5 h-3.5 text-emerald-400" />
+                                <UserCheck className="w-3.5 h-3.5 text-[#4C6957]" />
                                 <span>Aktifkan</span>
                               </>
                             ) : (
                               <>
-                                <UserX className="w-3.5 h-3.5" />
+                                <UserX className="w-3.5 h-3.5 text-[#8C3A27]" />
                                 <span>Suspend</span>
                               </>
                             )}
