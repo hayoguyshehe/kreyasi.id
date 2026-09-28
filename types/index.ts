@@ -115,6 +115,32 @@ export interface ApiResponse<T> {
   error?: { code: string; message: string };
 }
 
+export type TemplateAssetType = "IMAGE" | "VIDEO" | "LOTTIE" | "FONT";
+export type TemplateQaStatus = "PENDING_REVIEW" | "RESPONSIVE_OK" | "NEEDS_FIX";
+
+export interface TemplateAssetItem {
+  id: string;
+  templateId: string;
+  type: TemplateAssetType;
+  key: string;
+  url: string;
+  fileSize: number;
+  mimeType: string;
+  metadata?: any;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface TemplateSectionConfig {
+  id: string;
+  animation?: {
+    assetKey: string;
+    position?: "top" | "center" | "bottom" | "background";
+    speed?: number;
+    loop?: boolean;
+  };
+}
+
 /**
  * Template theme config — disimpan di kolom `themeConfig` (Json) pada model Template.
  */
@@ -125,7 +151,7 @@ export interface TemplateThemeConfig {
   fontFamily: string;
   fontDisplay: string;
   layout: "classic" | "modern" | "luxury" | "minimal";
-  sections: string[];
+  sections: (string | TemplateSectionConfig)[];
 }
 
 /**

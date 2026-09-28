@@ -12,6 +12,8 @@ import { DigitalGiftSection } from "@/components/invitation/digital-gift-section
 import { LoveStorySection } from "@/components/invitation/love-story-section";
 import { Heart, Sparkles, Video } from "lucide-react";
 import { formatDateIndonesia } from "@/lib/utils";
+import { LottiePlayer } from "@/components/invitation/lottie-player";
+import type { TemplateSectionConfig } from "@/types";
 
 interface InvitationViewProps {
   invitation: any;
@@ -30,9 +32,21 @@ export function InvitationView({
   const person = content.person;
   const theme = content.theme || { primaryColor: "#C5A059", fontFamily: "Plus Jakarta Sans" };
   const templateTheme = invitation.template?.themeConfig || {};
+  const templateAssets: any[] = invitation.template?.assets || [];
+
+  const getAssetUrlByKey = (key?: string): string | null => {
+    if (!key) return null;
+    const found = templateAssets.find((a) => a.key === key);
+    return found?.url || null;
+  };
+
+  const heroLottieUrl =
+    getAssetUrlByKey("hero-animation") ||
+    getAssetUrlByKey("cover-animation") ||
+    getAssetUrlByKey("header-animation");
 
   // Section order from template config, or fallback to default
-  const sectionOrder: string[] = templateTheme.sections || [
+  const rawSections: (string | TemplateSectionConfig)[] = templateTheme.sections || [
     "cover",
     "quote",
     "couple",
@@ -283,6 +297,42 @@ export function InvitationView({
     }
   };
 
+  const renderSectionWithAnimation = (sectionItem: string | TemplateSectionConfig) => {
+    const sectionId = typeof sectionItem === "string" ? sectionItem : sectionItem.id;
+    const animConfig = typeof sectionItem === "object" ? sectionItem.animation : undefined;
+    const lottieUrl = animConfig?.assetKey ? getAssetUrlByKey(animConfig.assetKey) : null;
+    const rendered = renderSection(sectionId);
+
+    if (!rendered) return null;
+    if (!lottieUrl) return rendered;
+
+    return (
+      <div key={`sec-wrap-${sectionId}`} className="relative space-y-4">
+        {animConfig?.position !== "bottom" && (
+          <div className="w-28 h-28 sm:w-36 sm:h-36 mx-auto -mb-2">
+            <LottiePlayer
+              src={lottieUrl}
+              loop={animConfig?.loop ?? true}
+              speed={animConfig?.speed ?? 1}
+              className="w-full h-full"
+            />
+          </div>
+        )}
+        {rendered}
+        {animConfig?.position === "bottom" && (
+          <div className="w-28 h-28 sm:w-36 sm:h-36 mx-auto -mt-2">
+            <LottiePlayer
+              src={lottieUrl}
+              loop={animConfig?.loop ?? true}
+              speed={animConfig?.speed ?? 1}
+              className="w-full h-full"
+            />
+          </div>
+        )}
+      </div>
+    );
+  };
+
   return (
     <div
       className="min-h-screen bg-[#FAF7F2] text-[#2A211B] relative selection:bg-[#C5A059] selection:text-white font-sans"
@@ -310,9 +360,15 @@ export function InvitationView({
       <div className="max-w-2xl mx-auto px-4 py-16 sm:py-24 space-y-20 relative z-10">
         {/* HERO SECTION — always rendered first */}
         <section className="text-center space-y-6 pt-4">
-          <div className="w-12 h-12 rounded-full bg-linear-to-br from-[#C5A059] to-[#8C6A28] mx-auto flex items-center justify-center text-white shadow-lg shadow-[#C5A059]/20">
-            <Heart className="w-6 h-6 fill-white" />
-          </div>
+          {heroLottieUrl ? (
+            <div className="w-36 h-36 sm:w-44 sm:h-44 mx-auto -my-4">
+              <LottiePlayer src={heroLottieUrl} loop autoplay className="w-full h-full" />
+            </div>
+          ) : (
+            <div className="w-12 h-12 rounded-full bg-linear-to-br from-[#C5A059] to-[#8C6A28] mx-auto flex items-center justify-center text-white shadow-lg shadow-[#C5A059]/20">
+              <Heart className="w-6 h-6 fill-white" />
+            </div>
+          )}
 
           <div className="space-y-2">
             <p className="text-xs uppercase tracking-[0.3em] text-[#8C6A28] font-semibold font-serif">
@@ -336,8 +392,16 @@ export function InvitationView({
         </section>
 
         {/* Render sections in template-defined order */}
-        {sectionOrder.map((sectionId) => renderSection(sectionId))}
+        {rawSections.map((sectionItem, idx) => {
+          const key = typeof sectionItem === "string" ? sectionItem : (sectionItem.id || `sec-${idx}`);
+          return (
+            <React.Fragment key={key}>
+              {renderSectionWithAnimation(sectionItem)}
+            </React.Fragment>
+          );
+        })}
       </div>
     </div>
   );
 }
+

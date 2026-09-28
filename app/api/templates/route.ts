@@ -10,6 +10,7 @@ export async function GET(request: NextRequest) {
 
     const whereClause: Record<string, unknown> = {
       isActive: true,
+      qaStatus: "RESPONSIVE_OK",
     };
 
     if (categoryId) {

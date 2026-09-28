@@ -66,7 +66,11 @@ export default async function PublicInvitationPage(props: PageProps) {
   const invitation = await prisma.invitation.findUnique({
     where: { slug },
     include: {
-      template: true,
+      template: {
+        include: {
+          assets: true,
+        },
+      },
       giftAccounts: true,
       media: {
         orderBy: { sortOrder: "asc" },

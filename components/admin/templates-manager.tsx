@@ -4,7 +4,18 @@ import React, { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Modal } from "@/components/ui/modal";
-import { Palette, Plus, Power, RotateCw } from "lucide-react";
+import Link from "next/link";
+import {
+  Palette,
+  Plus,
+  Power,
+  RotateCw,
+  Smartphone,
+  Layers,
+  CheckCircle2,
+  AlertTriangle,
+  Sparkles,
+} from "lucide-react";
 
 interface CategoryOption {
   id: string;
@@ -18,8 +29,10 @@ interface TemplateItem {
   minPackageTier: number;
   previewImageUrl: string;
   isActive: boolean;
+  qaStatus: "PENDING_REVIEW" | "RESPONSIVE_OK" | "NEEDS_FIX";
+  qaNote?: string | null;
   category: { id: string; name: string };
-  _count: { invitations: number };
+  _count: { invitations: number; assets?: number };
 }
 
 interface TemplatesManagerProps {
@@ -43,6 +56,11 @@ export function TemplatesManager({
   const [previewImageUrl, setPreviewImageUrl] = useState("");
 
   const handleToggleActive = async (template: TemplateItem) => {
+    if (!template.isActive && template.qaStatus !== "RESPONSIVE_OK") {
+      alert("Template belum dapat diaktifkan: Harap uji responsif terlebih dahulu dan tandai status RESPONSIVE_OK.");
+      return;
+    }
+
     try {
       const res = await fetch(`/api/admin/templates/${template.id}`, {
         method: "PUT",
@@ -95,8 +113,9 @@ export function TemplatesManager({
         minPackageTier: data.data.minPackageTier,
         previewImageUrl: data.data.previewImageUrl,
         isActive: data.data.isActive,
+        qaStatus: data.data.qaStatus || "PENDING_REVIEW",
         category: { id: categoryId, name: cat ? cat.name : "Umum" },
-        _count: { invitations: 0 },
+        _count: { invitations: 0, assets: 0 },
       };
 
       setTemplates([newTpl, ...templates]);
@@ -155,14 +174,21 @@ export function TemplatesManager({
                   {tpl.category.name}
                 </span>
               </div>
-              <div className="absolute top-3 right-3">
-                {tpl.isActive ? (
-                  <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-[#4C6957] text-white shadow-xs">
-                    Aktif
+              <div className="absolute top-3 right-3 flex items-center gap-1.5">
+                {tpl.qaStatus === "RESPONSIVE_OK" ? (
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-[#4C6957] text-white shadow-xs">
+                    <CheckCircle2 className="w-2.5 h-2.5" />
+                    <span>RESPONSIVE_OK</span>
+                  </span>
+                ) : tpl.qaStatus === "NEEDS_FIX" ? (
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-[#8C3A27] text-white shadow-xs">
+                    <AlertTriangle className="w-2.5 h-2.5" />
+                    <span>NEEDS_FIX</span>
                   </span>
                 ) : (
-                  <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-[#8C3A27] text-white shadow-xs">
-                    Nonaktif
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-[#C5A059] text-white shadow-xs">
+                    <Sparkles className="w-2.5 h-2.5" />
+                    <span>PENDING_REVIEW</span>
                   </span>
                 )}
               </div>
@@ -170,14 +196,48 @@ export function TemplatesManager({
 
             <div className="p-5 space-y-4">
               <div>
-                <h3 className="text-base font-bold font-serif text-[#2A211B]">{tpl.name}</h3>
-                <p className="text-[11px] font-mono text-[#8C6A28]">slug: {tpl.slug}</p>
-                <p className="text-xs text-[#6B5E55] mt-1">
-                  Digunakan pada {tpl._count.invitations} undangan
-                </p>
+                <div className="flex items-center justify-between">
+                  <h3 className="text-base font-bold font-serif text-[#2A211B]">{tpl.name}</h3>
+                  {tpl.isActive ? (
+                    <span className="text-[10px] font-semibold text-[#4C6957]">Katalog Aktif</span>
+                  ) : (
+                    <span className="text-[10px] font-medium text-[#9C8E84]">Katalog Nonaktif</span>
+                  )}
+                </div>
+                <p className="text-[11px] font-mono text-[#8C6A28] mt-0.5">slug: {tpl.slug}</p>
+                <div className="flex items-center gap-3 text-xs text-[#6B5E55] mt-2">
+                  <span>{tpl._count.invitations} undangan</span>
+                  <span>•</span>
+                  <span>{tpl._count.assets || 0} aset &amp; animasi</span>
+                </div>
               </div>
 
-              <div className="flex items-center justify-between pt-3 border-t border-[#EAE3D8]">
+              {/* Action Buttons */}
+              <div className="pt-3 border-t border-[#EAE3D8] space-y-2">
+                <div className="grid grid-cols-2 gap-2">
+                  <Link href={`/admin/templates/${tpl.id}`} className="w-full">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="text-xs border-[#EAE3D8] text-[#2A211B] hover:bg-[#FAF7F2] w-full justify-center gap-1"
+                    >
+                      <Layers className="w-3.5 h-3.5 text-[#8C6A28]" />
+                      <span>Kelola &amp; Aset</span>
+                    </Button>
+                  </Link>
+
+                  <Link href={`/admin/templates/${tpl.id}/preview`} className="w-full">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="text-xs border-[#EAE3D8] text-[#2A211B] hover:bg-[#FAF7F2] w-full justify-center gap-1"
+                    >
+                      <Smartphone className="w-3.5 h-3.5 text-[#4C6957]" />
+                      <span>Uji Responsif</span>
+                    </Button>
+                  </Link>
+                </div>
+
                 <Button
                   variant="outline"
                   size="sm"

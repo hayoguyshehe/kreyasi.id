@@ -8,7 +8,7 @@ export const revalidate = 3600; // Cache 1 jam
 export default async function TemplatesPage() {
   const [templates, categories] = await Promise.all([
     prisma.template.findMany({
-      where: { isActive: true },
+      where: { isActive: true, qaStatus: "RESPONSIVE_OK" },
       include: {
         category: true,
       },

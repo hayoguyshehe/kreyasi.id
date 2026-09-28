@@ -52,6 +52,19 @@ enum EventCategory {
   EVENT_UMUM
 }
 
+enum TemplateAssetType {
+  IMAGE
+  VIDEO
+  LOTTIE
+  FONT
+}
+
+enum TemplateQaStatus {
+  PENDING_REVIEW
+  RESPONSIVE_OK
+  NEEDS_FIX
+}
+
 // ============================================
 // MODELS
 // ============================================
@@ -155,20 +168,43 @@ model Package {
 }
 
 model Template {
-  id              String   @id @default(cuid())
-  name            String
-  slug            String   @unique
-  categoryId      String
-  category        Category @relation(fields: [categoryId], references: [id])
-  minPackageTier  Int // merujuk ke Package.sortOrder minimum yang boleh pakai
-  previewImageUrl String
-  themeConfig     Json // warna, font, layout section default
-  isActive        Boolean  @default(true)
-  createdAt       DateTime @default(now())
+  id                  String            @id @default(cuid())
+  name                String
+  slug                String            @unique
+  categoryId          String
+  category            Category          @relation(fields: [categoryId], references: [id])
+  minPackageTier      Int // merujuk ke Package.sortOrder minimum yang boleh pakai
+  previewImageUrl     String
+  themeConfig         Json // warna, font, layout section default
+  isActive            Boolean           @default(true)
+  qaStatus            TemplateQaStatus  @default(PENDING_REVIEW)
+  qaNote              String?
+  responsiveCheckedAt DateTime?
+  previewMobileUrl    String?
+  previewDesktopUrl   String?
+  createdAt           DateTime          @default(now())
 
   invitations Invitation[]
+  assets      TemplateAsset[]
 
   @@map("templates")
+}
+
+model TemplateAsset {
+  id         String            @id @default(cuid())
+  templateId String
+  template   Template          @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  type       TemplateAssetType
+  key        String // Unik per templateId + key (misal 'cover-animation', 'corner-decor')
+  url        String
+  fileSize   Int // Dalam bytes
+  mimeType   String
+  metadata   Json? // Metadata tambahan misal width, height, frameRate, duration
+  createdAt  DateTime          @default(now())
+  updatedAt  DateTime          @updatedAt
+
+  @@unique([templateId, key])
+  @@map("template_assets")
 }
 
 model Invitation {

@@ -3,6 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   // Konfigurasi image domains untuk Cloudflare R2
   images: {
+    formats: ["image/avif", "image/webp"],
     remotePatterns: [
       // IDCloudHost Object Storage
       {
@@ -26,6 +27,11 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "lh3.googleusercontent.com",
+      },
+      // Unsplash images
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
       },
     ],
   },

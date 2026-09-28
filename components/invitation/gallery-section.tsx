@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import { Camera, X } from "lucide-react";
 
 interface MediaItem {
@@ -34,14 +35,15 @@ export function GallerySection({ media }: { media: MediaItem[] }) {
             onClick={() => setSelectedPhoto(photo.url)}
             className="aspect-square rounded-2xl overflow-hidden bg-[#F5EFEB] border border-[#C5A059]/20 cursor-pointer group relative shadow-md shadow-[#C5A059]/5"
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <Image
               src={photo.url}
               alt="Momen Bahagia"
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              fill
+              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+              className="object-cover group-hover:scale-105 transition-transform duration-300"
               loading="lazy"
             />
-            <div className="absolute inset-0 bg-white/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-[#2A211B]">
+            <div className="absolute inset-0 bg-white/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-[#2A211B] z-10">
               <Camera className="w-6 h-6 text-[#8C6A28]" />
             </div>
           </div>
@@ -51,21 +53,25 @@ export function GallerySection({ media }: { media: MediaItem[] }) {
       {/* Lightbox Modal */}
       {selectedPhoto && (
         <div
-          className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4 backdrop-blur-md"
+          className="fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-4 backdrop-blur-md"
           onClick={() => setSelectedPhoto(null)}
         >
           <button
             onClick={() => setSelectedPhoto(null)}
-            className="absolute top-6 right-6 p-2 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
+            className="absolute top-6 right-6 p-2 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors z-20"
           >
             <X className="w-6 h-6" />
           </button>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={selectedPhoto}
-            alt="Preview"
-            className="max-h-[85vh] max-w-full rounded-xl object-contain shadow-2xl"
-          />
+          <div className="relative w-full max-w-4xl h-[80vh] flex items-center justify-center">
+            <Image
+              src={selectedPhoto}
+              alt="Preview Foto"
+              fill
+              className="rounded-xl object-contain shadow-2xl"
+              sizes="100vw"
+              priority
+            />
+          </div>
         </div>
       )}
     </section>

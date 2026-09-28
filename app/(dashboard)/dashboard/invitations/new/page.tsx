@@ -10,7 +10,7 @@ export default async function NewInvitationPage() {
       orderBy: { sortOrder: "asc" },
     }),
     prisma.template.findMany({
-      where: { isActive: true },
+      where: { isActive: true, qaStatus: "RESPONSIVE_OK" },
       orderBy: { minPackageTier: "asc" },
     }),
   ]);

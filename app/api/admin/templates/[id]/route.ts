@@ -1,11 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { auth } from "@/lib/auth";
 
 export async function PUT(
   request: NextRequest,
   context: { params: Promise<{ id: string }> }
 ) {
   try {
+    const session = await auth();
+    if (!session?.user || (session.user.role !== "ADMIN" && session.user.role !== "SUPERADMIN")) {
+      return NextResponse.json(
+        { success: false, error: "Akses ditolak: Hanya admin yang diizinkan" },
+        { status: 403 }
+      );
+    }
+
     const { id } = await context.params;
     const body = await request.json();
 
@@ -17,6 +26,8 @@ export async function PUT(
       previewImageUrl,
       themeConfig,
       isActive,
+      previewMobileUrl,
+      previewDesktopUrl,
     } = body;
 
     const existing = await prisma.template.findUnique({
@@ -30,6 +41,18 @@ export async function PUT(
       );
     }
 
+    // Gerbang QA: isActive hanya boleh true bila qaStatus === "RESPONSIVE_OK"
+    if (isActive === true && existing.qaStatus !== "RESPONSIVE_OK") {
+      return NextResponse.json(
+        {
+          success: false,
+          error:
+            "Template tidak dapat diaktifkan sebelum lolos uji responsif (status harus RESPONSIVE_OK)",
+        },
+        { status: 400 }
+      );
+    }
+
     const updated = await prisma.template.update({
       where: { id },
       data: {
@@ -40,6 +63,8 @@ export async function PUT(
         ...(previewImageUrl && { previewImageUrl }),
         ...(themeConfig && { themeConfig }),
         ...(isActive !== undefined && { isActive: Boolean(isActive) }),
+        ...(previewMobileUrl !== undefined && { previewMobileUrl }),
+        ...(previewDesktopUrl !== undefined && { previewDesktopUrl }),
       },
     });
 

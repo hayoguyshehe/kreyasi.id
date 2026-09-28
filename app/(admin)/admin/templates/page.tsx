@@ -12,7 +12,7 @@ export default async function AdminTemplatesPage() {
       orderBy: { minPackageTier: "asc" },
       include: {
         category: { select: { id: true, name: true } },
-        _count: { select: { invitations: true } },
+        _count: { select: { invitations: true, assets: true } },
       },
     }),
     prisma.category.findMany({
