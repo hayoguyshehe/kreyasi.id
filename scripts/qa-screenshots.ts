@@ -22,7 +22,8 @@ async function runQaScreenshots() {
   console.log(`[QA Screenshots] Memulai capture untuk template: ${targetTemplate}`);
 
   try {
-    // Dynamic import playwright
+    // Dynamic import playwright (optional local dependency)
+    // @ts-expect-error playwright is an optional local CLI dependency
     const { chromium } = await import("playwright");
 
     const browser = await chromium.launch({ headless: true });
