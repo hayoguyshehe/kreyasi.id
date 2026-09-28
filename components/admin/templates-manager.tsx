@@ -1,11 +1,10 @@
 "use client";
 
 import React, { useState } from "react";
-import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Modal } from "@/components/ui/modal";
-import { Palette, Plus, Eye, Check, Power, RotateCw } from "lucide-react";
+import { Palette, Plus, Power, RotateCw } from "lucide-react";
 
 interface CategoryOption {
   id: string;
@@ -113,23 +112,22 @@ export function TemplatesManager({
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold font-serif text-white flex items-center gap-2.5">
-            <Palette className="w-6 h-6 text-amber-400" />
-            <span>Katalog Template Desain</span>
+          <h1 className="text-2xl font-bold font-serif text-[#2A211B] tracking-tight">
+            Katalog Template Desain
           </h1>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-[#6B5E55] mt-1">
             Kelola template tema undangan digital, pratinjau desain, dan syarat tier paket minimum.
           </p>
         </div>
         <Button
-          variant="gold"
+          variant="sage"
           size="sm"
           onClick={() => setIsModalOpen(true)}
-          className="text-xs gap-1.5 shadow-md shadow-amber-500/20"
+          className="text-xs gap-1.5 shadow-sm"
         >
           <Plus className="w-4 h-4" />
           <span>Tambah Template</span>
@@ -141,53 +139,57 @@ export function TemplatesManager({
         {templates.map((tpl) => (
           <div
             key={tpl.id}
-            className="rounded-2xl bg-[#14171F] border border-slate-800 overflow-hidden shadow-xl flex flex-col justify-between"
+            className="rounded-2xl bg-white border border-[#EAE3D8] overflow-hidden shadow-xs flex flex-col justify-between"
           >
-            <div className="relative aspect-4/3 bg-slate-900 overflow-hidden">
+            <div className="relative aspect-4/3 bg-[#F5EFEB] overflow-hidden">
               <img
                 src={tpl.previewImageUrl}
                 alt={tpl.name}
                 className="w-full h-full object-cover"
               />
               <div className="absolute top-3 left-3 flex gap-2">
-                <Badge variant="gold" className="text-[10px] py-0.5">
+                <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-white/95 text-[#8C6A28] border border-[#DFC798] shadow-xs">
                   Tier {tpl.minPackageTier}
-                </Badge>
-                <Badge variant="outline" className="text-[10px] py-0.5 bg-slate-900/80">
+                </span>
+                <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-medium bg-white/95 text-[#2A211B] border border-[#EAE3D8] shadow-xs">
                   {tpl.category.name}
-                </Badge>
+                </span>
               </div>
               <div className="absolute top-3 right-3">
                 {tpl.isActive ? (
-                  <Badge variant="success" className="text-[10px] py-0.5">
+                  <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-[#4C6957] text-white shadow-xs">
                     Aktif
-                  </Badge>
+                  </span>
                 ) : (
-                  <Badge variant="danger" className="text-[10px] py-0.5">
+                  <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-[#8C3A27] text-white shadow-xs">
                     Nonaktif
-                  </Badge>
+                  </span>
                 )}
               </div>
             </div>
 
             <div className="p-5 space-y-4">
               <div>
-                <h3 className="text-base font-bold font-serif text-white">{tpl.name}</h3>
-                <p className="text-[11px] font-mono text-slate-400">slug: {tpl.slug}</p>
-                <p className="text-xs text-slate-500 mt-1">
+                <h3 className="text-base font-bold font-serif text-[#2A211B]">{tpl.name}</h3>
+                <p className="text-[11px] font-mono text-[#8C6A28]">slug: {tpl.slug}</p>
+                <p className="text-xs text-[#6B5E55] mt-1">
                   Digunakan pada {tpl._count.invitations} undangan
                 </p>
               </div>
 
-              <div className="flex items-center justify-between pt-3 border-t border-slate-800">
+              <div className="flex items-center justify-between pt-3 border-t border-[#EAE3D8]">
                 <Button
-                  variant={tpl.isActive ? "outline" : "gold"}
+                  variant="outline"
                   size="sm"
                   onClick={() => handleToggleActive(tpl)}
-                  className="text-xs gap-1.5 w-full justify-center"
+                  className={`text-xs gap-1.5 w-full justify-center ${
+                    tpl.isActive
+                      ? "text-[#8C3A27] border-[#8C3A27]/30 hover:bg-[#8C3A27]/10"
+                      : "text-[#4C6957] border-[#4C6957]/30 hover:bg-[#4C6957]/10"
+                  }`}
                 >
                   <Power className="w-3.5 h-3.5" />
-                  <span>{tpl.isActive ? "Nonaktifkan" : "Aktifkan"}</span>
+                  <span>{tpl.isActive ? "Nonaktifkan Template" : "Aktifkan Template"}</span>
                 </Button>
               </div>
             </div>
@@ -200,10 +202,11 @@ export function TemplatesManager({
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         title="Tambah Template Desain Baru"
+        description="Daftarkan template tema baru ke dalam katalog sistem Kreyasi."
       >
         <form onSubmit={handleCreate} className="space-y-4 text-xs">
           <div className="space-y-1.5">
-            <label className="text-slate-300 font-medium">Nama Template</label>
+            <label className="text-[#2A211B] font-medium">Nama Template</label>
             <input
               type="text"
               required
@@ -213,29 +216,29 @@ export function TemplatesManager({
                 setName(e.target.value);
                 setSlug(e.target.value.toLowerCase().replace(/[^a-z0-9]+/g, "-"));
               }}
-              className="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-amber-400"
+              className="w-full px-3.5 py-2 bg-white border border-[#EAE3D8] rounded-xl text-[#2A211B] placeholder-[#7A6D63] focus:outline-none focus:border-[#4C6957] focus:ring-1 focus:ring-[#4C6957]/20"
             />
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-slate-300 font-medium">Slug Template</label>
+            <label className="text-[#2A211B] font-medium">Slug Template</label>
             <input
               type="text"
               required
               placeholder="contoh: royal-emerald"
               value={slug}
               onChange={(e) => setSlug(e.target.value)}
-              className="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-amber-400"
+              className="w-full px-3.5 py-2 bg-white border border-[#EAE3D8] rounded-xl text-[#2A211B] placeholder-[#7A6D63] focus:outline-none focus:border-[#4C6957] focus:ring-1 focus:ring-[#4C6957]/20 font-mono text-[11px]"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1.5">
-              <label className="text-slate-300 font-medium">Kategori</label>
+              <label className="text-[#2A211B] font-medium">Kategori</label>
               <select
                 value={categoryId}
                 onChange={(e) => setCategoryId(e.target.value)}
-                className="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-amber-400"
+                className="w-full px-3.5 py-2 bg-white border border-[#EAE3D8] rounded-xl text-[#2A211B] focus:outline-none focus:border-[#4C6957]"
               >
                 {categories.map((c) => (
                   <option key={c.id} value={c.id}>
@@ -246,11 +249,11 @@ export function TemplatesManager({
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-slate-300 font-medium">Min. Paket Tier</label>
+              <label className="text-[#2A211B] font-medium">Min. Paket Tier</label>
               <select
                 value={minPackageTier}
                 onChange={(e) => setMinPackageTier(e.target.value)}
-                className="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-amber-400"
+                className="w-full px-3.5 py-2 bg-white border border-[#EAE3D8] rounded-xl text-[#2A211B] focus:outline-none focus:border-[#4C6957]"
               >
                 <option value="0">Tier 0 (Semua Paket / Gratis)</option>
                 <option value="1">Tier 1 (Basic ke atas)</option>
@@ -262,18 +265,18 @@ export function TemplatesManager({
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-slate-300 font-medium">URL Gambar Preview</label>
+            <label className="text-[#2A211B] font-medium">URL Gambar Preview</label>
             <input
-              type="url"
+              type="text"
               required
-              placeholder="https://..."
+              placeholder="/templates/nama-template.jpg"
               value={previewImageUrl}
               onChange={(e) => setPreviewImageUrl(e.target.value)}
-              className="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-amber-400"
+              className="w-full px-3.5 py-2 bg-white border border-[#EAE3D8] rounded-xl text-[#2A211B] placeholder-[#7A6D63] focus:outline-none focus:border-[#4C6957] focus:ring-1 focus:ring-[#4C6957]/20 font-mono text-[11px]"
             />
           </div>
 
-          <div className="flex justify-end gap-3 pt-4 border-t border-slate-800">
+          <div className="flex justify-end gap-2 pt-4 border-t border-[#EAE3D8]">
             <Button
               type="button"
               variant="outline"
@@ -284,10 +287,10 @@ export function TemplatesManager({
             </Button>
             <Button
               type="submit"
-              variant="gold"
+              variant="sage"
               size="sm"
               disabled={loading}
-              className="gap-1.5"
+              className="gap-1.5 shadow-sm"
             >
               {loading && <RotateCw className="w-3.5 h-3.5 animate-spin" />}
               <span>Simpan Template</span>
