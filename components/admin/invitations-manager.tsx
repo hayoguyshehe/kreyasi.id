@@ -309,11 +309,11 @@ export function InvitationsManager({
       {/* Header & Quick Action */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold font-serif text-white flex items-center gap-2.5">
-            <HeartHandshake className="w-6 h-6 text-amber-400" />
+          <h1 className="text-2xl font-bold font-serif text-[#2A211B] flex items-center gap-2.5">
+            <HeartHandshake className="w-6 h-6 text-[#8C6A28]" />
             <span>Manajemen Undangan &amp; Kerjasama</span>
           </h1>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-[#6B5E55] mt-1">
             Kelola seluruh undangan pelanggan dan berikan status Gratis Kerjasama / Complimentary kepada mitra atau teman tanpa memerlukan pembayaran Midtrans.
           </p>
         </div>
@@ -322,7 +322,7 @@ export function InvitationsManager({
             variant="gold"
             size="sm"
             onClick={() => setIsCreateModalOpen(true)}
-            className="text-xs gap-1.5 shadow-md shadow-amber-500/20"
+            className="text-xs gap-1.5 shadow-sm"
           >
             <Plus className="w-3.5 h-3.5" />
             <span>Buat Undangan Kerjasama</span>
@@ -332,40 +332,40 @@ export function InvitationsManager({
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="p-4 rounded-xl bg-[#14171F] border border-slate-800 space-y-1">
-          <span className="text-xs text-slate-400 font-medium">Total Undangan</span>
-          <p className="text-xl font-bold font-serif text-white">{invitations.length}</p>
-          <p className="text-[11px] text-slate-500">Semua draft &amp; publik</p>
+        <div className="p-4 rounded-xl bg-white border border-[#EAE3D8] space-y-1 shadow-sm">
+          <span className="text-xs text-[#6B5E55] font-medium">Total Undangan</span>
+          <p className="text-xl font-bold font-serif text-[#2A211B]">{invitations.length}</p>
+          <p className="text-[11px] text-[#9C8E84]">Semua draft &amp; publik</p>
         </div>
-        <div className="p-4 rounded-xl bg-[#14171F] border border-amber-500/30 bg-amber-500/5 space-y-1">
+        <div className="p-4 rounded-xl bg-[#FAF7F2] border border-[#C5A059]/40 space-y-1 shadow-sm">
           <div className="flex items-center justify-between">
-            <span className="text-xs text-amber-400 font-medium">Undangan Kerjasama</span>
-            <Sparkles className="w-4 h-4 text-amber-400" />
+            <span className="text-xs text-[#8C6A28] font-medium">Undangan Kerjasama</span>
+            <Sparkles className="w-4 h-4 text-[#8C6A28]" />
           </div>
-          <p className="text-xl font-bold font-serif text-amber-400">{complimentaryCount}</p>
-          <p className="text-[11px] text-amber-400/80">Gratis fitur penuh tanpa order Midtrans</p>
+          <p className="text-xl font-bold font-serif text-[#8C6A28]">{complimentaryCount}</p>
+          <p className="text-[11px] text-[#8C6A28]/80">Gratis fitur penuh tanpa order Midtrans</p>
         </div>
-        <div className="p-4 rounded-xl bg-[#14171F] border border-slate-800 space-y-1">
-          <span className="text-xs text-slate-400 font-medium">Undangan Reguler</span>
-          <p className="text-xl font-bold font-serif text-white">
+        <div className="p-4 rounded-xl bg-white border border-[#EAE3D8] space-y-1 shadow-sm">
+          <span className="text-xs text-[#6B5E55] font-medium">Undangan Reguler</span>
+          <p className="text-xl font-bold font-serif text-[#2A211B]">
             {invitations.length - complimentaryCount}
           </p>
-          <p className="text-[11px] text-slate-500">Tier gratis atau lunas Midtrans</p>
+          <p className="text-[11px] text-[#9C8E84]">Tier gratis atau lunas Midtrans</p>
         </div>
       </div>
 
       {/* Filters & Search Bar */}
-      <div className="p-4 rounded-2xl bg-[#14171F] border border-slate-800 space-y-4">
+      <div className="p-4 rounded-2xl bg-white border border-[#EAE3D8] space-y-4 shadow-sm">
         <div className="flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
           {/* Search */}
           <div className="relative flex-1 max-w-md">
-            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[#9C8E84]" />
             <input
               type="text"
               placeholder="Cari judul acara, slug, nama user, email, atau catatan..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 bg-slate-900 border border-slate-700/80 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
+              className="w-full pl-9 pr-4 py-2 bg-white border border-[#EAE3D8] rounded-xl text-xs text-[#2A211B] placeholder-[#9C8E84] focus:outline-none focus:ring-2 focus:ring-[#4C6957]/20 focus:border-[#4C6957]"
             />
           </div>
 
@@ -375,8 +375,8 @@ export function InvitationsManager({
               onClick={() => setFilterType("ALL")}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                 filterType === "ALL"
-                  ? "bg-slate-700 text-white"
-                  : "text-slate-400 hover:text-white hover:bg-slate-800"
+                  ? "bg-[#2A211B] text-white"
+                  : "text-[#6B5E55] hover:text-[#2A211B] hover:bg-[#FAF7F2]"
               }`}
             >
               Semua ({invitations.length})
@@ -385,8 +385,8 @@ export function InvitationsManager({
               onClick={() => setFilterType("COMPLIMENTARY")}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors flex items-center gap-1.5 ${
                 filterType === "COMPLIMENTARY"
-                  ? "bg-amber-500/20 text-amber-300 border border-amber-500/40"
-                  : "text-amber-400/80 hover:text-amber-300 hover:bg-amber-500/10"
+                  ? "bg-[#FAF7F2] text-[#8C6A28] border border-[#C5A059]/40"
+                  : "text-[#8C6A28] hover:bg-[#FAF7F2]"
               }`}
             >
               <Sparkles className="w-3 h-3" />
@@ -396,8 +396,8 @@ export function InvitationsManager({
               onClick={() => setFilterType("REGULAR")}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                 filterType === "REGULAR"
-                  ? "bg-slate-700 text-white"
-                  : "text-slate-400 hover:text-white hover:bg-slate-800"
+                  ? "bg-[#2A211B] text-white"
+                  : "text-[#6B5E55] hover:text-[#2A211B] hover:bg-[#FAF7F2]"
               }`}
             >
               Reguler ({invitations.length - complimentaryCount})
@@ -407,7 +407,7 @@ export function InvitationsManager({
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="px-2.5 py-1.5 bg-slate-900 border border-slate-700/80 rounded-lg text-xs text-slate-300 focus:outline-none focus:border-amber-500"
+              className="px-2.5 py-1.5 bg-white border border-[#EAE3D8] rounded-lg text-xs text-[#2A211B] focus:outline-none focus:ring-2 focus:ring-[#4C6957]/20 focus:border-[#4C6957]"
             >
               <option value="ALL">Semua Status</option>
               <option value="DRAFT">DRAFT</option>
@@ -420,22 +420,22 @@ export function InvitationsManager({
       </div>
 
       {/* Invitations Table */}
-      <div className="rounded-2xl bg-[#14171F] border border-slate-800 overflow-hidden shadow-xl">
+      <div className="rounded-2xl bg-white border border-[#EAE3D8] overflow-hidden shadow-sm">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-slate-900/80 border-b border-slate-800 text-slate-400 uppercase tracking-wider text-[10px]">
+            <thead className="bg-[#FAF7F2] border-b border-[#EAE3D8] text-[#6B5E55] font-semibold text-xs">
               <tr>
-                <th className="py-3.5 px-4 font-semibold">Acara &amp; Tautan</th>
-                <th className="py-3.5 px-4 font-semibold">Pemilik Undangan</th>
-                <th className="py-3.5 px-4 font-semibold">Paket &amp; Template</th>
-                <th className="py-3.5 px-4 font-semibold">Status Kerjasama</th>
-                <th className="py-3.5 px-4 font-semibold text-right">Aksi Admin</th>
+                <th className="py-3 px-4">Acara &amp; Tautan</th>
+                <th className="py-3 px-4">Pemilik Undangan</th>
+                <th className="py-3 px-4">Paket &amp; Template</th>
+                <th className="py-3 px-4">Status Kerjasama</th>
+                <th className="py-3 px-4 text-right">Aksi Admin</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800/60">
+            <tbody className="divide-y divide-[#EAE3D8] text-[#2A211B]">
               {filteredInvitations.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="py-12 text-center text-slate-500 text-xs">
+                  <td colSpan={5} className="py-12 text-center text-[#9C8E84] text-xs">
                     Tidak ada undangan yang cocok dengan kriteria pencarian.
                   </td>
                 </tr>
@@ -447,110 +447,116 @@ export function InvitationsManager({
                   return (
                     <tr
                       key={inv.id}
-                      className={`hover:bg-slate-800/30 transition-colors ${
-                        isComp ? "bg-amber-500/[0.02]" : ""
+                      className={`hover:bg-[#FAF7F2]/60 transition-colors ${
+                        isComp ? "bg-[#FAF7F2]/30" : ""
                       }`}
                     >
                       {/* Acara & Tautan */}
-                      <td className="py-4 px-4">
+                      <td className="py-3.5 px-4">
                         <div className="space-y-1">
                           <div className="flex items-center gap-2">
-                            <span className="font-semibold text-white text-sm">
+                            <span className="font-semibold text-[#2A211B] text-sm">
                               {inv.eventTitle}
                             </span>
                             <Badge
-                              variant={inv.status === "PUBLISHED" ? "success" : "outline"}
+                              variant={
+                                inv.status === "PUBLISHED"
+                                  ? "sage"
+                                  : inv.status === "DRAFT"
+                                  ? "outline"
+                                  : "danger"
+                              }
                               className="text-[10px] uppercase py-0 px-1.5"
                             >
                               {inv.status}
                             </Badge>
                           </div>
-                          <div className="flex items-center gap-2 text-[11px] text-slate-400">
-                            <Calendar className="w-3 h-3 text-slate-500" />
+                          <div className="flex items-center gap-2 text-[11px] text-[#6B5E55]">
+                            <Calendar className="w-3 h-3 text-[#9C8E84]" />
                             <span>{formatDateIndonesia(inv.eventDate)}</span>
                             <span>•</span>
                             <a
                               href={`/u/${inv.slug}`}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-amber-400 hover:text-amber-300 inline-flex items-center gap-1 font-mono"
+                              className="text-[#8C6A28] hover:text-[#C5A059] inline-flex items-center gap-1 font-mono"
                             >
                               <span>/u/{inv.slug}</span>
                               <ExternalLink className="w-2.5 h-2.5" />
                             </a>
                           </div>
-                          <div className="text-[10px] text-slate-500">
-                            {inv._count.guests} tamu • {inv._count.rsvps} konfirmasi RSVP • {inv._count.guestbook} ucapan
+                          <div className="text-[10px] text-[#9C8E84]">
+                            {inv._count.guests} tamu • {inv._count.rsvps} RSVP • {inv._count.guestbook} ucapan
                           </div>
                         </div>
                       </td>
 
                       {/* Pemilik */}
-                      <td className="py-4 px-4">
+                      <td className="py-3.5 px-4">
                         <div className="space-y-0.5">
-                          <p className="font-medium text-slate-200">{inv.user.name}</p>
-                          <p className="text-[11px] text-slate-400 font-mono">{inv.user.email}</p>
+                          <p className="font-medium text-[#2A211B]">{inv.user.name}</p>
+                          <p className="text-[11px] text-[#6B5E55] font-mono">{inv.user.email}</p>
                           {inv.user.phone && (
-                            <p className="text-[10px] text-slate-500">{inv.user.phone}</p>
+                            <p className="text-[10px] text-[#9C8E84]">{inv.user.phone}</p>
                           )}
                         </div>
                       </td>
 
                       {/* Paket & Template */}
-                      <td className="py-4 px-4">
+                      <td className="py-3.5 px-4">
                         <div className="space-y-1">
                           <div className="flex items-center gap-1.5">
-                            <Badge variant="outline" className="text-[10px] text-slate-300 py-0">
+                            <Badge variant="outline" className="text-[10px] border-[#EAE3D8] text-[#6B5E55] py-0">
                               {inv.package.name}
                             </Badge>
                             {inv.package.priceIdr > 0 ? (
-                              <span className="text-[10px] text-slate-400">
+                              <span className="text-[10px] text-[#6B5E55]">
                                 {formatRupiah(inv.package.priceIdr)}
                               </span>
                             ) : (
-                              <span className="text-[10px] text-emerald-400">Gratis</span>
+                              <span className="text-[10px] text-[#4C6957] font-medium">Gratis</span>
                             )}
                           </div>
-                          <p className="text-[11px] text-slate-400 flex items-center gap-1">
-                            <Layers className="w-3 h-3 text-slate-500" />
+                          <p className="text-[11px] text-[#6B5E55] flex items-center gap-1">
+                            <Layers className="w-3 h-3 text-[#9C8E84]" />
                             <span>{inv.template.name}</span>
                           </p>
                         </div>
                       </td>
 
                       {/* Status Kerjasama */}
-                      <td className="py-4 px-4">
+                      <td className="py-3.5 px-4">
                         {isComp ? (
                           <div className="space-y-1.5 max-w-xs">
-                            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-[11px] font-semibold">
+                            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#FAF7F2] border border-[#C5A059]/40 text-[#8C6A28] text-[11px] font-semibold">
                               <Sparkles className="w-3 h-3" />
                               <span>Kerjasama / Mitra</span>
                             </div>
                             {inv.complimentaryNote && (
-                              <p className="text-[11px] text-slate-300 italic bg-slate-900/60 p-2 rounded-lg border border-slate-800">
+                              <p className="text-[11px] text-[#6B5E55] italic bg-[#FAF7F2] p-2 rounded-lg border border-[#EAE3D8]">
                                 &quot;{inv.complimentaryNote}&quot;
                               </p>
                             )}
                             {inv.grantedBy && (
-                              <p className="text-[10px] text-slate-500">
-                                Oleh: <strong className="text-slate-400">{inv.grantedBy.name}</strong>
+                              <p className="text-[10px] text-[#9C8E84]">
+                                Oleh: <strong className="text-[#6B5E55]">{inv.grantedBy.name}</strong>
                               </p>
                             )}
                           </div>
                         ) : (
-                          <span className="text-[11px] text-slate-500">Reguler</span>
+                          <span className="text-[11px] text-[#9C8E84]">Reguler</span>
                         )}
                       </td>
 
                       {/* Aksi Admin */}
-                      <td className="py-4 px-4 text-right">
+                      <td className="py-3.5 px-4 text-right">
                         <div className="inline-flex items-center gap-1.5">
                           {/* Tombol Buka Editor (Admin bypass) */}
                           <Link href={`/dashboard/invitations/${inv.id}`} target="_blank">
                             <Button
                               variant="outline"
                               size="sm"
-                              className="text-[11px] py-1 px-2.5 h-auto text-slate-300 hover:text-white"
+                              className="text-[11px] py-1 px-2.5 h-auto border-[#EAE3D8] text-[#6B5E55] hover:bg-[#FAF7F2] hover:text-[#2A211B]"
                               title="Buka Editor Undangan sebagai Admin"
                             >
                               <span>Editor</span>
@@ -565,7 +571,7 @@ export function InvitationsManager({
                               size="sm"
                               disabled={isActionLoading}
                               onClick={() => handleRevokeComplimentary(inv)}
-                              className="text-[11px] py-1 px-2.5 h-auto text-amber-400/90 border-amber-500/30 hover:bg-amber-500/10"
+                              className="text-[11px] py-1 px-2.5 h-auto text-[#8C3A27] border-[#8C3A27]/30 hover:bg-[#8C3A27]/5"
                               title="Cabut status kerjasama"
                             >
                               {isActionLoading ? (
@@ -591,7 +597,7 @@ export function InvitationsManager({
                           <button
                             onClick={() => handleDeleteInvitation(inv)}
                             disabled={isActionLoading}
-                            className="p-1.5 rounded-lg text-slate-500 hover:text-red-400 hover:bg-slate-800 transition-colors"
+                            className="p-1.5 rounded-lg text-[#9C8E84] hover:text-[#8C3A27] hover:bg-[#8C3A27]/10 transition-colors"
                             title="Hapus Undangan"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
@@ -618,11 +624,11 @@ export function InvitationsManager({
         <form onSubmit={handleCreateComplimentary} className="space-y-4 text-xs">
           {/* Pilih Pengguna */}
           <div className="space-y-1.5">
-            <label className="text-slate-300 font-medium">Pilih Pengguna / Customer Target *</label>
+            <label className="text-[#2A211B] font-medium">Pilih Pengguna / Customer Target *</label>
             <select
               value={selectedUserId}
               onChange={(e) => setSelectedUserId(e.target.value)}
-              className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-amber-500 text-xs"
+              className="w-full px-3 py-2 bg-white border border-[#EAE3D8] rounded-xl text-[#2A211B] focus:outline-none focus:ring-2 focus:ring-[#4C6957]/20 focus:border-[#4C6957] text-xs"
               required
             >
               {users.map((u) => (
@@ -631,7 +637,7 @@ export function InvitationsManager({
                 </option>
               ))}
             </select>
-            <p className="text-[10px] text-slate-500">
+            <p className="text-[10px] text-[#6B5E55]">
               Undangan akan masuk ke dashboard akun pengguna tersebut.
             </p>
           </div>
@@ -639,11 +645,11 @@ export function InvitationsManager({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {/* Pilih Paket */}
             <div className="space-y-1.5">
-              <label className="text-slate-300 font-medium">Tingkat Paket (Tier) *</label>
+              <label className="text-[#2A211B] font-medium">Tingkat Paket (Tier) *</label>
               <select
                 value={selectedPackageId}
                 onChange={(e) => setSelectedPackageId(e.target.value)}
-                className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-amber-500 text-xs"
+                className="w-full px-3 py-2 bg-white border border-[#EAE3D8] rounded-xl text-[#2A211B] focus:outline-none focus:ring-2 focus:ring-[#4C6957]/20 focus:border-[#4C6957] text-xs"
                 required
               >
                 {packages.map((pkg) => (
@@ -656,11 +662,11 @@ export function InvitationsManager({
 
             {/* Pilih Template */}
             <div className="space-y-1.5">
-              <label className="text-slate-300 font-medium">Template Desain *</label>
+              <label className="text-[#2A211B] font-medium">Template Desain *</label>
               <select
                 value={selectedTemplateId}
                 onChange={(e) => setSelectedTemplateId(e.target.value)}
-                className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-amber-500 text-xs"
+                className="w-full px-3 py-2 bg-white border border-[#EAE3D8] rounded-xl text-[#2A211B] focus:outline-none focus:ring-2 focus:ring-[#4C6957]/20 focus:border-[#4C6957] text-xs"
                 required
               >
                 {templates.map((t) => (
@@ -675,11 +681,11 @@ export function InvitationsManager({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {/* Kategori Acara */}
             <div className="space-y-1.5">
-              <label className="text-slate-300 font-medium">Kategori Acara *</label>
+              <label className="text-[#2A211B] font-medium">Kategori Acara *</label>
               <select
                 value={eventCategory}
                 onChange={(e) => setEventCategory(e.target.value)}
-                className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-amber-500 text-xs"
+                className="w-full px-3 py-2 bg-white border border-[#EAE3D8] rounded-xl text-[#2A211B] focus:outline-none focus:ring-2 focus:ring-[#4C6957]/20 focus:border-[#4C6957] text-xs"
                 required
               >
                 <option value="PERNIKAHAN">Pernikahan</option>
@@ -691,12 +697,12 @@ export function InvitationsManager({
 
             {/* Tanggal Acara */}
             <div className="space-y-1.5">
-              <label className="text-slate-300 font-medium">Tanggal Acara *</label>
+              <label className="text-[#2A211B] font-medium">Tanggal Acara *</label>
               <Input
                 type="date"
                 value={eventDate}
                 onChange={(e) => setEventDate(e.target.value)}
-                className="bg-slate-900 border-slate-700 text-white"
+                className="bg-white border-[#EAE3D8] text-[#2A211B] focus:ring-[#4C6957]/20 focus:border-[#4C6957]"
                 required
               />
             </div>
@@ -704,22 +710,22 @@ export function InvitationsManager({
 
           {/* Judul Acara */}
           <div className="space-y-1.5">
-            <label className="text-slate-300 font-medium">Judul Acara *</label>
+            <label className="text-[#2A211B] font-medium">Judul Acara *</label>
             <Input
               type="text"
               placeholder="Contoh: Pernikahan Romeo & Juliet"
               value={eventTitle}
               onChange={(e) => setEventTitle(e.target.value)}
-              className="bg-slate-900 border-slate-700 text-white"
+              className="bg-white border-[#EAE3D8] text-[#2A211B] focus:ring-[#4C6957]/20 focus:border-[#4C6957]"
               required
             />
           </div>
 
           {/* Slug Kustom (Opsional) */}
           <div className="space-y-1.5">
-            <label className="text-slate-300 font-medium">Slug URL Kustom (Opsional)</label>
+            <label className="text-[#2A211B] font-medium">Slug URL Kustom (Opsional)</label>
             <div className="flex items-center">
-              <span className="px-3 py-2 bg-slate-800 border border-r-0 border-slate-700 rounded-l-xl text-slate-400 font-mono text-[11px]">
+              <span className="px-3 py-2 bg-[#FAF7F2] border border-r-0 border-[#EAE3D8] rounded-l-xl text-[#6B5E55] font-mono text-[11px]">
                 kreyasi.id/u/
               </span>
               <Input
@@ -727,38 +733,39 @@ export function InvitationsManager({
                 placeholder="romeo-dan-juliet"
                 value={customSlug}
                 onChange={(e) => setCustomSlug(e.target.value)}
-                className="rounded-l-none bg-slate-900 border-slate-700 text-white font-mono text-[11px]"
+                className="rounded-l-none bg-white border-[#EAE3D8] text-[#2A211B] font-mono text-[11px] focus:ring-[#4C6957]/20 focus:border-[#4C6957]"
               />
             </div>
-            <p className="text-[10px] text-slate-500">
+            <p className="text-[10px] text-[#6B5E55]">
               Kosongkan jika ingin digenerate otomatis dengan sufiks acak.
             </p>
           </div>
 
           {/* Catatan Kerjasama */}
           <div className="space-y-1.5">
-            <label className="text-slate-300 font-medium">
+            <label className="text-[#2A211B] font-medium">
               Alasan Kerjasama / Catatan Admin *
             </label>
             <Textarea
               placeholder="Contoh: Kerjasama Sponsorship Vendor MUA / Teman Dekat Owner / Promosi Instagram"
               value={complimentaryNote}
               onChange={(e) => setComplimentaryNote(e.target.value)}
-              className="bg-slate-900 border-slate-700 text-white"
+              className="bg-white border-[#EAE3D8] text-[#2A211B] placeholder-[#9C8E84] focus:ring-[#4C6957]/20 focus:border-[#4C6957]"
               rows={2}
               required
             />
-            <p className="text-[10px] text-slate-500">
+            <p className="text-[10px] text-[#6B5E55]">
               Catatan ini disimpan untuk audit dan transparansi internal pengelola Kreyasi.
             </p>
           </div>
 
-          <div className="pt-3 border-t border-slate-800 flex items-center justify-end gap-2">
+          <div className="pt-3 border-t border-[#EAE3D8] flex items-center justify-end gap-2">
             <Button
               type="button"
               variant="outline"
               size="sm"
               onClick={() => setIsCreateModalOpen(false)}
+              className="border-[#EAE3D8] text-[#6B5E55] hover:bg-[#FAF7F2] hover:text-[#2A211B]"
             >
               Batal
             </Button>
@@ -767,7 +774,7 @@ export function InvitationsManager({
               variant="gold"
               size="sm"
               disabled={loading}
-              className="gap-1.5 shadow-md shadow-amber-500/20"
+              className="gap-1.5 shadow-sm"
             >
               {loading ? (
                 <RotateCw className="w-3.5 h-3.5 animate-spin" />
@@ -794,12 +801,12 @@ export function InvitationsManager({
         {targetInvitation && (
           <form onSubmit={handleGrantSubmit} className="space-y-4 text-xs">
             {/* Info Undangan */}
-            <div className="p-3 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1">
-              <p className="font-semibold text-white">{targetInvitation.eventTitle}</p>
-              <p className="text-[11px] text-slate-400">
+            <div className="p-3 rounded-xl bg-[#FAF7F2] border border-[#EAE3D8] space-y-1">
+              <p className="font-semibold text-[#2A211B]">{targetInvitation.eventTitle}</p>
+              <p className="text-[11px] text-[#6B5E55]">
                 Milik: {targetInvitation.user.name} ({targetInvitation.user.email})
               </p>
-              <p className="text-[11px] text-amber-400">
+              <p className="text-[11px] text-[#8C6A28]">
                 Paket Saat Ini: {targetInvitation.package.name} (
                 {targetInvitation.package.priceIdr === 0
                   ? "Gratis"
@@ -810,13 +817,13 @@ export function InvitationsManager({
 
             {/* Pilihan Upgrade Paket */}
             <div className="space-y-1.5">
-              <label className="text-slate-300 font-medium">
+              <label className="text-[#2A211B] font-medium">
                 Pilih Paket (Opsional: Upgrade ke fitur lebih tinggi)
               </label>
               <select
                 value={upgradePackageId}
                 onChange={(e) => setUpgradePackageId(e.target.value)}
-                className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-amber-500 text-xs"
+                className="w-full px-3 py-2 bg-white border border-[#EAE3D8] rounded-xl text-[#2A211B] focus:outline-none focus:ring-2 focus:ring-[#4C6957]/20 focus:border-[#4C6957] text-xs"
               >
                 {packages.map((pkg) => (
                   <option key={pkg.id} value={pkg.id}>
@@ -828,20 +835,20 @@ export function InvitationsManager({
 
             {/* Catatan Kerjasama */}
             <div className="space-y-1.5">
-              <label className="text-slate-300 font-medium">
+              <label className="text-[#2A211B] font-medium">
                 Catatan / Alasan Kerjasama *
               </label>
               <Textarea
                 placeholder="Contoh: Teman lama / Barter barter konten TikTok / Mitra WO"
                 value={grantNote}
                 onChange={(e) => setGrantNote(e.target.value)}
-                className="bg-slate-900 border-slate-700 text-white"
+                className="bg-white border-[#EAE3D8] text-[#2A211B] placeholder-[#9C8E84] focus:ring-[#4C6957]/20 focus:border-[#4C6957]"
                 rows={3}
                 required
               />
             </div>
 
-            <div className="pt-3 border-t border-slate-800 flex items-center justify-end gap-2">
+            <div className="pt-3 border-t border-[#EAE3D8] flex items-center justify-end gap-2">
               <Button
                 type="button"
                 variant="outline"
@@ -850,6 +857,7 @@ export function InvitationsManager({
                   setIsGrantModalOpen(false);
                   setTargetInvitation(null);
                 }}
+                className="border-[#EAE3D8] text-[#6B5E55] hover:bg-[#FAF7F2] hover:text-[#2A211B]"
               >
                 Batal
               </Button>
@@ -858,7 +866,7 @@ export function InvitationsManager({
                 variant="gold"
                 size="sm"
                 disabled={loading}
-                className="gap-1.5 shadow-md shadow-amber-500/20"
+                className="gap-1.5 shadow-sm"
               >
                 {loading ? (
                   <RotateCw className="w-3.5 h-3.5 animate-spin" />
