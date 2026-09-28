@@ -160,7 +160,7 @@ export default async function AdminOverviewPage() {
           </div>
 
           {/* Kerjasama (Complimentary) */}
-          <div className="p-4 rounded-xl bg-white border border-[#DFC798] shadow-xs flex flex-col justify-between bg-[#FDFBF7]">
+          <div className="p-4 rounded-xl border border-[#DFC798] shadow-xs flex flex-col justify-between bg-[#FDFBF7]">
             <span className="text-xs text-[#8C6A28] font-medium">Kerjasama</span>
             <div className="mt-2">
               <p className="text-xl font-bold font-serif text-[#8C6A28]">{complimentaryInvitations}</p>

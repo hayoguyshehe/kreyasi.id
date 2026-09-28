@@ -66,7 +66,7 @@ export default async function AdminOrdersPage(props: OrdersPageProps) {
         </div>
         <div className="p-4 rounded-xl bg-white border border-[#EAE3D8] shadow-xs space-y-1">
           <p className="text-xs text-[#6B5E55] font-medium">Total Terbayar (Lunas)</p>
-          <p className="text-2xl font-bold font-serif text-[#4C6957] font-mono">
+          <p className="text-2xl font-bold font-serif text-[#4C6957]">
             {formatRupiah(totalPaidSum)}
           </p>
           <p className="text-[11px] text-[#4C6957]/80">pendapatan bersih tercatat</p>

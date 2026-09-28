@@ -141,7 +141,7 @@ export function PackagesManager({ initialPackages }: { initialPackages: PackageI
               </div>
 
               <div>
-                <p className="text-2xl font-bold font-serif text-[#2A211B] font-mono">
+                <p className="text-2xl font-bold font-serif text-[#2A211B]">
                   {pkg.priceIdr === 0 ? "Gratis" : formatRupiah(pkg.priceIdr)}
                 </p>
                 <p className="text-xs text-[#6B5E55] mt-0.5">Durasi aktif: {pkg.activeDurationDays} hari</p>

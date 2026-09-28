@@ -10,7 +10,7 @@ const DotLottieReact = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="w-full h-full min-h-[120px] flex items-center justify-center animate-pulse opacity-40">
+      <div className="w-full h-full min-h-30 flex items-center justify-center animate-pulse opacity-40">
         <div className="w-8 h-8 rounded-full border-2 border-[#C5A059]/40 border-t-[#C5A059] animate-spin" />
       </div>
     ),

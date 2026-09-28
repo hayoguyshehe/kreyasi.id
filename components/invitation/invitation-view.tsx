@@ -354,7 +354,7 @@ export function InvitationView({
       <MusicPlayer shouldPlay={isEnvelopeOpen} />
 
       {/* Ambient Lighting Glows */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-[#C5A059]/15 blur-[150px] pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-200 h-125 bg-[#C5A059]/15 blur-[150px] pointer-events-none" />
 
       {/* Main Container */}
       <div className="max-w-2xl mx-auto px-4 py-16 sm:py-24 space-y-20 relative z-10">

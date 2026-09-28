@@ -343,7 +343,7 @@ export function TemplateResponsivePreview({
       </div>
 
       {/* Main Preview Container with Responsive Device Frame */}
-      <div className="p-6 rounded-2xl bg-[#FAF7F2] border border-[#EAE3D8] flex flex-col items-center justify-center min-h-[600px] overflow-auto">
+      <div className="p-6 rounded-2xl bg-[#FAF7F2] border border-[#EAE3D8] flex flex-col items-center justify-center min-h-150 overflow-auto">
         <div className="text-center pb-3 text-xs text-[#6B5E55]">
           Resolusi Aktif: <strong className="text-[#2A211B]">{frameWidth}px</strong> ×{" "}
           <strong className="text-[#2A211B]">{frameHeight}px</strong>
