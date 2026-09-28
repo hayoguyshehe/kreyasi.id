@@ -9,10 +9,8 @@ import {
   CreditCard,
   Users,
   Mail,
-  ArrowRight,
   TrendingUp,
   Sparkles,
-  ShieldCheck,
   Palette,
   Tag,
   HeartHandshake,
@@ -85,29 +83,28 @@ export default async function AdminOverviewPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold font-serif text-white flex items-center gap-2.5">
-            <Sparkles className="w-6 h-6 text-amber-400" />
-            <span>Pusat Kendali Administrator</span>
+          <h1 className="text-2xl font-bold font-serif text-[#2A211B] tracking-tight">
+            Pusat Kendali Administrator
           </h1>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-[#6B5E55] mt-1">
             Ringkasan performa bisnis, aktivitas transaksi Midtrans, dan pengguna platform Kreyasi.
           </p>
         </div>
         <div className="flex items-center gap-2 flex-wrap">
           <Link href="/admin/invitations">
-            <Button variant="outline" size="sm" className="text-xs gap-1.5 text-amber-400 border-amber-500/30 hover:bg-amber-500/10">
-              <HeartHandshake className="w-3.5 h-3.5" />
+            <Button variant="outline" size="sm" className="text-xs gap-1.5 border-[#EAE3D8] text-[#8C6A28] hover:bg-[#F5EFEB]">
+              <HeartHandshake className="w-3.5 h-3.5 text-[#8C6A28]" />
               <span>Undangan Kerjasama</span>
             </Button>
           </Link>
           <Link href="/admin/templates">
-            <Button variant="outline" size="sm" className="text-xs gap-1.5">
-              <Palette className="w-3.5 h-3.5" />
+            <Button variant="outline" size="sm" className="text-xs gap-1.5 border-[#EAE3D8] text-[#2A211B] hover:bg-[#F5EFEB]">
+              <Palette className="w-3.5 h-3.5 text-[#4C6957]" />
               <span>Kelola Template</span>
             </Button>
           </Link>
           <Link href="/admin/promo-codes">
-            <Button variant="gold" size="sm" className="text-xs gap-1.5 shadow-md shadow-amber-500/20">
+            <Button variant="sage" size="sm" className="text-xs gap-1.5 shadow-sm">
               <Tag className="w-3.5 h-3.5" />
               <span>Buat Kupon</span>
             </Button>
@@ -115,189 +112,192 @@ export default async function AdminOverviewPage() {
         </div>
       </div>
 
-      {/* Metrics Row */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-        <div className="p-5 rounded-2xl bg-[#14171F] border border-slate-800 space-y-2">
-          <div className="flex items-center justify-between">
-            <span className="text-xs text-slate-400 font-medium">Total Pendapatan</span>
-            <div className="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center">
-              <DollarSign className="w-4 h-4" />
-            </div>
+      {/* Metrics Row: Hierarchical layout instead of 4 identical SaaS-cards */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        {/* Primary Metric: Total Revenue (prominent) */}
+        <div className="lg:col-span-5 p-6 rounded-2xl bg-white border border-[#EAE3D8] shadow-xs flex flex-col justify-between space-y-4">
+          <div className="space-y-1">
+            <span className="text-xs font-medium text-[#6B5E55]">Total Pendapatan Terkumpul</span>
+            <p className="text-3xl sm:text-4xl font-serif font-bold text-[#2A211B] tracking-tight">
+              {formatRupiah(totalRevenue)}
+            </p>
           </div>
-          <p className="text-2xl font-bold font-serif text-white">
-            {formatRupiah(totalRevenue)}
-          </p>
-          <div className="flex items-center gap-1.5 text-[11px] text-amber-400/90">
-            <TrendingUp className="w-3 h-3" />
-            <span>Bulan ini: {formatRupiah(monthlyRevenue)}</span>
+          <div className="pt-3 border-t border-[#EAE3D8] flex items-center justify-between text-xs">
+            <span className="text-[#6B5E55]">Pendapatan Bulan Ini</span>
+            <span className="font-semibold text-[#4C6957] font-mono">
+              {formatRupiah(monthlyRevenue)}
+            </span>
           </div>
         </div>
 
-        <div className="p-5 rounded-2xl bg-[#14171F] border border-slate-800 space-y-2">
-          <div className="flex items-center justify-between">
-            <span className="text-xs text-slate-400 font-medium">Pesanan Lunas</span>
-            <div className="w-8 h-8 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
-              <CreditCard className="w-4 h-4" />
+        {/* Secondary Metrics: 4 calmer, compact tiles */}
+        <div className="lg:col-span-7 grid grid-cols-2 sm:grid-cols-4 gap-3.5">
+          {/* Pesanan Lunas */}
+          <div className="p-4 rounded-xl bg-white border border-[#EAE3D8] shadow-xs flex flex-col justify-between">
+            <span className="text-xs text-[#6B5E55] font-medium">Pesanan Lunas</span>
+            <div className="mt-2">
+              <p className="text-xl font-bold font-serif text-[#2A211B]">{paidOrders}</p>
+              <p className="text-[11px] text-[#7A6D63] mt-0.5">dari {totalOrders} pesanan</p>
             </div>
           </div>
-          <p className="text-2xl font-bold font-serif text-white">{paidOrders}</p>
-          <p className="text-[11px] text-slate-500">
-            Dari total {totalOrders} pesanan tercatat
-          </p>
-        </div>
 
-        <div className="p-5 rounded-2xl bg-[#14171F] border border-slate-800 space-y-2">
-          <div className="flex items-center justify-between">
-            <span className="text-xs text-slate-400 font-medium">Total Pengguna</span>
-            <div className="w-8 h-8 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center">
-              <Users className="w-4 h-4" />
+          {/* Total Pengguna */}
+          <div className="p-4 rounded-xl bg-white border border-[#EAE3D8] shadow-xs flex flex-col justify-between">
+            <span className="text-xs text-[#6B5E55] font-medium">Pengguna</span>
+            <div className="mt-2">
+              <p className="text-xl font-bold font-serif text-[#2A211B]">{totalUsers}</p>
+              <p className="text-[11px] text-[#7A6D63] mt-0.5">akun terdaftar</p>
             </div>
           </div>
-          <p className="text-2xl font-bold font-serif text-white">{totalUsers}</p>
-          <p className="text-[11px] text-slate-500">Akun terdaftar di sistem</p>
-        </div>
 
-        <div className="p-5 rounded-2xl bg-[#14171F] border border-slate-800 space-y-2">
-          <div className="flex items-center justify-between">
-            <span className="text-xs text-slate-400 font-medium">Undangan Aktif</span>
-            <div className="w-8 h-8 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center">
-              <Mail className="w-4 h-4" />
+          {/* Undangan Aktif */}
+          <div className="p-4 rounded-xl bg-white border border-[#EAE3D8] shadow-xs flex flex-col justify-between">
+            <span className="text-xs text-[#6B5E55] font-medium">Undangan Aktif</span>
+            <div className="mt-2">
+              <p className="text-xl font-bold font-serif text-[#2A211B]">{publishedInvitations}</p>
+              <p className="text-[11px] text-[#7A6D63] mt-0.5">dari {totalInvitations} draft</p>
             </div>
           </div>
-          <p className="text-2xl font-bold font-serif text-white">{publishedInvitations}</p>
-          <p className="text-[11px] text-slate-500">
-            Dari {totalInvitations} total draft/undangan
-          </p>
-        </div>
 
-        <div className="p-5 rounded-2xl bg-[#14171F] border border-amber-500/30 bg-amber-500/5 space-y-2">
-          <div className="flex items-center justify-between">
-            <span className="text-xs text-amber-400 font-medium">Kerjasama (Mitra)</span>
-            <div className="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center">
-              <HeartHandshake className="w-4 h-4" />
+          {/* Kerjasama (Complimentary) */}
+          <div className="p-4 rounded-xl bg-white border border-[#DFC798] shadow-xs flex flex-col justify-between bg-[#FDFBF7]">
+            <span className="text-xs text-[#8C6A28] font-medium">Kerjasama</span>
+            <div className="mt-2">
+              <p className="text-xl font-bold font-serif text-[#8C6A28]">{complimentaryInvitations}</p>
+              <p className="text-[11px] text-[#8C6A28]/80 mt-0.5">mitra gratis</p>
             </div>
           </div>
-          <p className="text-2xl font-bold font-serif text-amber-400">{complimentaryInvitations}</p>
-          <p className="text-[11px] text-amber-400/80">Gratis fitur penuh</p>
         </div>
       </div>
 
       {/* Two Columns: Recent Orders & Recent Users */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Recent Orders (2 cols) */}
-        <div className="lg:col-span-2 rounded-2xl bg-[#14171F] border border-slate-800 p-6 space-y-5 shadow-xl">
-          <div className="flex items-center justify-between">
+        <div className="lg:col-span-2 rounded-2xl bg-white border border-[#EAE3D8] p-6 space-y-4 shadow-xs">
+          <div className="flex items-center justify-between pb-3 border-b border-[#EAE3D8]">
             <div>
-              <h2 className="text-base font-bold font-serif text-white">
+              <h2 className="text-base font-bold font-serif text-[#2A211B]">
                 Transaksi Terbaru
               </h2>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-[#6B5E55]">
                 Aktivitas pembayaran pelanggan terkini
               </p>
             </div>
             <Link
               href="/admin/orders"
-              className="text-xs text-amber-400 hover:text-amber-300 font-medium flex items-center gap-1"
+              className="text-xs text-[#4C6957] hover:underline font-medium"
             >
-              <span>Lihat Semua</span>
-              <ArrowRight className="w-3.5 h-3.5" />
+              Lihat Semua
             </Link>
           </div>
 
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse text-xs">
               <thead>
-                <tr className="border-b border-slate-800/80 text-slate-400 uppercase font-semibold text-[10px] tracking-wider">
-                  <th className="pb-3 px-2">Order ID</th>
-                  <th className="pb-3 px-2">Pelanggan</th>
-                  <th className="pb-3 px-2">Paket</th>
-                  <th className="pb-3 px-2">Nominal</th>
-                  <th className="pb-3 px-2">Status</th>
+                <tr className="border-b border-[#EAE3D8] text-[#6B5E55] font-semibold text-xs bg-[#F5EFEB]/50">
+                  <th className="py-2.5 px-3 rounded-l-lg">ID Pesanan</th>
+                  <th className="py-2.5 px-3">Pelanggan</th>
+                  <th className="py-2.5 px-3">Paket</th>
+                  <th className="py-2.5 px-3">Nominal</th>
+                  <th className="py-2.5 px-3 rounded-r-lg">Status</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/60 text-slate-300">
-                {recentOrders.map((order) => (
-                  <tr key={order.id} className="hover:bg-slate-800/20 transition-colors">
-                    <td className="py-3 px-2 font-mono text-amber-300 text-[11px]">
-                      {order.midtransOrderId}
-                    </td>
-                    <td className="py-3 px-2">
-                      <p className="font-semibold text-white truncate max-w-30">
-                        {order.user.name}
-                      </p>
-                      <p className="text-[10px] text-slate-500 truncate max-w-30">
-                        {order.user.email}
-                      </p>
-                    </td>
-                    <td className="py-3 px-2 text-slate-300">
-                      {order.package.name}
-                    </td>
-                    <td className="py-3 px-2 font-semibold text-white">
-                      {formatRupiah(order.amountIdr)}
-                    </td>
-                    <td className="py-3 px-2">
-                      {order.status === "PAID" && (
-                        <Badge variant="success" className="py-0 text-[10px]">
-                          Lunas
-                        </Badge>
-                      )}
-                      {order.status === "PENDING" && (
-                        <Badge variant="warning" className="py-0 text-[10px]">
-                          Pending
-                        </Badge>
-                      )}
-                      {order.status === "EXPIRED" && (
-                        <Badge variant="danger" className="py-0 text-[10px]">
-                          Kedaluwarsa
-                        </Badge>
-                      )}
-                      {order.status === "FAILED" && (
-                        <Badge variant="danger" className="py-0 text-[10px]">
-                          Gagal
-                        </Badge>
-                      )}
+              <tbody className="divide-y divide-[#EAE3D8] text-[#2A211B]">
+                {recentOrders.length === 0 ? (
+                  <tr>
+                    <td colSpan={5} className="py-8 text-center text-[#7A6D63] text-xs">
+                      Belum ada transaksi tercatat.
                     </td>
                   </tr>
-                ))}
+                ) : (
+                  recentOrders.map((order) => (
+                    <tr key={order.id} className="hover:bg-[#FAF7F2] transition-colors">
+                      <td className="py-3 px-3 font-mono text-[#8C6A28] text-[11px]">
+                        {order.midtransOrderId}
+                      </td>
+                      <td className="py-3 px-3">
+                        <p className="font-semibold text-[#2A211B] truncate max-w-36">
+                          {order.user.name}
+                        </p>
+                        <p className="text-[10px] text-[#7A6D63] truncate max-w-36">
+                          {order.user.email}
+                        </p>
+                      </td>
+                      <td className="py-3 px-3 text-[#6B5E55]">
+                        {order.package.name}
+                      </td>
+                      <td className="py-3 px-3 font-semibold text-[#2A211B] font-mono">
+                        {formatRupiah(order.amountIdr)}
+                      </td>
+                      <td className="py-3 px-3">
+                        {order.status === "PAID" && (
+                          <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-semibold bg-[#4C6957]/10 text-[#4C6957] border border-[#4C6957]/20">
+                            Lunas
+                          </span>
+                        )}
+                        {order.status === "PENDING" && (
+                          <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-semibold bg-[#C5A059]/15 text-[#8C6A28] border border-[#C5A059]/30">
+                            Menunggu
+                          </span>
+                        )}
+                        {order.status === "EXPIRED" && (
+                          <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-semibold bg-[#8C3A27]/10 text-[#8C3A27] border border-[#8C3A27]/20">
+                            Kedaluwarsa
+                          </span>
+                        )}
+                        {order.status === "FAILED" && (
+                          <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-semibold bg-[#8C3A27]/10 text-[#8C3A27] border border-[#8C3A27]/20">
+                            Gagal
+                          </span>
+                        )}
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>
         </div>
 
         {/* Recent Users (1 col) */}
-        <div className="rounded-2xl bg-[#14171F] border border-slate-800 p-6 space-y-5 shadow-xl">
-          <div className="flex items-center justify-between">
+        <div className="rounded-2xl bg-white border border-[#EAE3D8] p-6 space-y-4 shadow-xs">
+          <div className="flex items-center justify-between pb-3 border-b border-[#EAE3D8]">
             <div>
-              <h2 className="text-base font-bold font-serif text-white">
+              <h2 className="text-base font-bold font-serif text-[#2A211B]">
                 Pengguna Baru
               </h2>
-              <p className="text-xs text-slate-400">Pendaftaran akun terkini</p>
+              <p className="text-xs text-[#6B5E55]">Pendaftaran akun terkini</p>
             </div>
             <Link
               href="/admin/users"
-              className="text-xs text-amber-400 hover:text-amber-300 font-medium flex items-center gap-1"
+              className="text-xs text-[#4C6957] hover:underline font-medium"
             >
-              <span>Kelola</span>
-              <ArrowRight className="w-3.5 h-3.5" />
+              Kelola
             </Link>
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-2.5">
             {recentUsers.map((u) => (
               <div
                 key={u.id}
-                className="flex items-center justify-between p-3 rounded-xl bg-slate-900/60 border border-slate-800/80"
+                className="flex items-center justify-between p-3 rounded-xl bg-[#FAF7F2] border border-[#EAE3D8]"
               >
                 <div className="overflow-hidden">
-                  <p className="text-xs font-semibold text-white truncate">
+                  <p className="text-xs font-semibold text-[#2A211B] truncate">
                     {u.name}
                   </p>
-                  <p className="text-[10px] text-slate-500 truncate">{u.email}</p>
+                  <p className="text-[10px] text-[#7A6D63] truncate">{u.email}</p>
                 </div>
                 <div className="shrink-0 flex items-center gap-2">
-                  <Badge variant={u.role === "CUSTOMER" ? "outline" : "gold"} className="text-[9px] py-0">
+                  <span
+                    className={`inline-block px-2 py-0.5 rounded-full text-[9px] font-semibold ${
+                      u.role === "CUSTOMER"
+                        ? "bg-[#F5EFEB] text-[#6B5E55] border border-[#EAE3D8]"
+                        : "bg-[#C5A059]/15 text-[#8C6A28] border border-[#C5A059]/30"
+                    }`}
+                  >
                     {u.role}
-                  </Badge>
+                  </span>
                 </div>
               </div>
             ))}
