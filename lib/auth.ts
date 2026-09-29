@@ -61,6 +61,40 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
   ],
   callbacks: {
+    async signIn({ user, account, profile }) {
+      // Pengetatan Keamanan: Google OAuth & Auto-Linking hanya untuk CUSTOMER
+      if (account?.provider === "google") {
+        const emailToCheck = (profile?.email || user?.email)?.toLowerCase().trim();
+        if (!emailToCheck) {
+          return false;
+        }
+
+        // Cari user existing di database berdasarkan email Google
+        const existingUser = await prisma.user.findUnique({
+          where: { email: emailToCheck },
+          select: { id: true, role: true, isSuspended: true },
+        });
+
+        // Jika user berhak istimewa (ADMIN atau SUPERADMIN), tolak sign-in Google secara mutlak
+        if (
+          existingUser &&
+          (existingUser.role === "ADMIN" || existingUser.role === "SUPERADMIN")
+        ) {
+          console.warn(
+            `[Auth:signIn] Percobaan Google Sign-In ditolak untuk akun ${existingUser.role} (${emailToCheck})`
+          );
+          return `/login?error=${encodeURIComponent("Akun admin hanya bisa masuk dengan email & kata sandi")}`;
+        }
+
+        // Jika user disuspend, tolak
+        if (existingUser?.isSuspended) {
+          return `/login?error=${encodeURIComponent("Akun Anda telah dinonaktifkan")}`;
+        }
+      }
+
+      // Untuk akun CUSTOMER (lama maupun baru), lanjutkan alur Google Sign-In & linking seperti biasa
+      return true;
+    },
     async jwt({ token, user }) {
       // Saat pertama kali login, tambahkan role dan id ke token
       if (user) {

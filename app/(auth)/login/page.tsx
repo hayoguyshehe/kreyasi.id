@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Suspense, useState } from "react";
+import React, { Suspense, useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
@@ -21,6 +21,7 @@ function LoginForm() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
   const message = searchParams.get("message");
+  const errorParam = searchParams.get("error");
   
   // Extract package from package param or callbackUrl
   const packageParam = searchParams.get("package");
@@ -28,9 +29,25 @@ function LoginForm() {
   
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(() => {
+    if (!errorParam) return null;
+    if (errorParam === "AccessDenied") {
+      return "Akses ditolak: Akun admin hanya bisa masuk dengan email & kata sandi.";
+    }
+    return errorParam;
+  });
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+
+  useEffect(() => {
+    if (errorParam) {
+      if (errorParam === "AccessDenied") {
+        setError("Akses ditolak: Akun admin hanya bisa masuk dengan email & kata sandi.");
+      } else {
+        setError(errorParam);
+      }
+    }
+  }, [errorParam]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
