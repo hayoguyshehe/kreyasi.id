@@ -1,4 +1,6 @@
 import React from "react";
+import { redirect } from "next/navigation";
+import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { InvitationsManager, AdminInvitationItem } from "@/components/admin/invitations-manager";
 
@@ -7,6 +9,11 @@ export const metadata = {
 };
 
 export default async function AdminInvitationsPage() {
+  const session = await auth();
+  if (!session?.user || session.user.role !== "SUPERADMIN") {
+    redirect("/admin");
+  }
+
   const [invitations, users, packages, templates] = await Promise.all([
     prisma.invitation.findMany({
       orderBy: { createdAt: "desc" },

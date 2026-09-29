@@ -7,12 +7,9 @@ import type { EventCategory, InvitationStatus } from "@/generated/prisma";
 export async function GET(request: NextRequest) {
   try {
     const session = await auth();
-    if (
-      !session?.user?.id ||
-      (session.user.role !== "ADMIN" && session.user.role !== "SUPERADMIN")
-    ) {
+    if (!session?.user?.id || session.user.role !== "SUPERADMIN") {
       return NextResponse.json(
-        { success: false, error: "Unauthorized: Akses admin diperlukan" },
+        { success: false, error: "Akses ditolak: Hanya SUPERADMIN yang diizinkan mengelola undangan kerjasama" },
         { status: 403 }
       );
     }
@@ -79,12 +76,9 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const session = await auth();
-    if (
-      !session?.user?.id ||
-      (session.user.role !== "ADMIN" && session.user.role !== "SUPERADMIN")
-    ) {
+    if (!session?.user?.id || session.user.role !== "SUPERADMIN") {
       return NextResponse.json(
-        { success: false, error: "Unauthorized: Akses admin diperlukan" },
+        { success: false, error: "Akses ditolak: Hanya SUPERADMIN yang diizinkan membuat atau memberikan undangan kerjasama" },
         { status: 403 }
       );
     }

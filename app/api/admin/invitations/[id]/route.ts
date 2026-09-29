@@ -8,12 +8,9 @@ export async function GET(
 ) {
   try {
     const session = await auth();
-    if (
-      !session?.user?.id ||
-      (session.user.role !== "ADMIN" && session.user.role !== "SUPERADMIN")
-    ) {
+    if (!session?.user?.id || session.user.role !== "SUPERADMIN") {
       return NextResponse.json(
-        { success: false, error: "Unauthorized" },
+        { success: false, error: "Akses ditolak: Hanya SUPERADMIN yang diizinkan mengakses data undangan kerjasama" },
         { status: 403 }
       );
     }
@@ -60,12 +57,9 @@ export async function PATCH(
 ) {
   try {
     const session = await auth();
-    if (
-      !session?.user?.id ||
-      (session.user.role !== "ADMIN" && session.user.role !== "SUPERADMIN")
-    ) {
+    if (!session?.user?.id || session.user.role !== "SUPERADMIN") {
       return NextResponse.json(
-        { success: false, error: "Unauthorized" },
+        { success: false, error: "Akses ditolak: Hanya SUPERADMIN yang diizinkan mengubah status undangan kerjasama" },
         { status: 403 }
       );
     }
@@ -143,12 +137,9 @@ export async function DELETE(
 ) {
   try {
     const session = await auth();
-    if (
-      !session?.user?.id ||
-      (session.user.role !== "ADMIN" && session.user.role !== "SUPERADMIN")
-    ) {
+    if (!session?.user?.id || session.user.role !== "SUPERADMIN") {
       return NextResponse.json(
-        { success: false, error: "Unauthorized" },
+        { success: false, error: "Akses ditolak: Hanya SUPERADMIN yang diizinkan menghapus undangan kerjasama" },
         { status: 403 }
       );
     }
