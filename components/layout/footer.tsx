@@ -60,17 +60,27 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Nav Col 2: Fitur Utama */}
+          {/* Nav Col 2: Kebijakan & Legal */}
           <div className="space-y-3">
             <h4 className="text-xs font-semibold uppercase tracking-wider text-[#FBF9F5]">
-              Fitur Lengkap
+              Kebijakan &amp; Legal
             </h4>
-            <ul className="space-y-2 text-sm text-[#8E837B]">
-              <li>RSVP & Konfirmasi Tamu</li>
-              <li>Amplop Kado Digital (QRIS & Bank)</li>
-              <li>Tautan Personal Nama Tamu</li>
-              <li>Panduan Lokasi Google Maps</li>
-              <li>Musik Pengiring Suasana</li>
+            <ul className="space-y-2 text-sm">
+              <li>
+                <Link href="/terms" className="hover:text-[#C5A059] transition-colors">
+                  Syarat &amp; Ketentuan
+                </Link>
+              </li>
+              <li>
+                <Link href="/privacy" className="hover:text-[#C5A059] transition-colors">
+                  Kebijakan Privasi
+                </Link>
+              </li>
+              <li>
+                <Link href="/refund-policy" className="hover:text-[#C5A059] transition-colors">
+                  Kebijakan Refund
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -113,7 +123,21 @@ export function Footer() {
 
         {/* Bottom bar */}
         <div className="mt-14 pt-8 border-t border-[#232E27] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#758279]">
-          <p>© {new Date().getFullYear()} Kreyasi.id. Seluruh hak cipta dilindungi undang-undang.</p>
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+            <p>© {new Date().getFullYear()} Kreyasi.id. Hak cipta dilindungi.</p>
+            <span className="hidden sm:inline text-[#3C4A40]">&bull;</span>
+            <Link href="/terms" className="hover:text-[#C5A059] transition-colors">
+              Syarat &amp; Ketentuan
+            </Link>
+            <span className="text-[#3C4A40]">&bull;</span>
+            <Link href="/privacy" className="hover:text-[#C5A059] transition-colors">
+              Kebijakan Privasi
+            </Link>
+            <span className="text-[#3C4A40]">&bull;</span>
+            <Link href="/refund-policy" className="hover:text-[#C5A059] transition-colors">
+              Kebijakan Refund
+            </Link>
+          </div>
           <div className="flex items-center gap-2">
             <span>Dirancang dengan</span>
             <Heart className="w-3.5 h-3.5 text-[#D4A59A] fill-[#D4A59A]" />

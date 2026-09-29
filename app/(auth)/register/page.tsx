@@ -18,6 +18,7 @@ function RegisterForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
@@ -27,6 +28,11 @@ function RegisterForm() {
     setError(null);
 
     // Client-side quick check
+    if (!agreedToTerms) {
+      setError("Anda wajib menyetujui Syarat & Ketentuan dan Kebijakan Privasi untuk mendaftar.");
+      return;
+    }
+
     if (password.length < 8) {
       setError("Password minimal 8 karakter.");
       return;
@@ -187,6 +193,37 @@ function RegisterForm() {
             required
             leftIcon={<Lock className="w-4 h-4" />}
           />
+
+          {/* Checkbox Persetujuan Syarat & Ketentuan */}
+          <div className="flex items-start gap-2.5 pt-1 text-xs text-[#6B5E55]">
+            <input
+              type="checkbox"
+              id="agreedToTerms"
+              checked={agreedToTerms}
+              onChange={(e) => setAgreedToTerms(e.target.checked)}
+              required
+              className="mt-0.5 w-4 h-4 rounded border-[#EAE3D8] text-[#8C6A28] focus:ring-[#8C6A28]/20 cursor-pointer accent-[#8C6A28]"
+            />
+            <label htmlFor="agreedToTerms" className="cursor-pointer leading-relaxed select-none">
+              Saya menyetujui{" "}
+              <Link
+                href="/terms"
+                target="_blank"
+                className="text-[#8C6A28] font-semibold hover:underline"
+              >
+                Syarat &amp; Ketentuan
+              </Link>{" "}
+              dan{" "}
+              <Link
+                href="/privacy"
+                target="_blank"
+                className="text-[#8C6A28] font-semibold hover:underline"
+              >
+                Kebijakan Privasi
+              </Link>{" "}
+              Kreyasi.id.
+            </label>
+          </div>
 
           <Button
             type="submit"
