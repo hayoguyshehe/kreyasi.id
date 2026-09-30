@@ -19,14 +19,16 @@ interface InvitationViewProps {
   invitation: any;
   guestName?: string | null;
   guestPersonalSlug?: string | null;
+  initialOpen?: boolean;
 }
 
 export function InvitationView({
   invitation,
   guestName,
   guestPersonalSlug,
+  initialOpen = false,
 }: InvitationViewProps) {
-  const [isEnvelopeOpen, setIsEnvelopeOpen] = useState(false);
+  const [isEnvelopeOpen, setIsEnvelopeOpen] = useState(initialOpen);
   const content = invitation.content || {};
   const couple = content.couple;
   const person = content.person;
@@ -105,6 +107,54 @@ export function InvitationView({
   const groomDisplayName = couple?.groomNickname || couple?.groomName || "";
   const brideDisplayName = couple?.brideNickname || couple?.brideName || "";
 
+  // Layout Theme Determinators
+  const layout = templateTheme.layout || "classic";
+  const isMinimal = layout === "minimal";
+  const isNusantara = layout === "nusantara";
+  const isRustic = layout === "rustic";
+  const isIslamic = layout === "islamic";
+
+  // Dynamic Theme Styling Tokens
+  const themeCard = isMinimal
+    ? "bg-white border border-neutral-200 rounded-xl shadow-xs"
+    : isNusantara
+    ? "bg-[#FFFDF9] border border-[#B86F36]/30 rounded-2xl shadow-sm shadow-[#B86F36]/10"
+    : isRustic
+    ? "bg-[#FAF8F3] border border-[#4C6957]/20 rounded-3xl shadow-xs shadow-[#4C6957]/5"
+    : isIslamic
+    ? "bg-white border border-[#0F4C3A]/25 rounded-2xl shadow-md shadow-[#0F4C3A]/5"
+    : "bg-white border border-[#C5A059]/20 rounded-3xl shadow-sm";
+
+  const themeHeading = isMinimal
+    ? "font-sans font-bold text-[#09090B] tracking-tight"
+    : isRustic
+    ? "font-serif italic font-normal text-[#1F2C20]"
+    : isNusantara
+    ? "font-serif font-bold text-[#2C1D11]"
+    : isIslamic
+    ? "font-serif font-bold text-[#0B1E15]"
+    : "font-serif font-bold text-[#2A211B]";
+
+  const themeSubheading = isMinimal
+    ? "text-xs uppercase tracking-[0.35em] text-[#2563EB] font-sans font-semibold"
+    : isNusantara
+    ? "text-xs uppercase tracking-[0.25em] text-[#8D4925] font-serif font-bold"
+    : isRustic
+    ? "text-xs uppercase tracking-[0.25em] text-[#4C6957] font-serif italic"
+    : isIslamic
+    ? "text-xs uppercase tracking-[0.25em] text-[#0F4C3A] font-serif font-semibold"
+    : "text-xs uppercase tracking-[0.25em] text-[#8C6A28] font-semibold";
+
+  const themeBadge = isMinimal
+    ? "bg-neutral-100 text-neutral-800 border-neutral-200"
+    : isNusantara
+    ? "bg-[#F5E8D8] text-[#8D4925] border-[#D6A97A]/40"
+    : isRustic
+    ? "bg-[#EBF1EC] text-[#3B5343] border-[#C2D6C6]"
+    : isIslamic
+    ? "bg-[#E6F0EB] text-[#0F4C3A] border-[#A3C9B6]"
+    : "bg-[#F5EFEB] text-[#8C6A28] border-[#C5A059]/30";
+
   // Section renderers
   const renderSection = (sectionId: string) => {
     switch (sectionId) {
@@ -115,8 +165,26 @@ export function InvitationView({
       case "quote":
         if (!content.quote) return null;
         return (
-          <section key="quote" className="text-center max-w-lg mx-auto p-6 rounded-3xl bg-[#F5EFEB]/50 border border-[#C5A059]/20 space-y-2">
-            <p className="text-xs sm:text-sm text-stone-600 italic font-serif leading-relaxed">
+          <section key="quote" className={`text-center max-w-lg mx-auto p-6 sm:p-8 space-y-3 ${themeCard}`}>
+            {isIslamic && (
+              <div className="pb-1 text-center">
+                <span className="text-xs text-[#0F4C3A] font-serif font-bold tracking-wider block">
+                  بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
+                </span>
+                <div className="w-12 h-0.5 bg-[#C5A059] mx-auto mt-1 rounded-full" />
+              </div>
+            )}
+            {isNusantara && (
+              <div className="text-[10px] text-[#B86F36] uppercase tracking-widest font-serif font-semibold">
+                ✦ UNGKAPAN DOA & RESTU ✦
+              </div>
+            )}
+            {isRustic && (
+              <div className="text-xs text-[#4C6957] font-serif italic">
+                ❦ Kata Mutiara Kasih ❦
+              </div>
+            )}
+            <p className={`text-xs sm:text-sm leading-relaxed ${isMinimal ? "text-neutral-600 font-sans" : isRustic ? "text-[#3E5240] font-serif italic" : isNusantara ? "text-[#4A3222] font-serif italic" : isIslamic ? "text-[#1E382C] font-serif" : "text-stone-600 italic font-serif"}`}>
               &quot;{content.quote}&quot;
             </p>
           </section>
@@ -127,43 +195,63 @@ export function InvitationView({
         return (
           <section key="couple" className="space-y-8 text-center">
             <div className="space-y-2">
-              <p className="text-xs uppercase tracking-[0.25em] text-[#8C6A28] font-semibold">
-                Mempelai yang Berbahagia
+              <p className={themeSubheading}>
+                {isIslamic ? "Mempelai Walimah" : "Mempelai yang Berbahagia"}
               </p>
-              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#2A211B]">
+              <h2 className={`text-2xl sm:text-3xl ${themeHeading}`}>
                 Kedua Mempelai
               </h2>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {/* Groom */}
-              <div className="p-6 rounded-3xl bg-white border border-[#C5A059]/20 shadow-sm space-y-3">
-                <div className="w-20 h-20 rounded-full bg-[#F5EFEB] border border-[#C5A059]/40 mx-auto flex items-center justify-center text-[#8C6A28]">
-                  <Sparkles className="w-8 h-8" />
+              <div className={`p-6 sm:p-8 space-y-3 ${themeCard}`}>
+                <div className={`w-20 h-20 rounded-full mx-auto flex items-center justify-center ${isMinimal ? "bg-neutral-100 border border-neutral-200 text-neutral-800" : isNusantara ? "bg-[#F5E8D8] border border-[#D6A97A]/50 text-[#8D4925]" : isRustic ? "bg-[#EBF1EC] border border-[#C2D6C6] text-[#3B5343]" : isIslamic ? "bg-[#E6F0EB] border border-[#A3C9B6] text-[#0F4C3A]" : "bg-[#F5EFEB] border border-[#C5A059]/40 text-[#8C6A28]"}`}>
+                  {isMinimal ? (
+                    <div className="w-4 h-4 bg-[#2563EB] rotate-45" />
+                  ) : isNusantara ? (
+                    <span className="text-xl font-serif">✦</span>
+                  ) : isRustic ? (
+                    <span className="text-xl font-serif">❦</span>
+                  ) : isIslamic ? (
+                    <span className="text-xl font-serif">۞</span>
+                  ) : (
+                    <Sparkles className="w-8 h-8" />
+                  )}
                 </div>
-                <h3 className="text-lg font-bold font-serif text-[#2A211B]">
+                <h3 className={`text-lg font-bold ${themeHeading}`}>
                   {couple.groomName}
                 </h3>
                 {couple.groomParents && (
-                  <p className="text-xs text-stone-500">
+                  <p className="text-xs opacity-75">
                     Putra tercinta dari: <br />
-                    <strong className="text-stone-600">{couple.groomParents}</strong>
+                    <strong className="opacity-90">{couple.groomParents}</strong>
                   </p>
                 )}
               </div>
 
               {/* Bride */}
-              <div className="p-6 rounded-3xl bg-white border border-[#C5A059]/20 shadow-sm space-y-3">
-                <div className="w-20 h-20 rounded-full bg-[#F5EFEB] border border-[#C5A059]/40 mx-auto flex items-center justify-center text-[#8C6A28]">
-                  <Sparkles className="w-8 h-8" />
+              <div className={`p-6 sm:p-8 space-y-3 ${themeCard}`}>
+                <div className={`w-20 h-20 rounded-full mx-auto flex items-center justify-center ${isMinimal ? "bg-neutral-100 border border-neutral-200 text-neutral-800" : isNusantara ? "bg-[#F5E8D8] border border-[#D6A97A]/50 text-[#8D4925]" : isRustic ? "bg-[#EBF1EC] border border-[#C2D6C6] text-[#3B5343]" : isIslamic ? "bg-[#E6F0EB] border border-[#A3C9B6] text-[#0F4C3A]" : "bg-[#F5EFEB] border border-[#C5A059]/40 text-[#8C6A28]"}`}>
+                  {isMinimal ? (
+                    <div className="w-4 h-4 bg-[#2563EB] rotate-45" />
+                  ) : isNusantara ? (
+                    <span className="text-xl font-serif">✦</span>
+                  ) : isRustic ? (
+                    <span className="text-xl font-serif">❦</span>
+                  ) : isIslamic ? (
+                    <span className="text-xl font-serif">۞</span>
+                  ) : (
+                    <Sparkles className="w-8 h-8" />
+                  )}
                 </div>
-                <h3 className="text-lg font-bold font-serif text-[#2A211B]">
+                <h3 className={`text-lg font-bold ${themeHeading}`}>
                   {couple.brideName}
                 </h3>
                 {couple.brideParents && (
-                  <p className="text-xs text-stone-500">
+                  <p className="text-xs opacity-75">
                     Putri tercinta dari: <br />
-                    <strong className="text-stone-600">{couple.brideParents}</strong>
+                    <strong className="opacity-90">{couple.brideParents}</strong>
                   </p>
                 )}
               </div>
@@ -175,11 +263,11 @@ export function InvitationView({
         return (
           <section key="countdown" className="text-center space-y-4">
             <div className="space-y-2">
-              <p className="text-xs uppercase tracking-[0.25em] text-[#8C6A28] font-semibold">
+              <p className={themeSubheading}>
                 Menghitung Hari
               </p>
-              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#2A211B]">
-                Hitung Mundur
+              <h2 className={`text-2xl sm:text-3xl ${themeHeading}`}>
+                Hitung Mundur Acara
               </h2>
             </div>
             <CountdownTimer targetDate={invitation.eventDate} />
@@ -192,11 +280,11 @@ export function InvitationView({
       case "live-streaming":
         if (!content.liveStreamingUrl) return null;
         return (
-          <div key="live-streaming" className="text-center p-6 rounded-3xl bg-white border border-[#C5A059]/30 shadow-md space-y-3">
-            <h3 className="text-base font-serif font-bold text-[#2A211B]">
+          <div key="live-streaming" className={`text-center p-6 sm:p-8 space-y-3 ${themeCard}`}>
+            <h3 className={`text-base font-bold ${themeHeading}`}>
               Siaran Langsung Acara (Live Streaming)
             </h3>
-            <p className="text-xs text-stone-600">
+            <p className="text-xs opacity-75">
               Bagi keluarga &amp; kerabat yang berhalangan hadir langsung, saksikan momen sakral kami melalui tayangan online:
             </p>
             <a
@@ -251,20 +339,30 @@ export function InvitationView({
         return (
           <section key="closing" className="text-center space-y-8 pt-8">
             {/* Closing personal message */}
-            <div className="p-8 rounded-3xl bg-white border border-[#C5A059]/20 shadow-md space-y-4 max-w-md mx-auto">
-              <div className="w-12 h-12 rounded-full bg-linear-to-br from-[#C5A059] to-[#8C6A28] mx-auto flex items-center justify-center text-white shadow-lg shadow-[#C5A059]/20">
-                <Heart className="w-6 h-6 fill-white" />
+            <div className={`p-8 space-y-4 max-w-md mx-auto ${themeCard}`}>
+              <div className={`w-12 h-12 rounded-full mx-auto flex items-center justify-center text-white shadow-lg ${isMinimal ? "bg-[#18181B] text-white shadow-black/10" : isNusantara ? "bg-linear-to-br from-[#8D4925] to-[#B86F36] shadow-[#8D4925]/20" : isRustic ? "bg-[#4C6957] shadow-[#4C6957]/20" : isIslamic ? "bg-linear-to-br from-[#0F4C3A] to-[#16654F] shadow-[#0F4C3A]/20" : "bg-linear-to-br from-[#C5A059] to-[#8C6A28] shadow-[#C5A059]/20"}`}>
+                {isMinimal ? (
+                  <div className="w-3 h-3 bg-[#2563EB] rotate-45" />
+                ) : isNusantara ? (
+                  <span className="text-base font-serif">✦</span>
+                ) : isRustic ? (
+                  <span className="text-base font-serif">❦</span>
+                ) : isIslamic ? (
+                  <span className="text-base font-serif">۞</span>
+                ) : (
+                  <Heart className="w-6 h-6 fill-white" />
+                )}
               </div>
-              <p className="text-xs text-stone-500 leading-relaxed">
+              <p className="text-xs opacity-75 leading-relaxed">
                 Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila
                 Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restu
                 kepada kami.
               </p>
               <div className="pt-2 space-y-1">
-                <p className="text-[11px] uppercase tracking-[0.2em] text-[#8C6A28] font-semibold">
+                <p className={themeSubheading}>
                   Kami yang berbahagia
                 </p>
-                <h3 className="text-xl font-serif font-bold text-[#2A211B]">
+                <h3 className={`text-xl font-bold ${themeHeading}`}>
                   {couple
                     ? `${groomDisplayName} & ${brideDisplayName}`
                     : person?.name || invitation.eventTitle}
@@ -273,8 +371,8 @@ export function InvitationView({
             </div>
 
             {/* Footer Branding */}
-            <footer className="pt-4 pb-6 border-t border-[#F5EFEB] space-y-3">
-              <p className="text-xs font-serif text-stone-500">
+            <footer className="pt-4 pb-6 border-t border-black/5 space-y-3">
+              <p className="text-xs opacity-60">
                 Ungkapan terima kasih yang tulus dari keluarga besar kami.
               </p>
               <div className="pt-2">
@@ -282,10 +380,12 @@ export function InvitationView({
                   href="https://kreyasi.id"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-[11px] text-stone-400 hover:text-[#8C6A28] transition-colors"
+                  className="inline-flex items-center gap-1.5 text-[11px] opacity-50 hover:opacity-100 transition-opacity"
                 >
                   <span>Powered by</span>
-                  <strong className="text-[#8C6A28]">Kreyasi.id</strong>
+                  <strong className={isMinimal ? "text-neutral-900" : isNusantara ? "text-[#8D4925]" : isRustic ? "text-[#4C6957]" : isIslamic ? "text-[#0F4C3A]" : "text-[#8C6A28]"}>
+                    Kreyasi.id
+                  </strong>
                 </a>
               </div>
             </footer>
@@ -316,7 +416,7 @@ export function InvitationView({
     return (
       <div key={`sec-wrap-${sectionId}`} className="relative space-y-4">
         {animConfig?.position !== "bottom" && (
-          <div className="w-28 h-28 sm:w-36 sm:h-36 mx-auto -mb-2">
+          <div className="w-24 h-24 sm:w-32 sm:h-32 mx-auto -mb-2">
             <LottiePlayer
               src={lottieUrl}
               loop={animConfig?.loop ?? true}
@@ -327,7 +427,7 @@ export function InvitationView({
         )}
         {rendered}
         {animConfig?.position === "bottom" && (
-          <div className="w-28 h-28 sm:w-36 sm:h-36 mx-auto -mt-2">
+          <div className="w-24 h-24 sm:w-32 sm:h-32 mx-auto -mt-2">
             <LottiePlayer
               src={lottieUrl}
               loop={animConfig?.loop ?? true}
@@ -340,11 +440,21 @@ export function InvitationView({
     );
   };
 
+  const containerBg = isMinimal
+    ? "bg-[#FAFAFA] text-[#18181B]"
+    : isNusantara
+    ? "bg-[#FAF6F0] text-[#332219]"
+    : isRustic
+    ? "bg-[#F5F2EB] text-[#2C3E2D]"
+    : isIslamic
+    ? "bg-[#F8F9F6] text-[#142A20]"
+    : "bg-[#FAF7F2] text-[#2A211B]";
+
   return (
     <div
-      className="min-h-screen bg-[#FAF7F2] text-[#2A211B] relative selection:bg-[#C5A059] selection:text-white font-sans"
+      className={`min-h-screen ${containerBg} relative selection:bg-[#C5A059] selection:text-white font-sans`}
       style={{
-        ["--primary-gold" as any]: theme.primaryColor || "#C5A059",
+        ["--primary-gold" as any]: theme.primaryColor || (isMinimal ? "#2563EB" : isNusantara ? "#8D4925" : isRustic ? "#4C6957" : isIslamic ? "#0F4C3A" : "#C5A059"),
       }}
     >
       {/* 1. Envelope Cover Modal */}
@@ -355,6 +465,9 @@ export function InvitationView({
           guestName={guestName}
           sealLottieUrl={sealLottieUrl}
           sealImageUrl={sealImageUrl}
+          layout={layout}
+          primaryColor={templateTheme.primaryColor}
+          accentColor={templateTheme.accentColor}
           onOpen={() => setIsEnvelopeOpen(true)}
         />
       )}
@@ -363,15 +476,84 @@ export function InvitationView({
       <MusicPlayer shouldPlay={isEnvelopeOpen} />
 
       {/* Ambient Lighting Glows */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-200 h-125 bg-[#C5A059]/15 blur-[150px] pointer-events-none" />
+      {!isMinimal && (
+        <div
+          className={`absolute top-0 left-1/2 -translate-x-1/2 w-200 h-125 blur-[150px] pointer-events-none ${
+            isNusantara
+              ? "bg-[#8D4925]/15"
+              : isRustic
+              ? "bg-[#4C6957]/15"
+              : isIslamic
+              ? "bg-[#0F4C3A]/15"
+              : "bg-[#C5A059]/15"
+          }`}
+        />
+      )}
 
       {/* Main Container */}
       <div className="max-w-2xl mx-auto px-4 py-16 sm:py-24 space-y-20 relative z-10">
         {/* HERO SECTION — always rendered first */}
         <section className="text-center space-y-6 pt-4">
+          {/* Nusantara Cultural Header */}
+          {isNusantara && (
+            <div className="flex items-center justify-center gap-2 text-[#B86F36]/80 text-[11px] tracking-widest uppercase font-serif pb-2">
+              <span>✦</span>
+              <span>━━━━━━━━</span>
+              <span className="font-bold text-[#8D4925]">PAWIKAHAN ADAT</span>
+              <span>━━━━━━━━</span>
+              <span>✦</span>
+            </div>
+          )}
+
+          {/* Islamic Basmalah Banner */}
+          {isIslamic && (
+            <div className="space-y-1.5 pb-2">
+              <span className="text-sm sm:text-base text-[#0F4C3A] font-serif font-bold tracking-widest block">
+                بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
+              </span>
+              <div className="w-20 h-0.5 bg-[#C5A059] mx-auto rounded-full" />
+            </div>
+          )}
+
+          {/* Minimalist Top Architectural Accent */}
+          {isMinimal && (
+            <div className="flex items-center justify-center gap-3 pb-2">
+              <div className="w-8 h-px bg-neutral-300" />
+              <div className="w-2 h-2 bg-[#2563EB] rotate-45" />
+              <div className="w-8 h-px bg-neutral-300" />
+            </div>
+          )}
+
+          {/* Rustic Botanical Laurel Header */}
+          {isRustic && (
+            <div className="flex items-center justify-center gap-2 text-[#4C6957] text-xs font-serif italic pb-1">
+              <span>❦</span>
+              <span>━━━━━━━━</span>
+              <span>A Garden of Love</span>
+              <span>━━━━━━━━</span>
+              <span>❦</span>
+            </div>
+          )}
+
           {heroLottieUrl ? (
-            <div className="w-36 h-36 sm:w-44 sm:h-44 mx-auto -my-4">
+            <div className="w-32 h-32 sm:w-40 sm:h-40 mx-auto -my-4">
               <LottiePlayer src={heroLottieUrl} loop autoplay className="w-full h-full" />
+            </div>
+          ) : isMinimal ? (
+            <div className="w-12 h-12 rounded-full border border-neutral-300 bg-neutral-100 mx-auto flex items-center justify-center text-neutral-800">
+              <div className="w-3 h-3 bg-[#2563EB] rotate-45" />
+            </div>
+          ) : isNusantara ? (
+            <div className="w-12 h-12 rounded-full bg-linear-to-br from-[#8D4925] to-[#B86F36] mx-auto flex items-center justify-center text-white shadow-lg shadow-[#8D4925]/30">
+              <span className="text-base font-serif font-bold">✦</span>
+            </div>
+          ) : isRustic ? (
+            <div className="w-12 h-12 rounded-full bg-[#EBF1EC] border border-[#C2D6C6] mx-auto flex items-center justify-center text-[#3B5343] shadow-md">
+              <span className="text-base font-serif">❦</span>
+            </div>
+          ) : isIslamic ? (
+            <div className="w-12 h-12 rounded-full bg-linear-to-br from-[#0F4C3A] to-[#16654F] mx-auto flex items-center justify-center text-[#C5A059] shadow-lg shadow-[#0F4C3A]/30">
+              <span className="text-base font-serif font-bold">۞</span>
             </div>
           ) : (
             <div className="w-12 h-12 rounded-full bg-linear-to-br from-[#C5A059] to-[#8C6A28] mx-auto flex items-center justify-center text-white shadow-lg shadow-[#C5A059]/20">
@@ -380,21 +562,23 @@ export function InvitationView({
           )}
 
           <div className="space-y-2">
-            <p className="text-xs uppercase tracking-[0.3em] text-[#8C6A28] font-semibold font-serif">
-              The Wedding of
+            <p className={themeSubheading}>
+              {isIslamic ? "Walimatul 'Urs" : "The Wedding of"}
             </p>
-            <h1 className="text-4xl sm:text-5xl font-serif font-bold text-[#2A211B] leading-tight">
+            <h1 className={`text-4xl sm:text-5xl leading-tight ${themeHeading}`}>
               {couple ? (
                 <>
                   <span>{groomDisplayName}</span>
-                  <span className="text-[#8C6A28] font-sans mx-3">&</span>
+                  <span className={`${isMinimal ? "text-[#2563EB] font-sans font-light" : isNusantara ? "text-[#B86F36] font-serif" : isRustic ? "text-[#4C6957] font-serif" : isIslamic ? "text-[#C5A059] font-serif" : "text-[#8C6A28] font-sans"} mx-3`}>
+                    &
+                  </span>
                   <span>{brideDisplayName}</span>
                 </>
               ) : (
                 person?.name || invitation.eventTitle
               )}
             </h1>
-            <p className="text-xs text-stone-500">
+            <p className="text-xs opacity-75">
               {formatDateIndonesia(invitation.eventDate)}
             </p>
           </div>

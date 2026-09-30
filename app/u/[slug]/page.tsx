@@ -7,7 +7,7 @@ import { formatDateIndonesia } from "@/lib/utils";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
-  searchParams: Promise<{ to?: string }>;
+  searchParams: Promise<{ to?: string; open?: string; opened?: string }>;
 }
 
 export async function generateMetadata(props: PageProps): Promise<Metadata> {
@@ -149,6 +149,8 @@ export default async function PublicInvitationPage(props: PageProps) {
     }
   }
 
+  const isDirectOpen = searchParams?.open === "1" || searchParams?.opened === "true";
+
   return (
     <InvitationView
       invitation={{
@@ -157,6 +159,7 @@ export default async function PublicInvitationPage(props: PageProps) {
       }}
       guestName={guestName}
       guestPersonalSlug={personalSlug}
+      initialOpen={isDirectOpen}
     />
   );
 }

@@ -349,25 +349,81 @@ export function WizardCreateInvitation({
               </div>
             ) : (
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                {availableTemplates.map((tpl) => (
-                  <div
-                    key={tpl.id}
-                    onClick={() => setSelectedTemplate(tpl.id)}
-                    className={`p-3 rounded-xl border cursor-pointer text-center space-y-2 transition-all ${
-                      selectedTemplate === tpl.id
-                        ? "bg-[#FAF7F2] border-[#4C6957] ring-1 ring-[#4C6957] shadow-sm"
-                        : "bg-white border-[#EAE3D8] hover:border-[#DFC798]"
-                    }`}
-                  >
-                    <div className="h-28 rounded-lg bg-[#FAF7F2] border border-[#EAE3D8] flex items-center justify-center p-2">
-                      <Sparkles className="w-5 h-5 text-[#4C6957]" />
+                {availableTemplates.map((tpl) => {
+                  const isSelected = selectedTemplate === tpl.id;
+                  const isMinimal = tpl.slug === "modern-minimalist";
+                  const isNusantara = tpl.slug === "adat-nusantara";
+                  const isRustic = tpl.slug === "botanical-rustic";
+                  const isIslamic = tpl.slug === "geometris-islami";
+                  const isMidnight = tpl.slug === "midnight-gold";
+
+                  return (
+                    <div
+                      key={tpl.id}
+                      onClick={() => setSelectedTemplate(tpl.id)}
+                      className={`p-3 rounded-xl border cursor-pointer text-center space-y-2 transition-all ${
+                        isSelected
+                          ? "bg-[#FAF7F2] border-[#4C6957] ring-1 ring-[#4C6957] shadow-sm"
+                          : "bg-white border-[#EAE3D8] hover:border-[#DFC798]"
+                      }`}
+                    >
+                      <div className={`h-28 rounded-lg flex flex-col items-center justify-center p-2 border ${
+                        isMinimal
+                          ? "bg-neutral-50 border-neutral-200"
+                          : isNusantara
+                          ? "bg-[#F5E8D8]/50 border-[#B86F36]/30"
+                          : isRustic
+                          ? "bg-[#EBF1EC]/60 border-[#4C6957]/30"
+                          : isIslamic
+                          ? "bg-[#E6F0EB]/60 border-[#0F4C3A]/30"
+                          : isMidnight
+                          ? "bg-[#161726] border-[#C9A84C]/40 text-white"
+                          : "bg-[#FAF7F2] border-[#EAE3D8]"
+                      }`}>
+                        {isMinimal ? (
+                          <div className="w-8 h-8 rounded-full border border-neutral-300 bg-white flex items-center justify-center">
+                            <div className="w-3 h-3 bg-[#2563EB] rotate-45" />
+                          </div>
+                        ) : isNusantara ? (
+                          <div className="w-8 h-8 rounded-full bg-[#F5E8D8] border border-[#B86F36]/40 flex items-center justify-center text-[#8D4925]">
+                            <span className="text-sm font-serif font-bold">✦</span>
+                          </div>
+                        ) : isRustic ? (
+                          <div className="w-8 h-8 rounded-full bg-[#EBF1EC] border border-[#4C6957]/40 flex items-center justify-center text-[#3B5343]">
+                            <span className="text-sm font-serif">❦</span>
+                          </div>
+                        ) : isIslamic ? (
+                          <div className="w-8 h-8 rounded-full bg-[#E6F0EB] border border-[#0F4C3A]/40 flex items-center justify-center text-[#0F4C3A]">
+                            <span className="text-sm font-serif font-bold">۞</span>
+                          </div>
+                        ) : (
+                          <div className="w-8 h-8 rounded-full bg-[#FAF2E4] border border-[#DFC798] flex items-center justify-center">
+                            <Sparkles className={`w-4 h-4 ${isMidnight ? "text-[#C9A84C]" : "text-[#4C6957]"}`} />
+                          </div>
+                        )}
+                        <span className={`text-[10px] mt-2 block font-medium truncate max-w-full ${
+                          isMidnight ? "text-stone-300" : "text-[#6B5E55]"
+                        }`}>
+                          {isMinimal
+                            ? "Modern Clean"
+                            : isNusantara
+                            ? "Songket & Adat"
+                            : isRustic
+                            ? "Eucalyptus & Kraft"
+                            : isIslamic
+                            ? "Arabesque Islami"
+                            : isMidnight
+                            ? "Luxury Dark Gold"
+                            : "Floral Elegan"}
+                        </span>
+                      </div>
+                      <p className="text-xs font-semibold text-[#2A211B] truncate">{tpl.name}</p>
+                      {isSelected && (
+                        <span className="text-[10px] text-[#4C6957] font-bold block">✓ Terpilih</span>
+                      )}
                     </div>
-                    <p className="text-xs font-semibold text-[#2A211B] truncate">{tpl.name}</p>
-                    {selectedTemplate === tpl.id && (
-                      <span className="text-[10px] text-[#4C6957] font-bold block">✓ Terpilih</span>
-                    )}
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </div>
